@@ -1,0 +1,574 @@
+---
+title: "CalcUA tips and tricks"
+subtitle: "For bioinformatics"
+author: "Pieter Moris"
+institute: Institute of Tropical Medicine Antwerp
+toc-title: Overview
+editor:
+  render-on-save: true
+format:
+  revealjs:
+    toc: true
+    toc-depth: 1
+    center: true
+    progress: true
+    slide-level: 2
+    code-block-height: 650px
+    code-copy: true
+    # code-line-numbers: false
+    highlight-style: dracula
+    transition: fade
+    slide-number: c/t #< collapsed/total
+    preview-links: auto
+    incremental: false  # can be disabled per list using ::: {.nonincremental}, but not for toc?
+    logo: img/ITM-symbol_white_rgb.png  # img/ITM-symbol_col_rgb.png
+    theme: [black, custom.scss]
+    # css: styles.css
+    # footer: '[https://{{< meta prerelease-subdomain >}}quarto.org](https://{{< meta prerelease-subdomain >}}quarto.org)'
+    menu:
+      side: left
+      numbers: false
+      titleSelector: 'h1' # requires next options, https://asanzdiego.github.io/markdownslides/doc/lib/reveal.js-menu/, Using titleSelector: '' will ignore all elements and no title will be provided, unless the slide section contains a data-menu-title attribute or an element with the menu-title class.
+      hideMissingTitles: true # requires next option
+      useTextContentForMissingTitles: false # https://github.com/quarto-dev/quarto-cli/issues/5404
+---
+
+# HPC container wrapper as a `conda` alternative
+
+<!--
+# Contents
+
+- [x] HPC container wrapper for conda
+- [x] Pretty squeue command with more information?
+- [x] Belnet download scripts
+- [x] Rclone tool for syncing between sharepoint/onedrive and calcua
+- [x] SSH config files
+- [x] File permissions best practices
+- [ ] direct editing of scripts on supercomputer via Vscode (remote SSH)
+- [ ] Useful aliases for navigating the filesystem - merge with squeue?
+- [x] Persistent sessions using tmux to avoid disconnect/timeout in interactive sessions?
+- [ ] X11-forwarding for gui tools?
+- [ ] globus?
+- [ ] Activating conda environments?
+- [ ] how/which environment variables are passed from user session to job?
+- [ ] For windows users: WSL + windows terminal? => copy paste works
+- [ ] conda vs mamba
+
+TODO: check if line highlighting can be used in combination with no line numbers
+-->
+
+## Using `conda` (and to a lesser extent `pip`) is frowned upon
+
+<!-- > Conda packages are incompatible with the software modules. Usage of conda is discouraged in the clusters at UAntwerpen, UGent, and VUB. -->
+
+> We discourage the use of Conda-variants for various reasons. It should only be used if nothing else works.
+
+::: incremental
+-   Disk space / file quota
+-   Not optimized for CPUs (e.g. Intel MKL math libraries, openBlAS, AMD Math Core Library)
+:::
+
+::: aside
+Learn more: - [VSC docs](https://docs.vscentrum.be/compute/software/python_package_management.html#install-python-packages-using-conda) & [CalcUA docs](https://docs.vscentrum.be/antwerp/tier2_hardware.html#conda)
+:::
+
+## File quota {auto-animate="true"}
+
+```bash
+└─▶ myquota
+file system /user/antwerpen
+    using 1.612G of 3G space, 5,187 of 20k files
+file system /data/antwerpen
+    using 82.99G of 128G space, 157,497 of 200k files
+```
+
+## File quota {auto-animate="true"}
+
+```{.bash code-line-numbers="7-15"}
+└─▶ myquota
+file system /user/antwerpen
+    using 1.612G of 3G space, 5,187 of 20k files
+file system /data/antwerpen
+    using 82.99G of 128G space, 157,497 of 200k files
+
+└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -h
+...
+91      /data/antwerpen/203/vsc20380/miniforge3/conda-meta
+132     /data/antwerpen/203/vsc20380/miniforge3/bin
+798     /data/antwerpen/203/vsc20380/miniforge3/include
+1.5K    /data/antwerpen/203/vsc20380/miniforge3/share
+6.0K    /data/antwerpen/203/vsc20380/miniforge3/lib
+10K     /data/antwerpen/203/vsc20380/miniforge3/envs
+107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs
+```
+<!--
+└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/
+125K    /data/antwerpen/203/vsc20380/miniforge3/
+
+
+91      /data/antwerpen/203/vsc20380/miniforge3/conda-meta
+132     /data/antwerpen/203/vsc20380/miniforge3/bin
+798     /data/antwerpen/203/vsc20380/miniforge3/include -->
+
+## File quota {auto-animate="true"}
+
+```{.bash code-line-numbers="12-20"}
+└─▶ myquota
+file system /user/antwerpen
+    using 1.612G of 3G space, 5,187 of 20k files
+file system /data/antwerpen
+    using 82.99G of 128G space, 157,497 of 200k files
+
+└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -h
+...
+10K     /data/antwerpen/203/vsc20380/miniforge3/envs
+107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs
+
+└─▶ conda env list
+# conda environments:
+#
+base                 * /data/antwerpen/203/vsc20380/miniforge3
+never                 /data/antwerpen/203/vsc20380/miniforge3/envs/never
+gonna                 /data/antwerpen/203/vsc20380/miniforge3/envs/gonna
+give                  /data/antwerpen/203/vsc20380/miniforge3/envs/give
+you                   /data/antwerpen/203/vsc20380/miniforge3/envs/you
+up                    /data/antwerpen/203/vsc20380/miniforge3/envs/up
+```
+
+## Conda clean {auto-animate="true"}
+
+Remember to clear out your conda cache every now and then:
+
+```bash
+└─▶ conda clean --all
+```
+
+## Conda clean {auto-animate="true"}
+
+Remember to clear out your conda cache every now and then:
+
+```bash
+└─▶ conda clean --all
+Will remove 69 (130.8 MB) tarball(s).
+Proceed ([y]/n)? y
+
+Will remove 1 index cache(s).
+Proceed ([y]/n)? y
+
+Will remove 173 (1.97 GB) package(s).
+Proceed ([y]/n)? y
+
+There are no tempfile(s) to remove.
+There are no logfile(s) to remove.
+```
+
+## Conda clean {auto-animate="true"}
+
+Remember to clear out your conda cache every now and then:
+
+```{.bash code-line-numbers="14-15"}
+└─▶ conda clean --all
+Will remove 69 (130.8 MB) tarball(s).
+Proceed ([y]/n)? y
+
+Will remove 1 index cache(s).
+Proceed ([y]/n)? y
+
+Will remove 173 (1.97 GB) package(s).
+Proceed ([y]/n)? y
+
+There are no tempfile(s) to remove.
+There are no logfile(s) to remove.
+
+└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/
+29K     /data/antwerpen/203/vsc20380/miniforge3/
+```
+
+## A different approach to using containers
+
+`hpc-container-wrapper` (formerly known as `Tykky`)
+
+::: incremental
+- A tool to wrap your Python installation into a (Apptainer/Singularity) container, designed for use on HPC systems.
+- Uses `environment.yml` (conda/mamba) or `requirements.txt` (pip) to define packages
+- Provides "wrapped" binaries to call Python (or other tools) inside the container environment.
+:::
+
+::: aside
+See documentation on [GitHub](https://github.com/CSCfi/hpc-container-wrapper) & [tutorial](https://docs.csc.fi/computing/containers/tykky/).
+:::
+
+## Creating containers
+
+::: {style="font-size: 0.7em"}
+Define dependencies in `environment.yml` (conda/mamba) or `requirements.txt` (pip):
+:::
+
+```yaml
+name: wgs
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - pandas
+  - fastqc=0.12.1
+  - multiqc=1.27.1
+  - samtools=1.21
+  - seqkit=2.10.0
+  - bcftools=1.21
+  - bedtools=2.31.1
+```
+
+::: {style="font-size: 0.7em"}
+Create container:
+:::
+
+```bash
+└─▶ module load hpc-container-wrapper
+└─▶ conda-containerize new --prefix "$VSC_SCRATCH/containers/wgs" environment.yaml
+```
+
+## Creating containers {.smaller}
+
+```.bash
+└─▶ ll wgs/wgs-container/
+total 2313043
+drwxrwxr-x 2 vsc20380 vsc20380        341 May  8 16:36 _bin
+drwxrwxr-x 2 vsc20380 vsc20380        343 May  8 16:36 bin
+-rw-rw-r-- 1 vsc20380 vsc20380       2541 May  8 16:36 common.sh
+-rwxrwxr-x 1 vsc20380 vsc20380   69107712 May  8 16:36 container.sif
+-rw-rw-r-- 1 vsc20380 vsc20380 2396106752 May  8 16:36 img.sqfs
+drwxrwxr-x 3 vsc20380 vsc20380          3 May  8 16:36 share
+
+└─▶ ll wgs/wgs-container/bin/
+total 857
+-rwxrwxr-x 1 vsc20380 vsc20380 1575 May  8 16:36 _debug_exec
+-rwxrwxr-x 1 vsc20380 vsc20380 1577 May  8 16:36 _debug_shell
+-rwxrwxr-x 1 vsc20380 vsc20380 2254 May  8 16:36 ace2sam
+-rwxrwxr-x 1 vsc20380 vsc20380 2245 May  8 16:36 adig
+-rwxrwxr-x 1 vsc20380 vsc20380 2248 May  8 16:36 ahost
+-rwxrwxr-x 1 vsc20380 vsc20380 2260 May  8 16:36 annot-tsv
+-rwxrwxr-x 1 vsc20380 vsc20380 2257 May  8 16:36 annotate
+-rwxrwxr-x 1 vsc20380 vsc20380 2266 May  8 16:36 annotateBed
+-rwxrwxr-x 1 vsc20380 vsc20380 2254 May  8 16:36 aserver
+-rwxrwxr-x 1 vsc20380 vsc20380 2257 May  8 16:36 bamToBed
+-rwxrwxr-x 1 vsc20380 vsc20380 2263 May  8 16:36 bamToFastq
+-rwxrwxr-x 1 vsc20380 vsc20380 2257 May  8 16:36 bcftools
+...
+```
+
+## Running containers
+
+- Run `export PATH="$VSC_SCRATCH/containers/wgs/bin:$PATH"` at the top of job script, or
+- just use individual binaries, e.g. `$VSC_SCRATCH/containers/wgs/bin/python` and `$VSC_SCRATCH/containers/wgs/bin/fastqc`
+- Python packages are automatically picked up via import statements when using the containerized python binary.
+
+## Updating containers
+
+Containers can be updated after creation to include additional packages.
+
+```bash
+conda-containerize update --post-install post-install.sh \
+  "$VSC_SCRATCH/containers/wgs"
+```
+
+`post-install.sh`:
+```bash
+pip install requests
+conda install -c bioconda pyfaidx
+```
+
+## Warnings
+
+::: {.callout-warning}
+## Beware of `coreutils`!
+- Certain conda packages pull in the [coreutils package](https://anaconda.org/conda-forge/coreutils), to provide tools like `ls`.
+- If you add the entire container to your PATH by default (e.g. in `.bashrc`), it will hijack **all** of your `ls` calls.
+- The time it takes to spin up and down the container will add multiple seconds to even these basic system calls.
+:::
+
+::: {.callout-note}
+The packages provided by conda might still be slower/less optimized than `module` installed software?
+:::
+
+## Reproducibility
+
+::: {.callout-tip}
+Remember to store your `environment.yml` or `requirements.txt` files (ideally under version control, e.g. `git`).
+:::
+
+See [https://pythonspeed.com/articles/conda-dependency-management/](https://pythonspeed.com/articles/conda-dependency-management/) and [https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/](https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/) for a refresher.
+
+## A note on R and `renv`
+
+Great write-up on how to manage R package dependencies using `renv` on HPCs: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html)
+
+# Pretty `squeue`
+
+## Pretty `squeue`
+
+Add this to your `.bashrc` or `.bash_aliases` file for a more readable job output:
+
+`alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'`
+
+::: footer
+
+For more info on formatting options, see:
+
+- [https://slurm.schedmd.com/squeue.html](https://slurm.schedmd.com/squeue.html)
+- [https://docs.vscentrum.be/compute/jobs/job_management.html](https://docs.vscentrum.be/compute/jobs/job_management.html)
+- [https://jhpce.jhu.edu/slurm/tips-squeue/](https://jhpce.jhu.edu/slurm/tips-squeue/)
+- [https://hpc-docs.cubi.bihealth.org/slurm/format-strings/](https://hpc-docs.cubi.bihealth.org/slurm/format-strings/)
+- [https://kb.ucdavis.edu/?id=07381](https://kb.ucdavis.edu/?id=07381)
+:::
+
+## Pretty `squeue`
+
+
+```{.bash}
+└─▶ /usr/bin/squeue
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           2036034 broadwell the-answ vsc20380  R      30:36      1 r3c08cn3.leibniz
+
+
+
+└─▶ squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"
+   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)
+ 2036034     the answer to life the universe and everything  broadwell  RUNNING      30:37   2-23:29:23  2025-05-17T12:01:44 3-00:00:00  2025-05-14T12:01:34      1 r3c08cn3.leibniz
+```
+
+- Especially useful if you use long job names.
+- Downside: widths are fixed and terminal window needs to be wide enough to fit everything in.
+
+# Belnet FileSender
+
+## File transfers on CalcUA {.smaller}
+
+For an overview of different methods to transfer data to CalcUA, we refer to the [VSC documentation](https://docs.vscentrum.be/data/transfer.html). In brief, you can use:
+
+- options like `rsync` or `sftp` from a terminal
+- a dedicated GUI SFTP tool like ~~[FileZilla](https://filezilla-project.org/)~~ (bundled spyware in the past) or [WinSCP](https://winscp.net/eng/download.php) (or even directly from within MobaXterm if you are using it for access anyway)
+- Globus data sharing platform
+- Belnet FileSender: useful for sharing large datasets with others.
+- [rclone](https://rclone.org/) for moving data from CalcUA to OneDrive or SharePoint.
+
+## Belnet FileSender - downsides {.smaller}
+
+- [Belnet FileSender]((https://filesender.belnet.be/)) can be used to transfer large (volumes of) files.
+- However, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.
+- Moreover, since you cannot open a web browser on the CalcUA (unless you try your hand at [X forwarding](https://docs.vscentrum.be/access/access_methods.html#gui-applications-on-the-clusters)), you cannot download any files from FileSender to CalcUA directly.
+- Fortunately, there is an API you can call through a Python script, which makes it possible to both upload and download files directly on CalcUA.
+
+## Belnet FileSender API - setup
+
+Installing the script and generating a config file:
+
+```.bash
+# download script
+curl https://filesender.belnet.be//clidownload.php > ~/.local/bin/filesender.py
+
+# Save `filesender.py.ini` config file and store it in home `~/.filesender`
+curl https://filesender.belnet.be//clidownload.php?config=1 > ~/.filesender.py.ini
+```
+
+Next, generate an API key on your belnet profile page and add it alongside your username (email) to the `~/.filesender.py.ini` config file.
+
+## Belnet FileSender API - usage
+
+Now you can transfer files via:
+
+```bash
+python3 filesender.py -v \
+  -m "Message description" \
+  -s "Sent using the Belnet filesender API" \
+  -r "the.librarian@unseen-university.ank" \
+  $VSC_SCRATCH/clacks/*.fastq.gz
+```
+
+You can run this either in a Slurm batch job or through a `tmux`/`screen` session, to avoid time-outs.
+
+## Belnet FileSender - more info
+
+For more information, see:
+
+- [https://filesender.belnet.be/](https://filesender.belnet.be/)
+- [FAQ](https://www.belnet.be/nl/communities-diensten/alle-diensten/identity-mobility-federation/filesender/filesender-technical-faq)
+- [API documentation](https://belnet.be/sites/default/files/2024-02/FileSender-API-20230811%201.pdf)
+
+# Rclone - connecting to SharePoint
+
+## What is Rclone?
+
+
+The [rclone tool](https://rclone.org/) makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.
+
+In our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g. for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account.
+
+## Create a new Rclone remote
+
+First, you will need to create an rclone remote that targets OneDrive or Sharepoint:
+
+```bash
+# create a new rclone remote for OneDrive or SharePoint
+rclone config
+
+# an interactive setup will open and you will need to choose the following options:
+- new remote
+- name it e.g. `personal-onedrive` or `sharepoint-sitename`
+- type: 33 ( Microsoft OneDrive \ "onedrive" => use the same type for SharePoint)
+- client id: leave blank
+- client secret: leave blank
+- region: 1 (Microsoft Cloud Global \ "global")
+- do not edit advanced config
+- use browser to authenticate: no
+- on your local machine (with rclone installed), run:
+    rclone authorize "onedrive"
+- config_token: paste the result from above here
+```
+
+## Transferring files
+
+To transfer files, you can use a similar syntax to `rsync`:
+
+```bash
+# transfer current calcua directory to onedrive directory `./my/folder`
+rclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/
+
+# remove the --dry-run flag if everything looks OK
+```
+
+
+# SSH config files
+
+## SSH config
+
+You can add an SSH config file in your local (!) user/home directory `~/.ssh/config` that allows you to simply type `ssh calcua` to connect, without needing to provide your username, the login url, etc.
+
+```.bash
+Host calcua
+    HostName login.hpc.uantwerpen.be
+    # or login-leibniz.hpc.uantwerpen.be
+    # or login-vaughan.hpc.uantwerpen.be
+    # or even login1-leibniz.hpc.uantwerpen.be
+    User vsc20380
+    IdentityFile ~/.ssh/id_ed25519
+```
+
+::: footer
+
+Further reading:
+
+- [List of hostnames](https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure)
+- [VSC docs on SSH config](https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure)
+- [X11 forwarding over SSH](https://some-natalie.dev/blog/ssh-x11-forwarding/)
+
+:::
+
+## Advanced SSH config
+
+```.bash
+Host *
+    # prevent timeouts
+    ServerAliveInterval 60  # ping every 60 seconds
+    ServerAliveCountMax 10  # number of failed attempts before disconnecting
+    # Ignore SSH keys expect the ones specified in Host subsection
+    IdentitiesOnly yes
+
+Host calcua
+    HostName login.hpc.uantwerpen.be
+    User vsc20380
+    # only attempt to log in use this key
+    IdentityFile ~/.ssh/id_ed25519
+    # enable GUIs
+    ForwardX11 yes
+    # connect straight to a tmux session
+    RemoteCommand tmux new -A -s green-hills-zone
+```
+
+::: footer
+
+Further reading:
+
+- [List of hostnames](https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure)
+- [VSC docs on SSH config](https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure)
+- [X11 forwarding over SSH](https://some-natalie.dev/blog/ssh-x11-forwarding/)
+- [Source for tmux trick](https://carlosbecker.com/posts/ssh-tips-and-tricks/) (and related [HackerNews discussion](https://news.ycombinator.com/item?id=32486031))
+
+:::
+
+## Of course, you can also set up an alias as an alternative
+
+`alias tardis='ssh vsc09001@login.hpc.uantwerpen.be'`
+
+# Remote SSH in VSCode
+
+<!-- TODO -->
+
+- https://code.visualstudio.com/docs/remote/ssh
+- https://code.visualstudio.com/docs/remote/ssh-tutorial
+- https://suedbroecker.net/2024/01/25/cheatsheet-how-to-set-up-remote-development-with-vs-code-using-ssh/
+- https://edvaldoguimaraes.com.br/2024/10/28/remote-development-over-ssh-with-vs-code-a-comprehensive-guide/
+- https://carleton.ca/scs/2024/vscode-remote-access-and-code-editing/
+
+# Best practices for file permissions
+
+## File ownership and permissions
+
+> After transferring files to the CalcUA for long-term storage (e.g., raw data stored on `/data/antwerpen/grp/ap_itg_*`), the file permissions can be set to `read-only` to avoid accidental removal or modification.
+
+---
+
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffb1a898a-8440-430e-8ffa-3612d0555e6f_1768x1288.png){fig-align="center" width="120%"}
+
+::: footer
+See [https://chmod-calculator.com/](https://chmod-calculator.com/) for an explanation of Unix file permissions.
+:::
+
+## Bulk changing permissions
+
+```bash
+# for all files in a directory (and its subdirectories)
+find <path> -type f -exec chmod 440 {} +
+
+# for individual files
+chgrp ap_itg_mu <file name(s) or glob pattern>
+chmod 440  <file name(s) or glob pattern>
+
+# just removing the write flag from a file
+chmod -w <file name(s) or glob pattern>
+
+# do not set the 440 flag directly on directories,
+# and do not set it using the recursive (-r) flag either,
+# because this would make them inaccessible/untraversable
+# (directories need execution permission)
+# instead use:
+find . -type d -exec chmod 550 {} +
+```
+
+## Storage quotas are determined by the group owner, not the physical location
+
+```bash
+# setting ownership
+chown -R <vsc-username>:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/<name>
+chown -R <vsc-username>:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/<name>
+
+# or to do it recursively for all files and directories in a specific location
+find <path-to-folder> -user <username> -group <groupname> -exec chgrp <groupname> {} \;
+```
+
+# Persistent sessions using `tmux`/`screen`
+
+## How to avoid timeouts during long-running commands? {.smaller}
+
+- Commands on the login nodes are cancelled after some time.
+- Annoying when copying or downloading a large amount of data, or during interactive `srun` jobs.
+- Solution: use `tmux` or `screen` to create a _persistent session_ that remains active even if you log out.
+
+See:
+
+- [https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/](https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/)
+- [https://support.ceci-hpc.be/doc/\_contents/SubmittingJobs/SlurmInteractive.html](https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html)
+
+## Example
+
+![](https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif){fig-align="center" width="100%"}

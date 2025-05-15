@@ -1,0 +1,14 @@
+/*-- scss:defaults --*/
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fira+Code&display=swap');
+
+$font-family-sans-serif: 'Atkinson Hyperlegible Next', sans-serif;
+$font-family-monospace: 'Fira Code', monospace;
+
+/*-- scss:rules --*/
+
+.reveal .footer {
+    font-size: 0.55em !important;
+    text-align: center !important;
+}
