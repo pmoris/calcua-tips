@@ -1,0 +1,233 @@
+[
+  {
+    "objectID": "calcua-tips.html#using-conda-and-to-a-lesser-extent-pip-is-frowned-upon",
+    "href": "calcua-tips.html#using-conda-and-to-a-lesser-extent-pip-is-frowned-upon",
+    "title": "CalcUA tips and tricks",
+    "section": "Using conda (and to a lesser extent pip) is frowned upon",
+    "text": "Using conda (and to a lesser extent pip) is frowned upon\n\n\nWe discourage the use of Conda-variants for various reasons. It should only be used if nothing else works.\n\n\nDisk space / file quota\nNot optimized for CPUs (e.g. Intel MKL math libraries, openBlAS, AMD Math Core Library)\n\n\n\nLearn more: - VSC docs & CalcUA docs"
+  },
+  {
+    "objectID": "calcua-tips.html#file-quota",
+    "href": "calcua-tips.html#file-quota",
+    "title": "CalcUA tips and tricks",
+    "section": "File quota",
+    "text": "File quota\n└─▶ myquota\nfile system /user/antwerpen\n    using 1.612G of 3G space, 5,187 of 20k files\nfile system /data/antwerpen\n    using 82.99G of 128G space, 157,497 of 200k files"
+  },
+  {
+    "objectID": "calcua-tips.html#file-quota-1",
+    "href": "calcua-tips.html#file-quota-1",
+    "title": "CalcUA tips and tricks",
+    "section": "File quota",
+    "text": "File quota\n└─▶ myquota\nfile system /user/antwerpen\n    using 1.612G of 3G space, 5,187 of 20k files\nfile system /data/antwerpen\n    using 82.99G of 128G space, 157,497 of 200k files\n\n└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -h\n...\n91      /data/antwerpen/203/vsc20380/miniforge3/conda-meta\n132     /data/antwerpen/203/vsc20380/miniforge3/bin\n798     /data/antwerpen/203/vsc20380/miniforge3/include\n1.5K    /data/antwerpen/203/vsc20380/miniforge3/share\n6.0K    /data/antwerpen/203/vsc20380/miniforge3/lib\n10K     /data/antwerpen/203/vsc20380/miniforge3/envs\n107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs"
+  },
+  {
+    "objectID": "calcua-tips.html#file-quota-2",
+    "href": "calcua-tips.html#file-quota-2",
+    "title": "CalcUA tips and tricks",
+    "section": "File quota",
+    "text": "File quota\n└─▶ myquota\nfile system /user/antwerpen\n    using 1.612G of 3G space, 5,187 of 20k files\nfile system /data/antwerpen\n    using 82.99G of 128G space, 157,497 of 200k files\n\n└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -h\n...\n10K     /data/antwerpen/203/vsc20380/miniforge3/envs\n107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs\n\n└─▶ conda env list\n# conda environments:\n#\nbase                 * /data/antwerpen/203/vsc20380/miniforge3\nnever                 /data/antwerpen/203/vsc20380/miniforge3/envs/never\ngonna                 /data/antwerpen/203/vsc20380/miniforge3/envs/gonna\ngive                  /data/antwerpen/203/vsc20380/miniforge3/envs/give\nyou                   /data/antwerpen/203/vsc20380/miniforge3/envs/you\nup                    /data/antwerpen/203/vsc20380/miniforge3/envs/up"
+  },
+  {
+    "objectID": "calcua-tips.html#conda-clean",
+    "href": "calcua-tips.html#conda-clean",
+    "title": "CalcUA tips and tricks",
+    "section": "Conda clean",
+    "text": "Conda clean\nRemember to clear out your conda cache every now and then:\n└─▶ conda clean --all"
+  },
+  {
+    "objectID": "calcua-tips.html#conda-clean-1",
+    "href": "calcua-tips.html#conda-clean-1",
+    "title": "CalcUA tips and tricks",
+    "section": "Conda clean",
+    "text": "Conda clean\nRemember to clear out your conda cache every now and then:\n└─▶ conda clean --all\nWill remove 69 (130.8 MB) tarball(s).\nProceed ([y]/n)? y\n\nWill remove 1 index cache(s).\nProceed ([y]/n)? y\n\nWill remove 173 (1.97 GB) package(s).\nProceed ([y]/n)? y\n\nThere are no tempfile(s) to remove.\nThere are no logfile(s) to remove."
+  },
+  {
+    "objectID": "calcua-tips.html#conda-clean-2",
+    "href": "calcua-tips.html#conda-clean-2",
+    "title": "CalcUA tips and tricks",
+    "section": "Conda clean",
+    "text": "Conda clean\nRemember to clear out your conda cache every now and then:\n└─▶ conda clean --all\nWill remove 69 (130.8 MB) tarball(s).\nProceed ([y]/n)? y\n\nWill remove 1 index cache(s).\nProceed ([y]/n)? y\n\nWill remove 173 (1.97 GB) package(s).\nProceed ([y]/n)? y\n\nThere are no tempfile(s) to remove.\nThere are no logfile(s) to remove.\n\n└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/\n29K     /data/antwerpen/203/vsc20380/miniforge3/"
+  },
+  {
+    "objectID": "calcua-tips.html#a-different-approach-to-using-containers",
+    "href": "calcua-tips.html#a-different-approach-to-using-containers",
+    "title": "CalcUA tips and tricks",
+    "section": "A different approach to using containers",
+    "text": "A different approach to using containers\nhpc-container-wrapper (formerly known as Tykky)\n\nA tool to wrap your Python installation into a (Apptainer/Singularity) container, designed for use on HPC systems.\nUses environment.yml (conda/mamba) or requirements.txt (pip) to define packages\nProvides “wrapped” binaries to call Python (or other tools) inside the container environment.\n\n\n\nSee documentation on GitHub & tutorial."
+  },
+  {
+    "objectID": "calcua-tips.html#creating-containers",
+    "href": "calcua-tips.html#creating-containers",
+    "title": "CalcUA tips and tricks",
+    "section": "Creating containers",
+    "text": "Creating containers\n\nDefine dependencies in environment.yml (conda/mamba) or requirements.txt (pip):\n\nname: wgs\nchannels:\n  - bioconda\n  - conda-forge\ndependencies:\n  - pandas\n  - fastqc=0.12.1\n  - multiqc=1.27.1\n  - samtools=1.21\n  - seqkit=2.10.0\n  - bcftools=1.21\n  - bedtools=2.31.1\n\nCreate container:\n\n└─▶ module load hpc-container-wrapper\n└─▶ conda-containerize new --prefix \"$VSC_SCRATCH/containers/wgs\" environment.yaml"
+  },
+  {
+    "objectID": "calcua-tips.html#creating-containers-1",
+    "href": "calcua-tips.html#creating-containers-1",
+    "title": "CalcUA tips and tricks",
+    "section": "Creating containers",
+    "text": "Creating containers\n└─▶ ll wgs/wgs-container/\ntotal 2313043\ndrwxrwxr-x 2 vsc20380 vsc20380        341 May  8 16:36 _bin\ndrwxrwxr-x 2 vsc20380 vsc20380        343 May  8 16:36 bin\n-rw-rw-r-- 1 vsc20380 vsc20380       2541 May  8 16:36 common.sh\n-rwxrwxr-x 1 vsc20380 vsc20380   69107712 May  8 16:36 container.sif\n-rw-rw-r-- 1 vsc20380 vsc20380 2396106752 May  8 16:36 img.sqfs\ndrwxrwxr-x 3 vsc20380 vsc20380          3 May  8 16:36 share\n\n└─▶ ll wgs/wgs-container/bin/\ntotal 857\n-rwxrwxr-x 1 vsc20380 vsc20380 1575 May  8 16:36 _debug_exec\n-rwxrwxr-x 1 vsc20380 vsc20380 1577 May  8 16:36 _debug_shell\n-rwxrwxr-x 1 vsc20380 vsc20380 2254 May  8 16:36 ace2sam\n-rwxrwxr-x 1 vsc20380 vsc20380 2245 May  8 16:36 adig\n-rwxrwxr-x 1 vsc20380 vsc20380 2248 May  8 16:36 ahost\n-rwxrwxr-x 1 vsc20380 vsc20380 2260 May  8 16:36 annot-tsv\n-rwxrwxr-x 1 vsc20380 vsc20380 2257 May  8 16:36 annotate\n-rwxrwxr-x 1 vsc20380 vsc20380 2266 May  8 16:36 annotateBed\n-rwxrwxr-x 1 vsc20380 vsc20380 2254 May  8 16:36 aserver\n-rwxrwxr-x 1 vsc20380 vsc20380 2257 May  8 16:36 bamToBed\n-rwxrwxr-x 1 vsc20380 vsc20380 2263 May  8 16:36 bamToFastq\n-rwxrwxr-x 1 vsc20380 vsc20380 2257 May  8 16:36 bcftools\n..."
+  },
+  {
+    "objectID": "calcua-tips.html#running-containers",
+    "href": "calcua-tips.html#running-containers",
+    "title": "CalcUA tips and tricks",
+    "section": "Running containers",
+    "text": "Running containers\n\nRun export PATH=\"$VSC_SCRATCH/containers/wgs/bin:$PATH\" at the top of job script, or\njust use individual binaries, e.g. $VSC_SCRATCH/containers/wgs/bin/python and $VSC_SCRATCH/containers/wgs/bin/fastqc\nPython packages are automatically picked up via import statements when using the containerized python binary."
+  },
+  {
+    "objectID": "calcua-tips.html#updating-containers",
+    "href": "calcua-tips.html#updating-containers",
+    "title": "CalcUA tips and tricks",
+    "section": "Updating containers",
+    "text": "Updating containers\nContainers can be updated after creation to include additional packages.\nconda-containerize update --post-install post-install.sh \\\n  \"$VSC_SCRATCH/containers/wgs\"\npost-install.sh:\npip install requests\nconda install -c bioconda pyfaidx"
+  },
+  {
+    "objectID": "calcua-tips.html#warnings",
+    "href": "calcua-tips.html#warnings",
+    "title": "CalcUA tips and tricks",
+    "section": "Warnings",
+    "text": "Warnings\n\n\n\n\n\n\nBeware of coreutils!\n\n\n\nCertain conda packages pull in the coreutils package, to provide tools like ls.\nIf you add the entire container to your PATH by default (e.g. in .bashrc), it will hijack all of your ls calls.\nThe time it takes to spin up and down the container will add multiple seconds to even these basic system calls.\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nThe packages provided by conda might still be slower/less optimized than module installed software?"
+  },
+  {
+    "objectID": "calcua-tips.html#reproducibility",
+    "href": "calcua-tips.html#reproducibility",
+    "title": "CalcUA tips and tricks",
+    "section": "Reproducibility",
+    "text": "Reproducibility\n\n\n\n\n\n\nTip\n\n\nRemember to store your environment.yml or requirements.txt files (ideally under version control, e.g. git).\n\n\n\nSee https://pythonspeed.com/articles/conda-dependency-management/ and https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/ for a refresher."
+  },
+  {
+    "objectID": "calcua-tips.html#a-note-on-r-and-renv",
+    "href": "calcua-tips.html#a-note-on-r-and-renv",
+    "title": "CalcUA tips and tricks",
+    "section": "A note on R and renv",
+    "text": "A note on R and renv\nGreat write-up on how to manage R package dependencies using renv on HPCs: https://www.daryavanichkina.com/posts/210728_renvhpc.html"
+  },
+  {
+    "objectID": "calcua-tips.html#pretty-squeue-1",
+    "href": "calcua-tips.html#pretty-squeue-1",
+    "title": "CalcUA tips and tricks",
+    "section": "Pretty squeue",
+    "text": "Pretty squeue\nAdd this to your .bashrc or .bash_aliases file for a more readable job output:\nalias squeue='squeue --format=\"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R\"'\n\nFor more info on formatting options, see:\n\nhttps://slurm.schedmd.com/squeue.html\nhttps://docs.vscentrum.be/compute/jobs/job_management.html\nhttps://jhpce.jhu.edu/slurm/tips-squeue/\nhttps://hpc-docs.cubi.bihealth.org/slurm/format-strings/\nhttps://kb.ucdavis.edu/?id=07381"
+  },
+  {
+    "objectID": "calcua-tips.html#pretty-squeue-2",
+    "href": "calcua-tips.html#pretty-squeue-2",
+    "title": "CalcUA tips and tricks",
+    "section": "Pretty squeue",
+    "text": "Pretty squeue\n└─▶ /usr/bin/squeue\n             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)\n           2036034 broadwell the-answ vsc20380  R      30:36      1 r3c08cn3.leibniz\n\n\n\n└─▶ squeue --format=\"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R\"\n   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)\n 2036034     the answer to life the universe and everything  broadwell  RUNNING      30:37   2-23:29:23  2025-05-17T12:01:44 3-00:00:00  2025-05-14T12:01:34      1 r3c08cn3.leibniz\n\nEspecially useful if you use long job names.\nDownside: widths are fixed and terminal window needs to be wide enough to fit everything in."
+  },
+  {
+    "objectID": "calcua-tips.html#file-transfers-on-calcua",
+    "href": "calcua-tips.html#file-transfers-on-calcua",
+    "title": "CalcUA tips and tricks",
+    "section": "File transfers on CalcUA",
+    "text": "File transfers on CalcUA\nFor an overview of different methods to transfer data to CalcUA, we refer to the VSC documentation. In brief, you can use:\n\noptions like rsync or sftp from a terminal\na dedicated GUI SFTP tool like FileZilla (bundled spyware in the past) or WinSCP (or even directly from within MobaXterm if you are using it for access anyway)\nGlobus data sharing platform\nBelnet FileSender: useful for sharing large datasets with others.\nrclone for moving data from CalcUA to OneDrive or SharePoint."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender---downsides",
+    "href": "calcua-tips.html#belnet-filesender---downsides",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender - downsides",
+    "text": "Belnet FileSender - downsides\n\nBelnet FileSender can be used to transfer large (volumes of) files.\nHowever, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.\nMoreover, since you cannot open a web browser on the CalcUA (unless you try your hand at X forwarding), you cannot download any files from FileSender to CalcUA directly.\nFortunately, there is an API you can call through a Python script, which makes it possible to both upload and download files directly on CalcUA."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender-api---setup",
+    "href": "calcua-tips.html#belnet-filesender-api---setup",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender API - setup",
+    "text": "Belnet FileSender API - setup\nInstalling the script and generating a config file:\n# download script\ncurl https://filesender.belnet.be//clidownload.php &gt; ~/.local/bin/filesender.py\n\n# Save `filesender.py.ini` config file and store it in home `~/.filesender`\ncurl https://filesender.belnet.be//clidownload.php?config=1 &gt; ~/.filesender.py.ini\nNext, generate an API key on your belnet profile page and add it alongside your username (email) to the ~/.filesender.py.ini config file."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender-api---usage",
+    "href": "calcua-tips.html#belnet-filesender-api---usage",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender API - usage",
+    "text": "Belnet FileSender API - usage\nNow you can transfer files via:\npython3 filesender.py -v \\\n  -m \"Message description\" \\\n  -s \"Sent using the Belnet filesender API\" \\\n  -r \"the.librarian@unseen-university.ank\" \\\n  $VSC_SCRATCH/clacks/*.fastq.gz\nYou can run this either in a Slurm batch job or through a tmux/screen session, to avoid time-outs."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender---more-info",
+    "href": "calcua-tips.html#belnet-filesender---more-info",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender - more info",
+    "text": "Belnet FileSender - more info\nFor more information, see:\n\nhttps://filesender.belnet.be/\nFAQ\nAPI documentation"
+  },
+  {
+    "objectID": "calcua-tips.html#what-is-rclone",
+    "href": "calcua-tips.html#what-is-rclone",
+    "title": "CalcUA tips and tricks",
+    "section": "What is Rclone?",
+    "text": "What is Rclone?\nThe rclone tool makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.\nIn our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g. for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account."
+  },
+  {
+    "objectID": "calcua-tips.html#create-a-new-rclone-remote",
+    "href": "calcua-tips.html#create-a-new-rclone-remote",
+    "title": "CalcUA tips and tricks",
+    "section": "Create a new Rclone remote",
+    "text": "Create a new Rclone remote\nFirst, you will need to create an rclone remote that targets OneDrive or Sharepoint:\n# create a new rclone remote for OneDrive or SharePoint\nrclone config\n\n# an interactive setup will open and you will need to choose the following options:\n- new remote\n- name it e.g. `personal-onedrive` or `sharepoint-sitename`\n- type: 33 ( Microsoft OneDrive \\ \"onedrive\" =&gt; use the same type for SharePoint)\n- client id: leave blank\n- client secret: leave blank\n- region: 1 (Microsoft Cloud Global \\ \"global\")\n- do not edit advanced config\n- use browser to authenticate: no\n- on your local machine (with rclone installed), run:\n    rclone authorize \"onedrive\"\n- config_token: paste the result from above here"
+  },
+  {
+    "objectID": "calcua-tips.html#transferring-files",
+    "href": "calcua-tips.html#transferring-files",
+    "title": "CalcUA tips and tricks",
+    "section": "Transferring files",
+    "text": "Transferring files\nTo transfer files, you can use a similar syntax to rsync:\n# transfer current calcua directory to onedrive directory `./my/folder`\nrclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/\n\n# remove the --dry-run flag if everything looks OK"
+  },
+  {
+    "objectID": "calcua-tips.html#ssh-config",
+    "href": "calcua-tips.html#ssh-config",
+    "title": "CalcUA tips and tricks",
+    "section": "SSH config",
+    "text": "SSH config\nYou can add an SSH config file in your local (!) user/home directory ~/.ssh/config that allows you to simply type ssh calcua to connect, without needing to provide your username, the login url, etc.\nHost calcua\n    HostName login.hpc.uantwerpen.be\n    # or login-leibniz.hpc.uantwerpen.be\n    # or login-vaughan.hpc.uantwerpen.be\n    # or even login1-leibniz.hpc.uantwerpen.be\n    User vsc20380\n    IdentityFile ~/.ssh/id_ed25519\n\nFurther reading:\n\nList of hostnames\nVSC docs on SSH config\nX11 forwarding over SSH"
+  },
+  {
+    "objectID": "calcua-tips.html#advanced-ssh-config",
+    "href": "calcua-tips.html#advanced-ssh-config",
+    "title": "CalcUA tips and tricks",
+    "section": "Advanced SSH config",
+    "text": "Advanced SSH config\nHost *\n    # prevent timeouts\n    ServerAliveInterval 60  # ping every 60 seconds\n    ServerAliveCountMax 10  # number of failed attempts before disconnecting\n    # Ignore SSH keys expect the ones specified in Host subsection\n    IdentitiesOnly yes\n\nHost calcua\n    HostName login.hpc.uantwerpen.be\n    User vsc20380\n    # only attempt to log in use this key\n    IdentityFile ~/.ssh/id_ed25519\n    # enable GUIs\n    ForwardX11 yes\n    # connect straight to a tmux session\n    RemoteCommand tmux new -A -s green-hills-zone\n\nFurther reading:\n\nList of hostnames\nVSC docs on SSH config\nX11 forwarding over SSH\nSource for tmux trick (and related HackerNews discussion)"
+  },
+  {
+    "objectID": "calcua-tips.html#of-course-you-can-also-set-up-an-alias-as-an-alternative",
+    "href": "calcua-tips.html#of-course-you-can-also-set-up-an-alias-as-an-alternative",
+    "title": "CalcUA tips and tricks",
+    "section": "Of course, you can also set up an alias as an alternative",
+    "text": "Of course, you can also set up an alias as an alternative\nalias tardis='ssh vsc09001@login.hpc.uantwerpen.be'"
+  },
+  {
+    "objectID": "calcua-tips.html#file-ownership-and-permissions",
+    "href": "calcua-tips.html#file-ownership-and-permissions",
+    "title": "CalcUA tips and tricks",
+    "section": "File ownership and permissions",
+    "text": "File ownership and permissions\n\nAfter transferring files to the CalcUA for long-term storage (e.g., raw data stored on /data/antwerpen/grp/ap_itg_*), the file permissions can be set to read-only to avoid accidental removal or modification."
+  },
+  {
+    "objectID": "calcua-tips.html#bulk-changing-permissions",
+    "href": "calcua-tips.html#bulk-changing-permissions",
+    "title": "CalcUA tips and tricks",
+    "section": "Bulk changing permissions",
+    "text": "Bulk changing permissions\n# for all files in a directory (and its subdirectories)\nfind &lt;path&gt; -type f -exec chmod 440 {} +\n\n# for individual files\nchgrp ap_itg_mu &lt;file name(s) or glob pattern&gt;\nchmod 440  &lt;file name(s) or glob pattern&gt;\n\n# just removing the write flag from a file\nchmod -w &lt;file name(s) or glob pattern&gt;\n\n# do not set the 440 flag directly on directories,\n# and do not set it using the recursive (-r) flag either,\n# because this would make them inaccessible/untraversable\n# (directories need execution permission)\n# instead use:\nfind . -type d -exec chmod 550 {} +"
+  },
+  {
+    "objectID": "calcua-tips.html#storage-quotas-are-determined-by-the-group-owner-not-the-physical-location",
+    "href": "calcua-tips.html#storage-quotas-are-determined-by-the-group-owner-not-the-physical-location",
+    "title": "CalcUA tips and tricks",
+    "section": "Storage quotas are determined by the group owner, not the physical location",
+    "text": "Storage quotas are determined by the group owner, not the physical location\n# setting ownership\nchown -R &lt;vsc-username&gt;:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/&lt;name&gt;\nchown -R &lt;vsc-username&gt;:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/&lt;name&gt;\n\n# or to do it recursively for all files and directories in a specific location\nfind &lt;path-to-folder&gt; -user &lt;username&gt; -group &lt;groupname&gt; -exec chgrp &lt;groupname&gt; {} \\;"
+  },
+  {
+    "objectID": "calcua-tips.html#how-to-avoid-timeouts-during-long-running-commands",
+    "href": "calcua-tips.html#how-to-avoid-timeouts-during-long-running-commands",
+    "title": "CalcUA tips and tricks",
+    "section": "How to avoid timeouts during long-running commands?",
+    "text": "How to avoid timeouts during long-running commands?\n\nCommands on the login nodes are cancelled after some time.\nAnnoying when copying or downloading a large amount of data, or during interactive srun jobs.\nSolution: use tmux or screen to create a persistent session that remains active even if you log out.\n\nSee:\n\nhttps://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/\nhttps://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html"
+  },
+  {
+    "objectID": "calcua-tips.html#example",
+    "href": "calcua-tips.html#example",
+    "title": "CalcUA tips and tricks",
+    "section": "Example",
+    "text": "Example"
+  }
+]
