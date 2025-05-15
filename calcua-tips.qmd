@@ -1,28 +1,35 @@
 ---
 title: "CalcUA tips and tricks"
 subtitle: "For bioinformatics"
-author: "Pieter Moris"
-institute: Institute of Tropical Medicine Antwerp
-toc-title: Overview
+author:
+  - name: "Pieter Moris"
+    affiliation: Institute of Tropical Medicine Antwerp
+    orcid: 0000-0003-4242-4939
+    email: pmoris@itg.be
+# institute: Institute of Tropical Medicine Antwerp
+date: 2025-06-17  # last-modified
 editor:
   render-on-save: true
 format:
-  revealjs:
+  clean-revealjs:
     toc: true
     toc-depth: 1
+    toc-title: Overview
     center: true
     progress: true
     slide-level: 2
     code-block-height: 650px
     code-copy: true
     # code-line-numbers: false
-    highlight-style: dracula
+    highlight-style: nord
     transition: fade
     slide-number: c/t #< collapsed/total
     preview-links: auto
     incremental: false  # can be disabled per list using ::: {.nonincremental}, but not for toc?
-    logo: img/ITM-symbol_white_rgb.png  # img/ITM-symbol_col_rgb.png
-    theme: [black, custom.scss]
+    logo: img/ITM-symbol_col_rgb.png
+    # logo: img/ITM-symbol_white_rgb.png
+    theme: custom.scss
+    # theme: [black, custom.scss]
     # css: styles.css
     # footer: '[https://{{< meta prerelease-subdomain >}}quarto.org](https://{{< meta prerelease-subdomain >}}quarto.org)'
     menu:
