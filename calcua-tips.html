@@ -224,6 +224,7 @@ Pieter Moris <a href="https://orcid.org/0000-0003-4242-4939" class="quarto-title
 <li><a href="#/remote-ssh-in-vscode" id="/toc-remote-ssh-in-vscode">Remote SSH in VSCode</a></li>
 <li><a href="#/best-practices-for-file-permissions" id="/toc-best-practices-for-file-permissions">Best practices for file permissions</a></li>
 <li><a href="#/persistent-sessions-using-tmuxscreen" id="/toc-persistent-sessions-using-tmuxscreen">Persistent sessions using <code>tmux</code>/<code>screen</code></a></li>
+<li><a href="#/nextflow-on-calcua" id="/toc-nextflow-on-calcua">Nextflow on CalcUA</a></li>
 </ul>
 </nav>
 </section>
@@ -248,6 +249,7 @@ Pieter Moris <a href="https://orcid.org/0000-0003-4242-4939" class="quarto-title
 - [ ] how/which environment variables are passed from user session to job?
 - [ ] For windows users: WSL + windows terminal? => copy paste works
 - [ ] conda vs mamba
+- [ ] nextflow config
 
 TODO: check if line highlighting can be used in combination with no line numbers
 -->
@@ -758,9 +760,89 @@ TODO: check if line highlighting can be used in combination with no line numbers
 <section id="example" class="slide level2 center">
 <h2>Example</h2>
 
-
-
 <img data-src="https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section></section>
+<section>
+<section id="nextflow-on-calcua" class="title-slide slide level1 center">
+<h1>Nextflow on CalcUA</h1>
+
+</section>
+<section id="running-nextflow-on-calcua" class="slide level2 center">
+<h2>Running Nextflow on CalcUA</h2>
+<p>A dedicated nf-core config optimized for CalcUA is available here: <a href="https://nf-co.re/configs/vsc_calcua/">https://nf-co.re/configs/vsc_calcua/</a>, alongside instructions on how to use it.</p>
+<p>This config will set various settings like using Singularity/Apptainer containers for running processes (since docker does not work on most HPCs and we do not want to install all required software ourselves).</p>
+</section>
+<section id="quick-start---slurm-scheduled-pipeline-run" class="slide level2 smaller center" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Quick start - Slurm-scheduled pipeline run</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb21-1" class="hljs-ln-code"><a></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb21-2" class="hljs-ln-code"><a></a><span class="co">#SBATCH --partition=broadwell          # choose partition to run the nextflow head process on</span></span>
+<span id="cb21-3" class="hljs-ln-code"><a></a><span class="co">#SBATCH --job-name=nextflow            # create a short name for your job</span></span>
+<span id="cb21-4" class="hljs-ln-code"><a></a><span class="co">#SBATCH --nodes=1                      # node count</span></span>
+<span id="cb21-5" class="hljs-ln-code"><a></a><span class="co">#SBATCH --cpus-per-task=1              # only 1 cpu cores is needed to run the nextflow head process</span></span>
+<span id="cb21-6" class="hljs-ln-code"><a></a><span class="co">#SBATCH --mem-per-cpu=4G               # memory per cpu (4G is default for most partitions)</span></span>
+<span id="cb21-7" class="hljs-ln-code"><a></a><span class="co">#SBATCH --time=00:05:00                # total run time limit (HH:MM:SS)</span></span>
+<span id="cb21-8" class="hljs-ln-code"><a></a><span class="co">#SBATCH --account=&lt;project-account&gt;    # set project account</span></span>
+<span id="cb21-9" class="hljs-ln-code"><a></a></span>
+<span id="cb21-10" class="hljs-ln-code"><a></a><span class="co"># Load the available Nextflow module.</span></span>
+<span id="cb21-11" class="hljs-ln-code"><a></a><span class="ex">module</span> load Nextflow</span>
+<span id="cb21-12" class="hljs-ln-code"><a></a><span class="co"># Or, if using a locally installed version of Nextflow, make Java available.</span></span>
+<span id="cb21-13" class="hljs-ln-code"><a></a><span class="co"># module load Java</span></span>
+<span id="cb21-14" class="hljs-ln-code"><a></a></span>
+<span id="cb21-15" class="hljs-ln-code"><a></a><span class="co"># Set Apptainer/Singularity environment variables to define caching and tmp</span></span>
+<span id="cb21-16" class="hljs-ln-code"><a></a><span class="co"># directories. These are used during the conversion of Docker images to</span></span>
+<span id="cb21-17" class="hljs-ln-code"><a></a><span class="co"># Apptainer/Singularity ones.</span></span>
+<span id="cb21-18" class="hljs-ln-code"><a></a><span class="co"># These lines can be omitted if the variables are already set in your `~/.bashrc` file.</span></span>
+<span id="cb21-19" class="hljs-ln-code"><a></a><span class="bu">export</span> <span class="va">APPTAINER_CACHEDIR</span><span class="op">=</span><span class="st">"</span><span class="va">${VSC_SCRATCH}</span><span class="st">/apptainer/cache"</span></span>
+<span id="cb21-20" class="hljs-ln-code"><a></a><span class="bu">export</span> <span class="va">APPTAINER_TMPDIR</span><span class="op">=</span><span class="st">"</span><span class="va">${VSC_SCRATCH}</span><span class="st">/apptainer/tmp"</span></span>
+<span id="cb21-21" class="hljs-ln-code"><a></a><span class="co"># optional - set by default in the config already</span></span>
+<span id="cb21-22" class="hljs-ln-code"><a></a><span class="co"># export NXF_APPTAINER_CACHEDIR="${VSC_SCRATCH}/apptainer/nextflow_cache"</span></span>
+<span id="cb21-23" class="hljs-ln-code"><a></a></span>
+<span id="cb21-24" class="hljs-ln-code"><a></a><span class="co"># Launch Nextflow head process.</span></span>
+<span id="cb21-25" class="hljs-ln-code"><a></a><span class="co"># Provide the vsc_calcua profile to use this config and let Nextflow schedule tasks</span></span>
+<span id="cb21-26" class="hljs-ln-code"><a></a><span class="co"># using the Slurm job scheduler. For local execution on a single node, see below.</span></span>
+<span id="cb21-27" class="hljs-ln-code"><a></a><span class="co"># Note that multiple profiles can be stacked, and here we use the built-in test profile</span></span>
+<span id="cb21-28" class="hljs-ln-code"><a></a><span class="co"># of the nf-core/rnaseq pipeline for demonstration purposes.</span></span>
+<span id="cb21-29" class="hljs-ln-code"><a></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="dt">\</span></span>
+<span id="cb21-30" class="hljs-ln-code"><a></a>  <span class="at">-profile</span> test,vsc_calcua <span class="dt">\</span></span>
+<span id="cb21-31" class="hljs-ln-code"><a></a>  <span class="at">-with-report</span> report.html <span class="dt">\</span></span>
+<span id="cb21-32" class="hljs-ln-code"><a></a>  <span class="at">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="quick-start---single-node-pipeline-run" class="slide level2 smaller center" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Quick start - Single-node pipeline run</h2>
+<div class="sourceCode" id="cb22" data-code-line-numbers="5,6,29"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb22-1" class="hljs-ln-code"><a></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb22-2" class="hljs-ln-code"><a></a><span class="co">#SBATCH --partition=broadwell          # choose partition to run the nextflow head process on</span></span>
+<span id="cb22-3" class="hljs-ln-code"><a></a><span class="co">#SBATCH --job-name=nextflow            # create a short name for your job</span></span>
+<span id="cb22-4" class="hljs-ln-code"><a></a><span class="co">#SBATCH --nodes=1                      # node count</span></span>
+<span id="cb22-5" class="hljs-ln-code"><a></a><span class="co">#SBATCH --cpus-per-task=28             # request a full node for local execution (broadwell nodes have 28 cpus)</span></span>
+<span id="cb22-6" class="hljs-ln-code"><a></a><span class="co">#SBATCH --mem=112G                     # total memory (e.g., 112G max for broadwell) - can be omitted to use default (= max / # cores)</span></span>
+<span id="cb22-7" class="hljs-ln-code"><a></a><span class="co">#SBATCH --time=00:05:00                # total run time limit (HH:MM:SS)</span></span>
+<span id="cb22-8" class="hljs-ln-code"><a></a><span class="co">#SBATCH --account=&lt;project-account&gt;    # set project account</span></span>
+<span id="cb22-9" class="hljs-ln-code"><a></a></span>
+<span id="cb22-10" class="hljs-ln-code"><a></a><span class="co"># Load the available Nextflow module.</span></span>
+<span id="cb22-11" class="hljs-ln-code"><a></a><span class="ex">module</span> load Nextflow</span>
+<span id="cb22-12" class="hljs-ln-code"><a></a></span>
+<span id="cb22-13" class="hljs-ln-code"><a></a><span class="co"># Or, if using a locally installed version of Nextflow, make Java available.</span></span>
+<span id="cb22-14" class="hljs-ln-code"><a></a><span class="co"># module load Java</span></span>
+<span id="cb22-15" class="hljs-ln-code"><a></a></span>
+<span id="cb22-16" class="hljs-ln-code"><a></a><span class="co"># Set Apptainer/Singularity environment variables to define caching and tmp</span></span>
+<span id="cb22-17" class="hljs-ln-code"><a></a><span class="co"># directories. These are used during the conversion of Docker images to</span></span>
+<span id="cb22-18" class="hljs-ln-code"><a></a><span class="co"># Apptainer/Singularity ones.</span></span>
+<span id="cb22-19" class="hljs-ln-code"><a></a><span class="co"># These lines can be omitted if the variables are already set in your `~/.bashrc` file.</span></span>
+<span id="cb22-20" class="hljs-ln-code"><a></a><span class="bu">export</span> <span class="va">APPTAINER_CACHEDIR</span><span class="op">=</span><span class="st">"</span><span class="va">${VSC_SCRATCH}</span><span class="st">/apptainer/cache"</span></span>
+<span id="cb22-21" class="hljs-ln-code"><a></a><span class="bu">export</span> <span class="va">APPTAINER_TMPDIR</span><span class="op">=</span><span class="st">"</span><span class="va">${VSC_SCRATCH}</span><span class="st">/apptainer/tmp"</span></span>
+<span id="cb22-22" class="hljs-ln-code"><a></a><span class="co"># optional - set by default in the config already</span></span>
+<span id="cb22-23" class="hljs-ln-code"><a></a><span class="co"># export NXF_APPTAINER_CACHEDIR="${VSC_SCRATCH}/apptainer/nextflow_cache"</span></span>
+<span id="cb22-24" class="hljs-ln-code"><a></a></span>
+<span id="cb22-25" class="hljs-ln-code"><a></a><span class="co"># Launch Nextflow head process that will run on the same node as the pipeline tasks.</span></span>
+<span id="cb22-26" class="hljs-ln-code"><a></a><span class="co"># Append the single_node profile after the vsc_calcua one, to make Nextflow schedule</span></span>
+<span id="cb22-27" class="hljs-ln-code"><a></a><span class="co"># all jobs on the same local node. Note: don't do this on the login nodes!</span></span>
+<span id="cb22-28" class="hljs-ln-code"><a></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="dt">\</span></span>
+<span id="cb22-29" class="hljs-ln-code"><a></a>  <span class="at">-profile</span> test,vsc_calcua,single_node <span class="dt">\</span></span>
+<span id="cb22-30" class="hljs-ln-code"><a></a>  <span class="at">-with-report</span> report.html <span class="dt">\</span></span>
+<span id="cb22-31" class="hljs-ln-code"><a></a>  <span class="at">--outdir</span> test_output</span>
+<span id="cb22-32" class="hljs-ln-code"><a></a>  <span class="ex">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="img/ITM-symbol_col_rgb.png" class="slide-logo"></p>
