@@ -60,6 +60,7 @@ format:
 - [ ] how/which environment variables are passed from user session to job?
 - [ ] For windows users: WSL + windows terminal? => copy paste works
 - [ ] conda vs mamba
+- [ ] nextflow config
 
 TODO: check if line highlighting can be used in combination with no line numbers
 -->
@@ -579,3 +580,85 @@ See:
 ## Example
 
 ![](https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif){fig-align="center" width="100%"}
+
+# Nextflow on CalcUA
+
+## Running Nextflow on CalcUA
+
+A dedicated nf-core config optimized for CalcUA is available here: [https://nf-co.re/configs/vsc_calcua/](https://nf-co.re/configs/vsc_calcua/), alongside instructions on how to use it.
+
+This config will set various settings like using Singularity/Apptainer containers for running processes (since docker does not work on most HPCs and we do not want to install all required software ourselves).
+
+## Quick start - Slurm-scheduled pipeline run {.smaller auto-animate="true"}
+
+```{.bash}
+#!/bin/bash -l
+#SBATCH --partition=broadwell          # choose partition to run the nextflow head process on
+#SBATCH --job-name=nextflow            # create a short name for your job
+#SBATCH --nodes=1                      # node count
+#SBATCH --cpus-per-task=1              # only 1 cpu cores is needed to run the nextflow head process
+#SBATCH --mem-per-cpu=4G               # memory per cpu (4G is default for most partitions)
+#SBATCH --time=00:05:00                # total run time limit (HH:MM:SS)
+#SBATCH --account=<project-account>    # set project account
+
+# Load the available Nextflow module.
+module load Nextflow
+# Or, if using a locally installed version of Nextflow, make Java available.
+# module load Java
+
+# Set Apptainer/Singularity environment variables to define caching and tmp
+# directories. These are used during the conversion of Docker images to
+# Apptainer/Singularity ones.
+# These lines can be omitted if the variables are already set in your `~/.bashrc` file.
+export APPTAINER_CACHEDIR="${VSC_SCRATCH}/apptainer/cache"
+export APPTAINER_TMPDIR="${VSC_SCRATCH}/apptainer/tmp"
+# optional - set by default in the config already
+# export NXF_APPTAINER_CACHEDIR="${VSC_SCRATCH}/apptainer/nextflow_cache"
+
+# Launch Nextflow head process.
+# Provide the vsc_calcua profile to use this config and let Nextflow schedule tasks
+# using the Slurm job scheduler. For local execution on a single node, see below.
+# Note that multiple profiles can be stacked, and here we use the built-in test profile
+# of the nf-core/rnaseq pipeline for demonstration purposes.
+nextflow run nf-core/rnaseq \
+  -profile test,vsc_calcua \
+  -with-report report.html \
+  --outdir test_output
+```
+
+## Quick start - Single-node pipeline run {.smaller auto-animate="true"}
+
+```{.bash code-line-numbers="5,6,29"}
+#!/bin/bash -l
+#SBATCH --partition=broadwell          # choose partition to run the nextflow head process on
+#SBATCH --job-name=nextflow            # create a short name for your job
+#SBATCH --nodes=1                      # node count
+#SBATCH --cpus-per-task=28             # request a full node for local execution (broadwell nodes have 28 cpus)
+#SBATCH --mem=112G                     # total memory (e.g., 112G max for broadwell) - can be omitted to use default (= max / # cores)
+#SBATCH --time=00:05:00                # total run time limit (HH:MM:SS)
+#SBATCH --account=<project-account>    # set project account
+
+# Load the available Nextflow module.
+module load Nextflow
+
+# Or, if using a locally installed version of Nextflow, make Java available.
+# module load Java
+
+# Set Apptainer/Singularity environment variables to define caching and tmp
+# directories. These are used during the conversion of Docker images to
+# Apptainer/Singularity ones.
+# These lines can be omitted if the variables are already set in your `~/.bashrc` file.
+export APPTAINER_CACHEDIR="${VSC_SCRATCH}/apptainer/cache"
+export APPTAINER_TMPDIR="${VSC_SCRATCH}/apptainer/tmp"
+# optional - set by default in the config already
+# export NXF_APPTAINER_CACHEDIR="${VSC_SCRATCH}/apptainer/nextflow_cache"
+
+# Launch Nextflow head process that will run on the same node as the pipeline tasks.
+# Append the single_node profile after the vsc_calcua one, to make Nextflow schedule
+# all jobs on the same local node. Note: don't do this on the login nodes!
+nextflow run nf-core/rnaseq \
+  -profile test,vsc_calcua,single_node \
+  -with-report report.html \
+  --outdir test_output
+  --outdir test_output
+```
