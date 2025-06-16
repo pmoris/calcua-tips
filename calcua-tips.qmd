@@ -2,9 +2,9 @@
 title: "CalcUA tips and tricks"
 subtitle: "For bioinformatics"
 author:
-  - name: "Pieter Moris"
-    affiliation: Institute of Tropical Medicine Antwerp
-    orcid: 0000-0003-4242-4939
+  - name: "Pieter Moris [{{< fa globe >}}](https://pmoris.github.io) [{{< ai orcid >}}](https://orcid.org/0000-0003-4242-4939)"
+    affiliation: "[Institute of Tropical Medicine Antwerp](https://www.itg.be)"
+    # orcid: 0000-0003-4242-4939
     email: pmoris@itg.be
 # institute: Institute of Tropical Medicine Antwerp
 date: 2025-06-17  # last-modified
@@ -30,14 +30,22 @@ format:
     # logo: img/ITM-symbol_white_rgb.png
     theme: custom.scss
     # theme: [black, custom.scss]
-    # css: styles.css
-    # footer: '[https://{{< meta prerelease-subdomain >}}quarto.org](https://{{< meta prerelease-subdomain >}}quarto.org)'
+    # footer: "{{< fa brands github >}} &nbsp;[`pmoris/calcua-tips`](https://github.com/pmoris/calcua-tips) &nbsp; &bull; &nbsp; {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} &nbsp;[`cc-by-4.0`](https://creativecommons.org/licenses/by/4.0/deed.en)"
+    # footer was adapted from https://github.com/rdatatoolbox/course-quarto
+    # title-slide-attributes:
+      # title-footer: "title footer"
+      # footer was hardcoded in custom.js because {{ }} code injection or even quote escaping/html entities like &quot; do not seem to work when passed via this YAML option.
+      # note that font awesome iconds need to be loaded elsewhere in order to work (e.g. author name or global footer)
     menu:
       side: left
       numbers: false
       titleSelector: 'h1' # requires next options, https://asanzdiego.github.io/markdownslides/doc/lib/reveal.js-menu/, Using titleSelector: '' will ignore all elements and no title will be provided, unless the slide section contains a data-menu-title attribute or an element with the menu-title class.
       hideMissingTitles: true # requires next option
       useTextContentForMissingTitles: false # https://github.com/quarto-dev/quarto-cli/issues/5404
+    # include-after-body:
+    include-in-header:
+      - text: |
+          <script src="assets/custom.js" type="application/javascript"></script>
 ---
 
 # HPC container wrapper as a `conda` alternative
