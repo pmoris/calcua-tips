@@ -6,10 +6,14 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-f23cad2950421f566aff47128666b570.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-f23cad2950421f566aff47128666b570.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.30">
 
-  <meta name="author" content="Pieter Moris">
+  <meta name="author" content="Pieter Moris  ">
   <meta name="dcterms.date" content="2025-06-17">
   <title>CalcUA tips and tricks</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -96,7 +100,7 @@
     code span.vs { color: #a3be8c; } /* VerbatimString */
     code span.wa { color: #bf616a; } /* Warning */
   </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-5ca5b48a336c9bc287547891cc0162fa.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4639c82db17e44d91af737c972027610.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -188,6 +192,7 @@
       margin-right: 0; 
     }
   </style>
+  <script src="assets/custom.js" type="application/javascript"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -200,13 +205,13 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Pieter Moris <a href="https://orcid.org/0000-0003-4242-4939" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" aria-label="globe"></i></a> <a href="https://orcid.org/0000-0003-4242-4939"><i class="ai  ai-orcid" aria-label="orcid"></i></a> 
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:pmoris@itg.be">pmoris@itg.be</a>
 </div>
         <p class="quarto-title-affiliation">
-            Institute of Tropical Medicine Antwerp
+            <a href="https://www.itg.be">Institute of Tropical Medicine Antwerp</a>
           </p>
     </div>
 </div>
@@ -216,21 +221,21 @@ Pieter Moris <a href="https://orcid.org/0000-0003-4242-4939" class="quarto-title
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
 <ul>
-<li><a href="#/hpc-container-wrapper-as-a-conda-alternative" id="/toc-hpc-container-wrapper-as-a-conda-alternative">HPC container wrapper as a <code>conda</code> alternative</a></li>
+<li><a href="#/ssh-config-files" id="/toc-ssh-config-files">SSH config files</a></li>
+<li><a href="#/remote-ssh-in-vscode" id="/toc-remote-ssh-in-vscode">Remote SSH in VSCode</a></li>
+<li><a href="#/persistent-sessions-using-tmuxscreen" id="/toc-persistent-sessions-using-tmuxscreen">Persistent sessions using <code>tmux</code>/<code>screen</code></a></li>
 <li><a href="#/pretty-squeue" id="/toc-pretty-squeue">Pretty <code>squeue</code></a></li>
 <li><a href="#/belnet-filesender" id="/toc-belnet-filesender">Belnet FileSender</a></li>
 <li><a href="#/rclone---connecting-to-sharepoint" id="/toc-rclone---connecting-to-sharepoint">Rclone - connecting to SharePoint</a></li>
-<li><a href="#/ssh-config-files" id="/toc-ssh-config-files">SSH config files</a></li>
-<li><a href="#/remote-ssh-in-vscode" id="/toc-remote-ssh-in-vscode">Remote SSH in VSCode</a></li>
 <li><a href="#/best-practices-for-file-permissions" id="/toc-best-practices-for-file-permissions">Best practices for file permissions</a></li>
-<li><a href="#/persistent-sessions-using-tmuxscreen" id="/toc-persistent-sessions-using-tmuxscreen">Persistent sessions using <code>tmux</code>/<code>screen</code></a></li>
+<li><a href="#/hpc-container-wrapper-as-a-conda-alternative" id="/toc-hpc-container-wrapper-as-a-conda-alternative">HPC container wrapper as a <code>conda</code> alternative</a></li>
 <li><a href="#/nextflow-on-calcua" id="/toc-nextflow-on-calcua">Nextflow on CalcUA</a></li>
+<li><a href="#/running-gui-tools-on-calcua" id="/toc-running-gui-tools-on-calcua">Running GUI tools on CalcUA</a></li>
 </ul>
 </nav>
 </section>
-<section>
-<section id="hpc-container-wrapper-as-a-conda-alternative" class="title-slide slide level1 center">
-<h1>HPC container wrapper as a <code>conda</code> alternative</h1>
+<section class="slide level2 center">
+
 <!--
 # Contents
 
@@ -240,7 +245,7 @@ Pieter Moris <a href="https://orcid.org/0000-0003-4242-4939" class="quarto-title
 - [x] Rclone tool for syncing between sharepoint/onedrive and calcua
 - [x] SSH config files
 - [x] File permissions best practices
-- [ ] direct editing of scripts on supercomputer via Vscode (remote SSH)
+- [x] direct editing of scripts on supercomputer via Vscode (remote SSH)
 - [ ] Useful aliases for navigating the filesystem - merge with squeue?
 - [x] Persistent sessions using tmux to avoid disconnect/timeout in interactive sessions?
 - [ ] X11-forwarding for gui tools?
@@ -253,6 +258,307 @@ Pieter Moris <a href="https://orcid.org/0000-0003-4242-4939" class="quarto-title
 
 TODO: check if line highlighting can be used in combination with no line numbers
 -->
+</section>
+<section>
+<section id="ssh-config-files" class="title-slide slide level1 center">
+<h1>SSH config files</h1>
+
+</section>
+<section id="ssh-config" class="slide level2 center">
+<h2>SSH config</h2>
+<p>You can add an SSH config file in your local (!) user/home directory <code>~/.ssh/config</code> that allows you to simply type <code>ssh calcua</code> to connect, without needing to provide your username, the login url, etc.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="ex">Host</span> calcua</span>
+<span id="cb1-2"><a></a>    <span class="ex">HostName</span> login.hpc.uantwerpen.be</span>
+<span id="cb1-3"><a></a>    <span class="co"># or login-leibniz.hpc.uantwerpen.be</span></span>
+<span id="cb1-4"><a></a>    <span class="co"># or login-vaughan.hpc.uantwerpen.be</span></span>
+<span id="cb1-5"><a></a>    <span class="co"># or even login1-leibniz.hpc.uantwerpen.be</span></span>
+<span id="cb1-6"><a></a>    <span class="ex">User</span> vsc20380</span>
+<span id="cb1-7"><a></a>    <span class="ex">IdentityFile</span> ~/.ssh/id_ed25519</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="footer">
+<p>Further reading:</p>
+<ul>
+<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">List of hostnames</a></li>
+<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">VSC docs on SSH config</a></li>
+<li><a href="https://some-natalie.dev/blog/ssh-x11-forwarding/">X11 forwarding over SSH</a></li>
+</ul>
+</div>
+</section>
+<section id="advanced-ssh-config" class="slide level2 center">
+<h2>Advanced SSH config</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">Host</span> <span class="pp">*</span></span>
+<span id="cb2-2"><a></a>    <span class="co"># prevent timeouts</span></span>
+<span id="cb2-3"><a></a>    <span class="ex">ServerAliveInterval</span> 60  <span class="co"># ping every 60 seconds</span></span>
+<span id="cb2-4"><a></a>    <span class="ex">ServerAliveCountMax</span> 10  <span class="co"># number of failed attempts before disconnecting</span></span>
+<span id="cb2-5"><a></a>    <span class="co"># Ignore SSH keys expect the ones specified in Host subsection</span></span>
+<span id="cb2-6"><a></a>    <span class="ex">IdentitiesOnly</span> yes</span>
+<span id="cb2-7"><a></a></span>
+<span id="cb2-8"><a></a><span class="ex">Host</span> calcua</span>
+<span id="cb2-9"><a></a>    <span class="ex">HostName</span> login.hpc.uantwerpen.be</span>
+<span id="cb2-10"><a></a>    <span class="ex">User</span> vsc20380</span>
+<span id="cb2-11"><a></a>    <span class="co"># only attempt to log in use this key</span></span>
+<span id="cb2-12"><a></a>    <span class="ex">IdentityFile</span> ~/.ssh/id_ed25519</span>
+<span id="cb2-13"><a></a>    <span class="co"># enable GUIs</span></span>
+<span id="cb2-14"><a></a>    <span class="ex">ForwardX11</span> yes</span>
+<span id="cb2-15"><a></a>    <span class="co"># connect straight to a tmux session</span></span>
+<span id="cb2-16"><a></a>    <span class="ex">RemoteCommand</span> tmux new <span class="at">-A</span> <span class="at">-s</span> green-hills-zone</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="footer">
+<p>Further reading:</p>
+<ul>
+<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">List of hostnames</a></li>
+<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">VSC docs on SSH config</a></li>
+<li><a href="https://some-natalie.dev/blog/ssh-x11-forwarding/">X11 forwarding over SSH</a></li>
+<li><a href="https://carlosbecker.com/posts/ssh-tips-and-tricks/">Source for tmux trick</a> (and related <a href="https://news.ycombinator.com/item?id=32486031">HackerNews discussion</a>)</li>
+</ul>
+</div>
+</section>
+<section id="of-course-you-can-also-set-up-an-alias-as-an-alternative" class="slide level2 center">
+<h2>Of course, you can also set up an alias as an alternative</h2>
+<p><code>alias tardis='ssh vsc09001@login.hpc.uantwerpen.be'</code></p>
+</section></section>
+<section>
+<section id="remote-ssh-in-vscode" class="title-slide slide level1 center">
+<h1>Remote SSH in VSCode</h1>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Live demo!</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<p>Further reading:</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/remote/ssh">https://code.visualstudio.com/docs/remote/ssh</a></li>
+<li><a href="https://code.visualstudio.com/blogs/2019/10/03/remote-ssh-tips-and-tricks">https://code.visualstudio.com/blogs/2019/10/03/remote-ssh-tips-and-tricks</a></li>
+<li><a href="https://carleton.ca/scs/2024/vscode-remote-access-and-code-editing/">https://carleton.ca/scs/2024/vscode-remote-access-and-code-editing/</a></li>
+<li><a href="https://suedbroecker.net/2024/01/25/cheatsheet-how-to-set-up-remote-development-with-vs-code-using-ssh/">https://suedbroecker.net/2024/01/25/cheatsheet-how-to-set-up-remote-development-with-vs-code-using-ssh/</a></li>
+</ul>
+</div>
+</section>
+<section id="remote-ssh-in-vscode---keys-and-config-files" class="slide level2 center">
+<h2>Remote SSH in VSCode - keys and config files</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Be mindful of where your SSH keys live!</strong></p>
+</div>
+<div class="callout-content">
+<p>For Windows users that rely on WSL to access CalcUA, keep in mind that VSCode will be default search your Windows user’s directory for SSH keys and config files, which are not the same as the ones in your WSL home directory.</p>
+<p>You can either copy your keys to Windows or set the absolute path to the SSH config file (but then it will likely only work while WSL is running): <code>"remote.SSH.configFile": ""</code>.</p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="persistent-sessions-using-tmuxscreen" class="title-slide slide level1 center">
+<h1>Persistent sessions using <code>tmux</code>/<code>screen</code></h1>
+
+</section>
+<section id="how-to-avoid-timeouts-during-long-running-commands" class="slide level2 smaller center">
+<h2>How to avoid timeouts during long-running commands?</h2>
+<ul>
+<li>Commands on the login nodes are cancelled after some time.</li>
+<li>Annoying when copying or downloading a large amount of data, or during interactive <code>srun</code> jobs.</li>
+<li>Solution: use <code>tmux</code> or <code>screen</code> to create a <em>persistent session</em> that remains active even if you log out.</li>
+</ul>
+<p>See:</p>
+<ul>
+<li><a href="https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/">https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/</a></li>
+<li><a href="https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html">https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html</a></li>
+</ul>
+</section>
+<section id="example" class="slide level2 center">
+<h2>Example</h2>
+
+<img data-src="https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section></section>
+<section>
+<section id="pretty-squeue" class="title-slide slide level1 center">
+<h1>Pretty <code>squeue</code></h1>
+
+</section>
+<section id="pretty-squeue-1" class="slide level2 center">
+<h2>Pretty <code>squeue</code></h2>
+<p>Add this to your <code>.bashrc</code> or <code>.bash_aliases</code> file for a more readable job output:</p>
+<p><code>alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'</code></p>
+<div class="footer">
+<p>For more info on formatting options, see:</p>
+<ul>
+<li><a href="https://slurm.schedmd.com/squeue.html">https://slurm.schedmd.com/squeue.html</a></li>
+<li><a href="https://docs.vscentrum.be/compute/jobs/job_management.html">https://docs.vscentrum.be/compute/jobs/job_management.html</a></li>
+<li><a href="https://jhpce.jhu.edu/slurm/tips-squeue/">https://jhpce.jhu.edu/slurm/tips-squeue/</a></li>
+<li><a href="https://hpc-docs.cubi.bihealth.org/slurm/format-strings/">https://hpc-docs.cubi.bihealth.org/slurm/format-strings/</a></li>
+<li><a href="https://kb.ucdavis.edu/?id=07381">https://kb.ucdavis.edu/?id=07381</a></li>
+</ul>
+</div>
+</section>
+<section id="pretty-squeue-2" class="slide level2 center">
+<h2>Pretty <code>squeue</code></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a></a><span class="ex">└─▶</span> /usr/bin/squeue</span>
+<span id="cb3-2"><a></a>             <span class="ex">JOBID</span> PARTITION     NAME     USER ST       TIME  NODES NODELIST<span class="er">(</span><span class="ex">REASON</span><span class="kw">)</span></span>
+<span id="cb3-3"><a></a>           <span class="ex">2036034</span> broadwell the-answ vsc20380  R      30:36      1 r3c08cn3.leibniz</span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a></span>
+<span id="cb3-6"><a></a></span>
+<span id="cb3-7"><a></a><span class="ex">└─▶</span> squeue <span class="at">--format</span><span class="op">=</span><span class="st">"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"</span></span>
+<span id="cb3-8"><a></a>   <span class="ex">JOBID</span>                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST<span class="er">(</span><span class="ex">REASON</span><span class="kw">)</span></span>
+<span id="cb3-9"><a></a> <span class="ex">2036034</span>     the answer to life the universe and everything  broadwell  RUNNING      30:37   2-23:29:23  2025-05-17T12:01:44 3-00:00:00  2025-05-14T12:01:34      1 r3c08cn3.leibniz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Especially useful if you use long job names.</li>
+<li>Downside: widths are fixed and terminal window needs to be wide enough to fit everything in.</li>
+</ul>
+</section></section>
+<section>
+<section id="belnet-filesender" class="title-slide slide level1 center">
+<h1>Belnet FileSender</h1>
+
+</section>
+<section id="file-transfers-on-calcua" class="slide level2 center">
+<h2>File transfers on CalcUA</h2>
+<!-- {.smaller} -->
+<p>For an overview of different methods to transfer data to CalcUA, we refer to the <a href="https://docs.vscentrum.be/data/transfer.html">VSC documentation</a>. In brief, you can use:</p>
+<ul>
+<li>options like <code>rsync</code> or <code>sftp</code> from a terminal</li>
+<li>a dedicated GUI SFTP tool like <del><a href="https://filezilla-project.org/">FileZilla</a></del> (bundled spyware in the past) or <a href="https://winscp.net/eng/download.php">WinSCP</a> (or even directly from within MobaXterm if you are using it for access anyway)</li>
+<li>Globus data sharing platform</li>
+<li>Belnet FileSender: useful for sharing large datasets with others.</li>
+<li><a href="https://rclone.org/">rclone</a> for moving data from CalcUA to OneDrive or SharePoint.</li>
+</ul>
+</section>
+<section id="belnet-filesender---downsides" class="slide level2 center">
+<h2>Belnet FileSender - downsides</h2>
+<!-- {.smaller} -->
+<ul>
+<li><a href="https://filesender.belnet.be/">Belnet FileSender</a> can be used to transfer large (volumes of) files.</li>
+<li>However, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.</li>
+<li>Moreover, since you cannot open a web browser on the CalcUA (unless you try your hand at <a href="https://docs.vscentrum.be/access/access_methods.html#gui-applications-on-the-clusters">X forwarding</a>), you cannot download any files from FileSender to CalcUA directly.</li>
+<li>Fortunately, there is an API you can call through a Python script, which makes it possible to upload files directly from the CalcUA.</li>
+</ul>
+</section>
+<section id="belnet-filesender-api-for-uploading---setup" class="slide level2 center">
+<h2>Belnet FileSender API for uploading - setup</h2>
+<p>Installing the script and generating a config file:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a></a><span class="co"># download script</span></span>
+<span id="cb4-2"><a></a><span class="ex">curl</span> https://filesender.belnet.be//clidownload.php <span class="op">&gt;</span> ~/.local/bin/filesender.py</span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a><span class="co"># Save `filesender.py.ini` config file and store it in home `~/.filesender`</span></span>
+<span id="cb4-5"><a></a><span class="ex">curl</span> https://filesender.belnet.be//clidownload.php<span class="pp">?</span>config=1 <span class="op">&gt;</span> ~/.filesender.py.ini</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, generate an API key on your belnet profile page and add it alongside your username (email) to the <code>~/.filesender.py.ini</code> config file.</p>
+</section>
+<section id="belnet-filesender-api-for-uploading---usage" class="slide level2 center">
+<h2>Belnet FileSender API for uploading - usage</h2>
+<p>Now you can transfer files via:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a></a><span class="ex">python3</span> filesender.py <span class="at">-v</span> <span class="dt">\</span></span>
+<span id="cb5-2"><a></a>  <span class="at">-m</span> <span class="st">"Message description"</span> <span class="dt">\</span></span>
+<span id="cb5-3"><a></a>  <span class="at">-s</span> <span class="st">"Sent using the Belnet filesender API"</span> <span class="dt">\</span></span>
+<span id="cb5-4"><a></a>  <span class="at">-r</span> <span class="st">"the.librarian@unseen-university.ank"</span> <span class="dt">\</span></span>
+<span id="cb5-5"><a></a>  <span class="va">$VSC_SCRATCH</span>/clacks/<span class="pp">*</span>.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can run this either in a Slurm batch job or through a <code>tmux</code>/<code>screen</code> session, to avoid time-outs.</p>
+</section>
+<section id="belnet-filesender---more-info" class="slide level2 center">
+<h2>Belnet FileSender - more info</h2>
+<p>For more information, see:</p>
+<ul>
+<li><a href="https://filesender.belnet.be/">https://filesender.belnet.be/</a></li>
+<li><a href="https://www.belnet.be/nl/communities-diensten/alle-diensten/identity-mobility-federation/filesender/filesender-technical-faq">FAQ</a></li>
+<li><a href="https://belnet.be/sites/default/files/2024-02/FileSender-API-20230811%201.pdf">API documentation</a></li>
+</ul>
+</section></section>
+<section>
+<section id="rclone---connecting-to-sharepoint" class="title-slide slide level1 center">
+<h1>Rclone - connecting to SharePoint</h1>
+
+</section>
+<section id="what-is-rclone" class="slide level2 center">
+<h2>What is Rclone?</h2>
+<p>The <a href="https://rclone.org/">rclone tool</a> makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.</p>
+<p>In our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g.&nbsp;for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account.</p>
+</section>
+<section id="create-a-new-rclone-remote" class="slide level2 center">
+<h2>Create a new Rclone remote</h2>
+<p>First, you will need to create an rclone remote that targets OneDrive or Sharepoint:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a></a><span class="co"># create a new rclone remote for OneDrive or SharePoint</span></span>
+<span id="cb6-2"><a></a><span class="ex">rclone</span> config</span>
+<span id="cb6-3"><a></a></span>
+<span id="cb6-4"><a></a><span class="co"># an interactive setup will open and you will need to choose the following options:</span></span>
+<span id="cb6-5"><a></a><span class="ex">-</span> new remote</span>
+<span id="cb6-6"><a></a><span class="ex">-</span> name it e.g. <span class="kw">`</span><span class="ex">personal-onedrive</span><span class="kw">`</span> or <span class="kw">`</span><span class="ex">sharepoint-sitename</span><span class="kw">`</span></span>
+<span id="cb6-7"><a></a><span class="ex">-</span> type: 33 <span class="er">(</span> <span class="ex">Microsoft</span> OneDrive <span class="dt">\ </span><span class="st">"onedrive"</span> =<span class="op">&gt;</span> use the same type for SharePoint<span class="kw">)</span></span>
+<span id="cb6-8"><a></a><span class="ex">-</span> client id: leave blank</span>
+<span id="cb6-9"><a></a><span class="ex">-</span> client secret: leave blank</span>
+<span id="cb6-10"><a></a><span class="ex">-</span> region: 1 <span class="er">(</span><span class="ex">Microsoft</span> Cloud Global <span class="dt">\ </span><span class="st">"global"</span><span class="kw">)</span></span>
+<span id="cb6-11"><a></a><span class="ex">-</span> do not edit advanced config</span>
+<span id="cb6-12"><a></a><span class="ex">-</span> use browser to authenticate: no</span>
+<span id="cb6-13"><a></a><span class="ex">-</span> on your local machine <span class="er">(</span><span class="ex">with</span> rclone installed<span class="kw">)</span><span class="ex">,</span> run:</span>
+<span id="cb6-14"><a></a>    <span class="ex">rclone</span> authorize <span class="st">"onedrive"</span></span>
+<span id="cb6-15"><a></a><span class="ex">-</span> config_token: paste the result from above here</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="transferring-files" class="slide level2 center">
+<h2>Transferring files</h2>
+<p>To transfer files, you can use a similar syntax to <code>rsync</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a></a><span class="co"># transfer current calcua directory to onedrive directory `./my/folder`</span></span>
+<span id="cb7-2"><a></a><span class="ex">rclone</span> copy <span class="at">-P</span> <span class="at">--dry-run</span> party.parrot personal-onedrive:new-zealand/kakapo/</span>
+<span id="cb7-3"><a></a></span>
+<span id="cb7-4"><a></a><span class="co"># remove the --dry-run flag if everything looks OK</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section></section>
+<section>
+<section id="best-practices-for-file-permissions" class="title-slide slide level1 center">
+<h1>Best practices for file permissions</h1>
+
+</section>
+<section id="file-ownership-and-permissions" class="slide level2 center">
+<h2>File ownership and permissions</h2>
+<blockquote>
+<p>After transferring files to the CalcUA for long-term storage (e.g., raw data stored on <code>/data/antwerpen/grp/ap_itg_*</code>), the file permissions can be set to <code>read-only</code> to avoid accidental removal or modification.</p>
+</blockquote>
+</section>
+<section class="slide level2 center">
+
+
+<img data-src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffb1a898a-8440-430e-8ffa-3612d0555e6f_1768x1288.png" class="quarto-figure quarto-figure-center r-stretch" style="width:120.0%"><div class="footer">
+<p>See <a href="https://chmod-calculator.com/">https://chmod-calculator.com/</a> for an explanation of Unix file permissions.</p>
+</div>
+</section>
+<section id="bulk-changing-permissions" class="slide level2 center">
+<h2>Bulk changing permissions</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a></a><span class="co"># for all files in a directory (and its subdirectories)</span></span>
+<span id="cb8-2"><a></a><span class="fu">find</span> <span class="op">&lt;</span>path<span class="op">&gt;</span> -type f <span class="at">-exec</span> chmod 440 {} +</span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a><span class="co"># for individual files</span></span>
+<span id="cb8-5"><a></a><span class="fu">chgrp</span> ap_itg_mu <span class="op">&lt;</span>file name<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">or</span> glob pattern<span class="op">&gt;</span></span>
+<span id="cb8-6"><a></a><span class="fu">chmod</span> 440  <span class="op">&lt;</span>file name<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">or</span> glob pattern<span class="op">&gt;</span></span>
+<span id="cb8-7"><a></a></span>
+<span id="cb8-8"><a></a><span class="co"># just removing the write flag from a file</span></span>
+<span id="cb8-9"><a></a><span class="fu">chmod</span> <span class="at">-w</span> <span class="op">&lt;</span>file name<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">or</span> glob pattern<span class="op">&gt;</span></span>
+<span id="cb8-10"><a></a></span>
+<span id="cb8-11"><a></a><span class="co"># do not set the 440 flag directly on directories,</span></span>
+<span id="cb8-12"><a></a><span class="co"># and do not set it using the recursive (-r) flag either,</span></span>
+<span id="cb8-13"><a></a><span class="co"># because this would make them inaccessible/untraversable</span></span>
+<span id="cb8-14"><a></a><span class="co"># (directories need execution permission)</span></span>
+<span id="cb8-15"><a></a><span class="co"># instead use:</span></span>
+<span id="cb8-16"><a></a><span class="fu">find</span> . <span class="at">-type</span> d <span class="at">-exec</span> chmod 550 {} +</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="storage-quotas-are-determined-by-the-group-owner-not-the-physical-location" class="slide level2 center">
+<h2>Storage quotas are determined by the group owner, not the physical location</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a></a><span class="co"># setting ownership</span></span>
+<span id="cb9-2"><a></a><span class="fu">chown</span> <span class="at">-R</span> <span class="op">&lt;</span>vsc-username<span class="op">&gt;</span>:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/<span class="op">&lt;</span>name<span class="op">&gt;</span></span>
+<span id="cb9-3"><a></a><span class="fu">chown</span> <span class="at">-R</span> <span class="op">&lt;</span>vsc-username<span class="op">&gt;</span>:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/<span class="op">&lt;</span>name<span class="op">&gt;</span></span>
+<span id="cb9-4"><a></a></span>
+<span id="cb9-5"><a></a><span class="co"># or to do it recursively for all files and directories in a specific location</span></span>
+<span id="cb9-6"><a></a><span class="fu">find</span> <span class="op">&lt;</span>path-to-folder<span class="op">&gt;</span> -user <span class="op">&lt;</span>username<span class="op">&gt;</span> -group <span class="op">&lt;</span>groupname<span class="op">&gt;</span> -exec chgrp <span class="op">&lt;</span>groupname<span class="op">&gt;</span> {} <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section></section>
+<section>
+<section id="hpc-container-wrapper-as-a-conda-alternative" class="title-slide slide level1 center">
+<h1>HPC container wrapper as a <code>conda</code> alternative</h1>
+
 </section>
 <section id="using-conda-and-to-a-lesser-extent-pip-is-frowned-upon" class="slide level2 center">
 <h2>Using <code>conda</code> (and to a lesser extent <code>pip</code>) is frowned upon</h2>
@@ -270,29 +576,29 @@ TODO: check if line highlighting can be used in combination with no line numbers
 </div></aside></section>
 <section id="file-quota" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">File quota</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb1-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> myquota</span>
-<span id="cb1-2" class="hljs-ln-code"><a></a><span class="fu">file</span> system /user/antwerpen</span>
-<span id="cb1-3" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 1.612G of 3G space, 5,187 of 20k files</span>
-<span id="cb1-4" class="hljs-ln-code"><a></a><span class="fu">file</span> system /data/antwerpen</span>
-<span id="cb1-5" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 82.99G of 128G space, 157,497 of 200k files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb10-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> myquota</span>
+<span id="cb10-2" class="hljs-ln-code"><a></a><span class="fu">file</span> system /user/antwerpen</span>
+<span id="cb10-3" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 1.612G of 3G space, 5,187 of 20k files</span>
+<span id="cb10-4" class="hljs-ln-code"><a></a><span class="fu">file</span> system /data/antwerpen</span>
+<span id="cb10-5" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 82.99G of 128G space, 157,497 of 200k files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="file-quota-1" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">File quota</h2>
-<div class="sourceCode" id="cb2" data-code-line-numbers="7-15"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb2-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> myquota</span>
-<span id="cb2-2" class="hljs-ln-code"><a></a><span class="fu">file</span> system /user/antwerpen</span>
-<span id="cb2-3" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 1.612G of 3G space, 5,187 of 20k files</span>
-<span id="cb2-4" class="hljs-ln-code"><a></a><span class="fu">file</span> system /data/antwerpen</span>
-<span id="cb2-5" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 82.99G of 128G space, 157,497 of 200k files</span>
-<span id="cb2-6" class="hljs-ln-code"><a></a></span>
-<span id="cb2-7" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> du <span class="at">-sh</span> <span class="at">--inodes</span> /data/antwerpen/203/vsc20380/miniforge3/<span class="pp">*</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-h</span></span>
-<span id="cb2-8" class="hljs-ln-code"><a></a><span class="ex">...</span></span>
-<span id="cb2-9" class="hljs-ln-code"><a></a><span class="ex">91</span>      /data/antwerpen/203/vsc20380/miniforge3/conda-meta</span>
-<span id="cb2-10" class="hljs-ln-code"><a></a><span class="ex">132</span>     /data/antwerpen/203/vsc20380/miniforge3/bin</span>
-<span id="cb2-11" class="hljs-ln-code"><a></a><span class="ex">798</span>     /data/antwerpen/203/vsc20380/miniforge3/include</span>
-<span id="cb2-12" class="hljs-ln-code"><a></a><span class="ex">1.5K</span>    /data/antwerpen/203/vsc20380/miniforge3/share</span>
-<span id="cb2-13" class="hljs-ln-code"><a></a><span class="ex">6.0K</span>    /data/antwerpen/203/vsc20380/miniforge3/lib</span>
-<span id="cb2-14" class="hljs-ln-code"><a></a><span class="ex">10K</span>     /data/antwerpen/203/vsc20380/miniforge3/envs</span>
-<span id="cb2-15" class="hljs-ln-code"><a></a><span class="ex">107K</span>    /data/antwerpen/203/vsc20380/miniforge3/pkgs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11" data-code-line-numbers="7-15"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb11-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> myquota</span>
+<span id="cb11-2" class="hljs-ln-code"><a></a><span class="fu">file</span> system /user/antwerpen</span>
+<span id="cb11-3" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 1.612G of 3G space, 5,187 of 20k files</span>
+<span id="cb11-4" class="hljs-ln-code"><a></a><span class="fu">file</span> system /data/antwerpen</span>
+<span id="cb11-5" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 82.99G of 128G space, 157,497 of 200k files</span>
+<span id="cb11-6" class="hljs-ln-code"><a></a></span>
+<span id="cb11-7" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> du <span class="at">-sh</span> <span class="at">--inodes</span> /data/antwerpen/203/vsc20380/miniforge3/<span class="pp">*</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-h</span></span>
+<span id="cb11-8" class="hljs-ln-code"><a></a><span class="ex">...</span></span>
+<span id="cb11-9" class="hljs-ln-code"><a></a><span class="ex">91</span>      /data/antwerpen/203/vsc20380/miniforge3/conda-meta</span>
+<span id="cb11-10" class="hljs-ln-code"><a></a><span class="ex">132</span>     /data/antwerpen/203/vsc20380/miniforge3/bin</span>
+<span id="cb11-11" class="hljs-ln-code"><a></a><span class="ex">798</span>     /data/antwerpen/203/vsc20380/miniforge3/include</span>
+<span id="cb11-12" class="hljs-ln-code"><a></a><span class="ex">1.5K</span>    /data/antwerpen/203/vsc20380/miniforge3/share</span>
+<span id="cb11-13" class="hljs-ln-code"><a></a><span class="ex">6.0K</span>    /data/antwerpen/203/vsc20380/miniforge3/lib</span>
+<span id="cb11-14" class="hljs-ln-code"><a></a><span class="ex">10K</span>     /data/antwerpen/203/vsc20380/miniforge3/envs</span>
+<span id="cb11-15" class="hljs-ln-code"><a></a><span class="ex">107K</span>    /data/antwerpen/203/vsc20380/miniforge3/pkgs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <!--
 └─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/
 125K    /data/antwerpen/203/vsc20380/miniforge3/
@@ -304,66 +610,66 @@ TODO: check if line highlighting can be used in combination with no line numbers
 </section>
 <section id="file-quota-2" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">File quota</h2>
-<div class="sourceCode" id="cb3" data-code-line-numbers="12-20"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb3-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> myquota</span>
-<span id="cb3-2" class="hljs-ln-code"><a></a><span class="fu">file</span> system /user/antwerpen</span>
-<span id="cb3-3" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 1.612G of 3G space, 5,187 of 20k files</span>
-<span id="cb3-4" class="hljs-ln-code"><a></a><span class="fu">file</span> system /data/antwerpen</span>
-<span id="cb3-5" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 82.99G of 128G space, 157,497 of 200k files</span>
-<span id="cb3-6" class="hljs-ln-code"><a></a></span>
-<span id="cb3-7" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> du <span class="at">-sh</span> <span class="at">--inodes</span> /data/antwerpen/203/vsc20380/miniforge3/<span class="pp">*</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-h</span></span>
-<span id="cb3-8" class="hljs-ln-code"><a></a><span class="ex">...</span></span>
-<span id="cb3-9" class="hljs-ln-code"><a></a><span class="ex">10K</span>     /data/antwerpen/203/vsc20380/miniforge3/envs</span>
-<span id="cb3-10" class="hljs-ln-code"><a></a><span class="ex">107K</span>    /data/antwerpen/203/vsc20380/miniforge3/pkgs</span>
-<span id="cb3-11" class="hljs-ln-code"><a></a></span>
-<span id="cb3-12" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda env list</span>
-<span id="cb3-13" class="hljs-ln-code"><a></a><span class="co"># conda environments:</span></span>
-<span id="cb3-14" class="hljs-ln-code"><a></a><span class="co">#</span></span>
-<span id="cb3-15" class="hljs-ln-code"><a></a><span class="ex">base</span>                 <span class="pp">*</span> /data/antwerpen/203/vsc20380/miniforge3</span>
-<span id="cb3-16" class="hljs-ln-code"><a></a><span class="ex">never</span>                 /data/antwerpen/203/vsc20380/miniforge3/envs/never</span>
-<span id="cb3-17" class="hljs-ln-code"><a></a><span class="ex">gonna</span>                 /data/antwerpen/203/vsc20380/miniforge3/envs/gonna</span>
-<span id="cb3-18" class="hljs-ln-code"><a></a><span class="ex">give</span>                  /data/antwerpen/203/vsc20380/miniforge3/envs/give</span>
-<span id="cb3-19" class="hljs-ln-code"><a></a><span class="ex">you</span>                   /data/antwerpen/203/vsc20380/miniforge3/envs/you</span>
-<span id="cb3-20" class="hljs-ln-code"><a></a><span class="ex">up</span>                    /data/antwerpen/203/vsc20380/miniforge3/envs/up</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12" data-code-line-numbers="12-20"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb12-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> myquota</span>
+<span id="cb12-2" class="hljs-ln-code"><a></a><span class="fu">file</span> system /user/antwerpen</span>
+<span id="cb12-3" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 1.612G of 3G space, 5,187 of 20k files</span>
+<span id="cb12-4" class="hljs-ln-code"><a></a><span class="fu">file</span> system /data/antwerpen</span>
+<span id="cb12-5" class="hljs-ln-code"><a></a>    <span class="ex">using</span> 82.99G of 128G space, 157,497 of 200k files</span>
+<span id="cb12-6" class="hljs-ln-code"><a></a></span>
+<span id="cb12-7" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> du <span class="at">-sh</span> <span class="at">--inodes</span> /data/antwerpen/203/vsc20380/miniforge3/<span class="pp">*</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-h</span></span>
+<span id="cb12-8" class="hljs-ln-code"><a></a><span class="ex">...</span></span>
+<span id="cb12-9" class="hljs-ln-code"><a></a><span class="ex">10K</span>     /data/antwerpen/203/vsc20380/miniforge3/envs</span>
+<span id="cb12-10" class="hljs-ln-code"><a></a><span class="ex">107K</span>    /data/antwerpen/203/vsc20380/miniforge3/pkgs</span>
+<span id="cb12-11" class="hljs-ln-code"><a></a></span>
+<span id="cb12-12" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda env list</span>
+<span id="cb12-13" class="hljs-ln-code"><a></a><span class="co"># conda environments:</span></span>
+<span id="cb12-14" class="hljs-ln-code"><a></a><span class="co">#</span></span>
+<span id="cb12-15" class="hljs-ln-code"><a></a><span class="ex">base</span>                 <span class="pp">*</span> /data/antwerpen/203/vsc20380/miniforge3</span>
+<span id="cb12-16" class="hljs-ln-code"><a></a><span class="ex">never</span>                 /data/antwerpen/203/vsc20380/miniforge3/envs/never</span>
+<span id="cb12-17" class="hljs-ln-code"><a></a><span class="ex">gonna</span>                 /data/antwerpen/203/vsc20380/miniforge3/envs/gonna</span>
+<span id="cb12-18" class="hljs-ln-code"><a></a><span class="ex">give</span>                  /data/antwerpen/203/vsc20380/miniforge3/envs/give</span>
+<span id="cb12-19" class="hljs-ln-code"><a></a><span class="ex">you</span>                   /data/antwerpen/203/vsc20380/miniforge3/envs/you</span>
+<span id="cb12-20" class="hljs-ln-code"><a></a><span class="ex">up</span>                    /data/antwerpen/203/vsc20380/miniforge3/envs/up</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="conda-clean" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Conda clean</h2>
 <p>Remember to clear out your conda cache every now and then:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb4-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda clean <span class="at">--all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb13-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda clean <span class="at">--all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="conda-clean-1" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Conda clean</h2>
 <p>Remember to clear out your conda cache every now and then:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb5-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda clean <span class="at">--all</span></span>
-<span id="cb5-2" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 69 <span class="er">(</span><span class="ex">130.8</span> MB<span class="kw">)</span> <span class="ex">tarball</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
-<span id="cb5-3" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb5-4" class="hljs-ln-code"><a></a></span>
-<span id="cb5-5" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 1 index cache<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
-<span id="cb5-6" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb5-7" class="hljs-ln-code"><a></a></span>
-<span id="cb5-8" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 173 <span class="er">(</span><span class="ex">1.97</span> GB<span class="kw">)</span> <span class="ex">package</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
-<span id="cb5-9" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb5-10" class="hljs-ln-code"><a></a></span>
-<span id="cb5-11" class="hljs-ln-code"><a></a><span class="ex">There</span> are no tempfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span>
-<span id="cb5-12" class="hljs-ln-code"><a></a><span class="ex">There</span> are no logfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb14-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda clean <span class="at">--all</span></span>
+<span id="cb14-2" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 69 <span class="er">(</span><span class="ex">130.8</span> MB<span class="kw">)</span> <span class="ex">tarball</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb14-3" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
+<span id="cb14-4" class="hljs-ln-code"><a></a></span>
+<span id="cb14-5" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 1 index cache<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb14-6" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
+<span id="cb14-7" class="hljs-ln-code"><a></a></span>
+<span id="cb14-8" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 173 <span class="er">(</span><span class="ex">1.97</span> GB<span class="kw">)</span> <span class="ex">package</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb14-9" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
+<span id="cb14-10" class="hljs-ln-code"><a></a></span>
+<span id="cb14-11" class="hljs-ln-code"><a></a><span class="ex">There</span> are no tempfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span>
+<span id="cb14-12" class="hljs-ln-code"><a></a><span class="ex">There</span> are no logfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="conda-clean-2" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Conda clean</h2>
 <p>Remember to clear out your conda cache every now and then:</p>
-<div class="sourceCode" id="cb6" data-code-line-numbers="14-15"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb6-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda clean <span class="at">--all</span></span>
-<span id="cb6-2" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 69 <span class="er">(</span><span class="ex">130.8</span> MB<span class="kw">)</span> <span class="ex">tarball</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
-<span id="cb6-3" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb6-4" class="hljs-ln-code"><a></a></span>
-<span id="cb6-5" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 1 index cache<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
-<span id="cb6-6" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb6-7" class="hljs-ln-code"><a></a></span>
-<span id="cb6-8" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 173 <span class="er">(</span><span class="ex">1.97</span> GB<span class="kw">)</span> <span class="ex">package</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
-<span id="cb6-9" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb6-10" class="hljs-ln-code"><a></a></span>
-<span id="cb6-11" class="hljs-ln-code"><a></a><span class="ex">There</span> are no tempfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span>
-<span id="cb6-12" class="hljs-ln-code"><a></a><span class="ex">There</span> are no logfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span>
-<span id="cb6-13" class="hljs-ln-code"><a></a></span>
-<span id="cb6-14" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> du <span class="at">-sh</span> <span class="at">--inodes</span> /data/antwerpen/203/vsc20380/miniforge3/</span>
-<span id="cb6-15" class="hljs-ln-code"><a></a><span class="ex">29K</span>     /data/antwerpen/203/vsc20380/miniforge3/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15" data-code-line-numbers="14-15"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb15-1" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> conda clean <span class="at">--all</span></span>
+<span id="cb15-2" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 69 <span class="er">(</span><span class="ex">130.8</span> MB<span class="kw">)</span> <span class="ex">tarball</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb15-3" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
+<span id="cb15-4" class="hljs-ln-code"><a></a></span>
+<span id="cb15-5" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 1 index cache<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb15-6" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
+<span id="cb15-7" class="hljs-ln-code"><a></a></span>
+<span id="cb15-8" class="hljs-ln-code"><a></a><span class="ex">Will</span> remove 173 <span class="er">(</span><span class="ex">1.97</span> GB<span class="kw">)</span> <span class="ex">package</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb15-9" class="hljs-ln-code"><a></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
+<span id="cb15-10" class="hljs-ln-code"><a></a></span>
+<span id="cb15-11" class="hljs-ln-code"><a></a><span class="ex">There</span> are no tempfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span>
+<span id="cb15-12" class="hljs-ln-code"><a></a><span class="ex">There</span> are no logfile<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">to</span> remove.</span>
+<span id="cb15-13" class="hljs-ln-code"><a></a></span>
+<span id="cb15-14" class="hljs-ln-code"><a></a><span class="ex">└─▶</span> du <span class="at">-sh</span> <span class="at">--inodes</span> /data/antwerpen/203/vsc20380/miniforge3/</span>
+<span id="cb15-15" class="hljs-ln-code"><a></a><span class="ex">29K</span>     /data/antwerpen/203/vsc20380/miniforge3/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="a-different-approach-to-using-containers" class="slide level2 center">
 <h2>A different approach to using containers</h2>
@@ -382,50 +688,50 @@ TODO: check if line highlighting can be used in combination with no line numbers
 <div style="font-size: 0.7em">
 <p>Define dependencies in <code>environment.yml</code> (conda/mamba) or <code>requirements.txt</code> (pip):</p>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a></a><span class="fu">name</span><span class="kw">:</span><span class="at"> wgs</span></span>
-<span id="cb7-2"><a></a><span class="fu">channels</span><span class="kw">:</span></span>
-<span id="cb7-3"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> bioconda</span></span>
-<span id="cb7-4"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
-<span id="cb7-5"><a></a><span class="fu">dependencies</span><span class="kw">:</span></span>
-<span id="cb7-6"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> pandas</span></span>
-<span id="cb7-7"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> fastqc=0.12.1</span></span>
-<span id="cb7-8"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> multiqc=1.27.1</span></span>
-<span id="cb7-9"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> samtools=1.21</span></span>
-<span id="cb7-10"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> seqkit=2.10.0</span></span>
-<span id="cb7-11"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> bcftools=1.21</span></span>
-<span id="cb7-12"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> bedtools=2.31.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a></a><span class="fu">name</span><span class="kw">:</span><span class="at"> wgs</span></span>
+<span id="cb16-2"><a></a><span class="fu">channels</span><span class="kw">:</span></span>
+<span id="cb16-3"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> bioconda</span></span>
+<span id="cb16-4"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
+<span id="cb16-5"><a></a><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb16-6"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> pandas</span></span>
+<span id="cb16-7"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> fastqc=0.12.1</span></span>
+<span id="cb16-8"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> multiqc=1.27.1</span></span>
+<span id="cb16-9"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> samtools=1.21</span></span>
+<span id="cb16-10"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> seqkit=2.10.0</span></span>
+<span id="cb16-11"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> bcftools=1.21</span></span>
+<span id="cb16-12"><a></a><span class="at">  </span><span class="kw">-</span><span class="at"> bedtools=2.31.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="font-size: 0.7em">
 <p>Create container:</p>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a></a><span class="ex">└─▶</span> module load hpc-container-wrapper</span>
-<span id="cb8-2"><a></a><span class="ex">└─▶</span> conda-containerize new <span class="at">--prefix</span> <span class="st">"</span><span class="va">$VSC_SCRATCH</span><span class="st">/containers/wgs"</span> environment.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a></a><span class="ex">└─▶</span> module load hpc-container-wrapper</span>
+<span id="cb17-2"><a></a><span class="ex">└─▶</span> conda-containerize new <span class="at">--prefix</span> <span class="st">"</span><span class="va">$VSC_SCRATCH</span><span class="st">/containers/wgs"</span> environment.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="creating-containers-1" class="slide level2 smaller center">
 <h2>Creating containers</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a></a><span class="ex">└─▶</span> ll wgs/wgs-container/</span>
-<span id="cb9-2"><a></a><span class="ex">total</span> 2313043</span>
-<span id="cb9-3"><a></a><span class="ex">drwxrwxr-x</span> 2 vsc20380 vsc20380        341 May  8 16:36 _bin</span>
-<span id="cb9-4"><a></a><span class="ex">drwxrwxr-x</span> 2 vsc20380 vsc20380        343 May  8 16:36 bin</span>
-<span id="cb9-5"><a></a><span class="ex">-rw-rw-r--</span> 1 vsc20380 vsc20380       2541 May  8 16:36 common.sh</span>
-<span id="cb9-6"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380   69107712 May  8 16:36 container.sif</span>
-<span id="cb9-7"><a></a><span class="ex">-rw-rw-r--</span> 1 vsc20380 vsc20380 2396106752 May  8 16:36 img.sqfs</span>
-<span id="cb9-8"><a></a><span class="ex">drwxrwxr-x</span> 3 vsc20380 vsc20380          3 May  8 16:36 share</span>
-<span id="cb9-9"><a></a></span>
-<span id="cb9-10"><a></a><span class="ex">└─▶</span> ll wgs/wgs-container/bin/</span>
-<span id="cb9-11"><a></a><span class="ex">total</span> 857</span>
-<span id="cb9-12"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 1575 May  8 16:36 _debug_exec</span>
-<span id="cb9-13"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 1577 May  8 16:36 _debug_shell</span>
-<span id="cb9-14"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2254 May  8 16:36 ace2sam</span>
-<span id="cb9-15"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2245 May  8 16:36 adig</span>
-<span id="cb9-16"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2248 May  8 16:36 ahost</span>
-<span id="cb9-17"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2260 May  8 16:36 annot-tsv</span>
-<span id="cb9-18"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2257 May  8 16:36 annotate</span>
-<span id="cb9-19"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2266 May  8 16:36 annotateBed</span>
-<span id="cb9-20"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2254 May  8 16:36 aserver</span>
-<span id="cb9-21"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2257 May  8 16:36 bamToBed</span>
-<span id="cb9-22"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2263 May  8 16:36 bamToFastq</span>
-<span id="cb9-23"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2257 May  8 16:36 bcftools</span>
-<span id="cb9-24"><a></a><span class="ex">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a></a><span class="ex">└─▶</span> ll wgs/wgs-container/</span>
+<span id="cb18-2"><a></a><span class="ex">total</span> 2313043</span>
+<span id="cb18-3"><a></a><span class="ex">drwxrwxr-x</span> 2 vsc20380 vsc20380        341 May  8 16:36 _bin</span>
+<span id="cb18-4"><a></a><span class="ex">drwxrwxr-x</span> 2 vsc20380 vsc20380        343 May  8 16:36 bin</span>
+<span id="cb18-5"><a></a><span class="ex">-rw-rw-r--</span> 1 vsc20380 vsc20380       2541 May  8 16:36 common.sh</span>
+<span id="cb18-6"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380   69107712 May  8 16:36 container.sif</span>
+<span id="cb18-7"><a></a><span class="ex">-rw-rw-r--</span> 1 vsc20380 vsc20380 2396106752 May  8 16:36 img.sqfs</span>
+<span id="cb18-8"><a></a><span class="ex">drwxrwxr-x</span> 3 vsc20380 vsc20380          3 May  8 16:36 share</span>
+<span id="cb18-9"><a></a></span>
+<span id="cb18-10"><a></a><span class="ex">└─▶</span> ll wgs/wgs-container/bin/</span>
+<span id="cb18-11"><a></a><span class="ex">total</span> 857</span>
+<span id="cb18-12"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 1575 May  8 16:36 _debug_exec</span>
+<span id="cb18-13"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 1577 May  8 16:36 _debug_shell</span>
+<span id="cb18-14"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2254 May  8 16:36 ace2sam</span>
+<span id="cb18-15"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2245 May  8 16:36 adig</span>
+<span id="cb18-16"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2248 May  8 16:36 ahost</span>
+<span id="cb18-17"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2260 May  8 16:36 annot-tsv</span>
+<span id="cb18-18"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2257 May  8 16:36 annotate</span>
+<span id="cb18-19"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2266 May  8 16:36 annotateBed</span>
+<span id="cb18-20"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2254 May  8 16:36 aserver</span>
+<span id="cb18-21"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2257 May  8 16:36 bamToBed</span>
+<span id="cb18-22"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2263 May  8 16:36 bamToFastq</span>
+<span id="cb18-23"><a></a><span class="ex">-rwxrwxr-x</span> 1 vsc20380 vsc20380 2257 May  8 16:36 bcftools</span>
+<span id="cb18-24"><a></a><span class="ex">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="running-containers" class="slide level2 center">
 <h2>Running containers</h2>
@@ -438,11 +744,11 @@ TODO: check if line highlighting can be used in combination with no line numbers
 <section id="updating-containers" class="slide level2 center">
 <h2>Updating containers</h2>
 <p>Containers can be updated after creation to include additional packages.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a></a><span class="ex">conda-containerize</span> update <span class="at">--post-install</span> post-install.sh <span class="dt">\</span></span>
-<span id="cb10-2"><a></a>  <span class="st">"</span><span class="va">$VSC_SCRATCH</span><span class="st">/containers/wgs"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a></a><span class="ex">conda-containerize</span> update <span class="at">--post-install</span> post-install.sh <span class="dt">\</span></span>
+<span id="cb19-2"><a></a>  <span class="st">"</span><span class="va">$VSC_SCRATCH</span><span class="st">/containers/wgs"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>post-install.sh</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a></a><span class="ex">pip</span> install requests</span>
-<span id="cb11-2"><a></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda pyfaidx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a></a><span class="ex">pip</span> install requests</span>
+<span id="cb20-2"><a></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda pyfaidx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="warnings" class="slide level2 center">
 <h2>Warnings</h2>
@@ -498,269 +804,6 @@ TODO: check if line highlighting can be used in combination with no line numbers
 <h2>A note on R and <code>renv</code></h2>
 <p>Great write-up on how to manage R package dependencies using <code>renv</code> on HPCs: <a href="https://www.daryavanichkina.com/posts/210728_renvhpc.html">https://www.daryavanichkina.com/posts/210728_renvhpc.html</a></p>
 </section></section>
-<section>
-<section id="pretty-squeue" class="title-slide slide level1 center">
-<h1>Pretty <code>squeue</code></h1>
-
-</section>
-<section id="pretty-squeue-1" class="slide level2 center">
-<h2>Pretty <code>squeue</code></h2>
-<p>Add this to your <code>.bashrc</code> or <code>.bash_aliases</code> file for a more readable job output:</p>
-<p><code>alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'</code></p>
-<div class="footer">
-<p>For more info on formatting options, see:</p>
-<ul>
-<li><a href="https://slurm.schedmd.com/squeue.html">https://slurm.schedmd.com/squeue.html</a></li>
-<li><a href="https://docs.vscentrum.be/compute/jobs/job_management.html">https://docs.vscentrum.be/compute/jobs/job_management.html</a></li>
-<li><a href="https://jhpce.jhu.edu/slurm/tips-squeue/">https://jhpce.jhu.edu/slurm/tips-squeue/</a></li>
-<li><a href="https://hpc-docs.cubi.bihealth.org/slurm/format-strings/">https://hpc-docs.cubi.bihealth.org/slurm/format-strings/</a></li>
-<li><a href="https://kb.ucdavis.edu/?id=07381">https://kb.ucdavis.edu/?id=07381</a></li>
-</ul>
-</div>
-</section>
-<section id="pretty-squeue-2" class="slide level2 center">
-<h2>Pretty <code>squeue</code></h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a></a><span class="ex">└─▶</span> /usr/bin/squeue</span>
-<span id="cb12-2"><a></a>             <span class="ex">JOBID</span> PARTITION     NAME     USER ST       TIME  NODES NODELIST<span class="er">(</span><span class="ex">REASON</span><span class="kw">)</span></span>
-<span id="cb12-3"><a></a>           <span class="ex">2036034</span> broadwell the-answ vsc20380  R      30:36      1 r3c08cn3.leibniz</span>
-<span id="cb12-4"><a></a></span>
-<span id="cb12-5"><a></a></span>
-<span id="cb12-6"><a></a></span>
-<span id="cb12-7"><a></a><span class="ex">└─▶</span> squeue <span class="at">--format</span><span class="op">=</span><span class="st">"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"</span></span>
-<span id="cb12-8"><a></a>   <span class="ex">JOBID</span>                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST<span class="er">(</span><span class="ex">REASON</span><span class="kw">)</span></span>
-<span id="cb12-9"><a></a> <span class="ex">2036034</span>     the answer to life the universe and everything  broadwell  RUNNING      30:37   2-23:29:23  2025-05-17T12:01:44 3-00:00:00  2025-05-14T12:01:34      1 r3c08cn3.leibniz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Especially useful if you use long job names.</li>
-<li>Downside: widths are fixed and terminal window needs to be wide enough to fit everything in.</li>
-</ul>
-</section></section>
-<section>
-<section id="belnet-filesender" class="title-slide slide level1 center">
-<h1>Belnet FileSender</h1>
-
-</section>
-<section id="file-transfers-on-calcua" class="slide level2 smaller center">
-<h2>File transfers on CalcUA</h2>
-<p>For an overview of different methods to transfer data to CalcUA, we refer to the <a href="https://docs.vscentrum.be/data/transfer.html">VSC documentation</a>. In brief, you can use:</p>
-<ul>
-<li>options like <code>rsync</code> or <code>sftp</code> from a terminal</li>
-<li>a dedicated GUI SFTP tool like <del><a href="https://filezilla-project.org/">FileZilla</a></del> (bundled spyware in the past) or <a href="https://winscp.net/eng/download.php">WinSCP</a> (or even directly from within MobaXterm if you are using it for access anyway)</li>
-<li>Globus data sharing platform</li>
-<li>Belnet FileSender: useful for sharing large datasets with others.</li>
-<li><a href="https://rclone.org/">rclone</a> for moving data from CalcUA to OneDrive or SharePoint.</li>
-</ul>
-</section>
-<section id="belnet-filesender---downsides" class="slide level2 smaller center">
-<h2>Belnet FileSender - downsides</h2>
-<ul>
-<li><a href="(https://filesender.belnet.be/)">Belnet FileSender</a> can be used to transfer large (volumes of) files.</li>
-<li>However, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.</li>
-<li>Moreover, since you cannot open a web browser on the CalcUA (unless you try your hand at <a href="https://docs.vscentrum.be/access/access_methods.html#gui-applications-on-the-clusters">X forwarding</a>), you cannot download any files from FileSender to CalcUA directly.</li>
-<li>Fortunately, there is an API you can call through a Python script, which makes it possible to both upload and download files directly on CalcUA.</li>
-</ul>
-</section>
-<section id="belnet-filesender-api---setup" class="slide level2 center">
-<h2>Belnet FileSender API - setup</h2>
-<p>Installing the script and generating a config file:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a></a><span class="co"># download script</span></span>
-<span id="cb13-2"><a></a><span class="ex">curl</span> https://filesender.belnet.be//clidownload.php <span class="op">&gt;</span> ~/.local/bin/filesender.py</span>
-<span id="cb13-3"><a></a></span>
-<span id="cb13-4"><a></a><span class="co"># Save `filesender.py.ini` config file and store it in home `~/.filesender`</span></span>
-<span id="cb13-5"><a></a><span class="ex">curl</span> https://filesender.belnet.be//clidownload.php<span class="pp">?</span>config=1 <span class="op">&gt;</span> ~/.filesender.py.ini</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Next, generate an API key on your belnet profile page and add it alongside your username (email) to the <code>~/.filesender.py.ini</code> config file.</p>
-</section>
-<section id="belnet-filesender-api---usage" class="slide level2 center">
-<h2>Belnet FileSender API - usage</h2>
-<p>Now you can transfer files via:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a></a><span class="ex">python3</span> filesender.py <span class="at">-v</span> <span class="dt">\</span></span>
-<span id="cb14-2"><a></a>  <span class="at">-m</span> <span class="st">"Message description"</span> <span class="dt">\</span></span>
-<span id="cb14-3"><a></a>  <span class="at">-s</span> <span class="st">"Sent using the Belnet filesender API"</span> <span class="dt">\</span></span>
-<span id="cb14-4"><a></a>  <span class="at">-r</span> <span class="st">"the.librarian@unseen-university.ank"</span> <span class="dt">\</span></span>
-<span id="cb14-5"><a></a>  <span class="va">$VSC_SCRATCH</span>/clacks/<span class="pp">*</span>.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can run this either in a Slurm batch job or through a <code>tmux</code>/<code>screen</code> session, to avoid time-outs.</p>
-</section>
-<section id="belnet-filesender---more-info" class="slide level2 center">
-<h2>Belnet FileSender - more info</h2>
-<p>For more information, see:</p>
-<ul>
-<li><a href="https://filesender.belnet.be/">https://filesender.belnet.be/</a></li>
-<li><a href="https://www.belnet.be/nl/communities-diensten/alle-diensten/identity-mobility-federation/filesender/filesender-technical-faq">FAQ</a></li>
-<li><a href="https://belnet.be/sites/default/files/2024-02/FileSender-API-20230811%201.pdf">API documentation</a></li>
-</ul>
-</section></section>
-<section>
-<section id="rclone---connecting-to-sharepoint" class="title-slide slide level1 center">
-<h1>Rclone - connecting to SharePoint</h1>
-
-</section>
-<section id="what-is-rclone" class="slide level2 center">
-<h2>What is Rclone?</h2>
-<p>The <a href="https://rclone.org/">rclone tool</a> makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.</p>
-<p>In our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g.&nbsp;for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account.</p>
-</section>
-<section id="create-a-new-rclone-remote" class="slide level2 center">
-<h2>Create a new Rclone remote</h2>
-<p>First, you will need to create an rclone remote that targets OneDrive or Sharepoint:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a></a><span class="co"># create a new rclone remote for OneDrive or SharePoint</span></span>
-<span id="cb15-2"><a></a><span class="ex">rclone</span> config</span>
-<span id="cb15-3"><a></a></span>
-<span id="cb15-4"><a></a><span class="co"># an interactive setup will open and you will need to choose the following options:</span></span>
-<span id="cb15-5"><a></a><span class="ex">-</span> new remote</span>
-<span id="cb15-6"><a></a><span class="ex">-</span> name it e.g. <span class="kw">`</span><span class="ex">personal-onedrive</span><span class="kw">`</span> or <span class="kw">`</span><span class="ex">sharepoint-sitename</span><span class="kw">`</span></span>
-<span id="cb15-7"><a></a><span class="ex">-</span> type: 33 <span class="er">(</span> <span class="ex">Microsoft</span> OneDrive <span class="dt">\ </span><span class="st">"onedrive"</span> =<span class="op">&gt;</span> use the same type for SharePoint<span class="kw">)</span></span>
-<span id="cb15-8"><a></a><span class="ex">-</span> client id: leave blank</span>
-<span id="cb15-9"><a></a><span class="ex">-</span> client secret: leave blank</span>
-<span id="cb15-10"><a></a><span class="ex">-</span> region: 1 <span class="er">(</span><span class="ex">Microsoft</span> Cloud Global <span class="dt">\ </span><span class="st">"global"</span><span class="kw">)</span></span>
-<span id="cb15-11"><a></a><span class="ex">-</span> do not edit advanced config</span>
-<span id="cb15-12"><a></a><span class="ex">-</span> use browser to authenticate: no</span>
-<span id="cb15-13"><a></a><span class="ex">-</span> on your local machine <span class="er">(</span><span class="ex">with</span> rclone installed<span class="kw">)</span><span class="ex">,</span> run:</span>
-<span id="cb15-14"><a></a>    <span class="ex">rclone</span> authorize <span class="st">"onedrive"</span></span>
-<span id="cb15-15"><a></a><span class="ex">-</span> config_token: paste the result from above here</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="transferring-files" class="slide level2 center">
-<h2>Transferring files</h2>
-<p>To transfer files, you can use a similar syntax to <code>rsync</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a></a><span class="co"># transfer current calcua directory to onedrive directory `./my/folder`</span></span>
-<span id="cb16-2"><a></a><span class="ex">rclone</span> copy <span class="at">-P</span> <span class="at">--dry-run</span> party.parrot personal-onedrive:new-zealand/kakapo/</span>
-<span id="cb16-3"><a></a></span>
-<span id="cb16-4"><a></a><span class="co"># remove the --dry-run flag if everything looks OK</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section></section>
-<section>
-<section id="ssh-config-files" class="title-slide slide level1 center">
-<h1>SSH config files</h1>
-
-</section>
-<section id="ssh-config" class="slide level2 center">
-<h2>SSH config</h2>
-<p>You can add an SSH config file in your local (!) user/home directory <code>~/.ssh/config</code> that allows you to simply type <code>ssh calcua</code> to connect, without needing to provide your username, the login url, etc.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a></a><span class="ex">Host</span> calcua</span>
-<span id="cb17-2"><a></a>    <span class="ex">HostName</span> login.hpc.uantwerpen.be</span>
-<span id="cb17-3"><a></a>    <span class="co"># or login-leibniz.hpc.uantwerpen.be</span></span>
-<span id="cb17-4"><a></a>    <span class="co"># or login-vaughan.hpc.uantwerpen.be</span></span>
-<span id="cb17-5"><a></a>    <span class="co"># or even login1-leibniz.hpc.uantwerpen.be</span></span>
-<span id="cb17-6"><a></a>    <span class="ex">User</span> vsc20380</span>
-<span id="cb17-7"><a></a>    <span class="ex">IdentityFile</span> ~/.ssh/id_ed25519</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="footer">
-<p>Further reading:</p>
-<ul>
-<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">List of hostnames</a></li>
-<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">VSC docs on SSH config</a></li>
-<li><a href="https://some-natalie.dev/blog/ssh-x11-forwarding/">X11 forwarding over SSH</a></li>
-</ul>
-</div>
-</section>
-<section id="advanced-ssh-config" class="slide level2 center">
-<h2>Advanced SSH config</h2>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource .bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a></a><span class="ex">Host</span> <span class="pp">*</span></span>
-<span id="cb18-2"><a></a>    <span class="co"># prevent timeouts</span></span>
-<span id="cb18-3"><a></a>    <span class="ex">ServerAliveInterval</span> 60  <span class="co"># ping every 60 seconds</span></span>
-<span id="cb18-4"><a></a>    <span class="ex">ServerAliveCountMax</span> 10  <span class="co"># number of failed attempts before disconnecting</span></span>
-<span id="cb18-5"><a></a>    <span class="co"># Ignore SSH keys expect the ones specified in Host subsection</span></span>
-<span id="cb18-6"><a></a>    <span class="ex">IdentitiesOnly</span> yes</span>
-<span id="cb18-7"><a></a></span>
-<span id="cb18-8"><a></a><span class="ex">Host</span> calcua</span>
-<span id="cb18-9"><a></a>    <span class="ex">HostName</span> login.hpc.uantwerpen.be</span>
-<span id="cb18-10"><a></a>    <span class="ex">User</span> vsc20380</span>
-<span id="cb18-11"><a></a>    <span class="co"># only attempt to log in use this key</span></span>
-<span id="cb18-12"><a></a>    <span class="ex">IdentityFile</span> ~/.ssh/id_ed25519</span>
-<span id="cb18-13"><a></a>    <span class="co"># enable GUIs</span></span>
-<span id="cb18-14"><a></a>    <span class="ex">ForwardX11</span> yes</span>
-<span id="cb18-15"><a></a>    <span class="co"># connect straight to a tmux session</span></span>
-<span id="cb18-16"><a></a>    <span class="ex">RemoteCommand</span> tmux new <span class="at">-A</span> <span class="at">-s</span> green-hills-zone</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="footer">
-<p>Further reading:</p>
-<ul>
-<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">List of hostnames</a></li>
-<li><a href="https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure">VSC docs on SSH config</a></li>
-<li><a href="https://some-natalie.dev/blog/ssh-x11-forwarding/">X11 forwarding over SSH</a></li>
-<li><a href="https://carlosbecker.com/posts/ssh-tips-and-tricks/">Source for tmux trick</a> (and related <a href="https://news.ycombinator.com/item?id=32486031">HackerNews discussion</a>)</li>
-</ul>
-</div>
-</section>
-<section id="of-course-you-can-also-set-up-an-alias-as-an-alternative" class="slide level2 center">
-<h2>Of course, you can also set up an alias as an alternative</h2>
-<p><code>alias tardis='ssh vsc09001@login.hpc.uantwerpen.be'</code></p>
-</section></section>
-<section id="remote-ssh-in-vscode" class="title-slide slide level1 center">
-<h1>Remote SSH in VSCode</h1>
-<!-- TODO -->
-<ul>
-<li>https://code.visualstudio.com/docs/remote/ssh</li>
-<li>https://code.visualstudio.com/docs/remote/ssh-tutorial</li>
-<li>https://suedbroecker.net/2024/01/25/cheatsheet-how-to-set-up-remote-development-with-vs-code-using-ssh/</li>
-<li>https://edvaldoguimaraes.com.br/2024/10/28/remote-development-over-ssh-with-vs-code-a-comprehensive-guide/</li>
-<li>https://carleton.ca/scs/2024/vscode-remote-access-and-code-editing/</li>
-</ul>
-</section>
-
-<section>
-<section id="best-practices-for-file-permissions" class="title-slide slide level1 center">
-<h1>Best practices for file permissions</h1>
-
-</section>
-<section id="file-ownership-and-permissions" class="slide level2 center">
-<h2>File ownership and permissions</h2>
-<blockquote>
-<p>After transferring files to the CalcUA for long-term storage (e.g., raw data stored on <code>/data/antwerpen/grp/ap_itg_*</code>), the file permissions can be set to <code>read-only</code> to avoid accidental removal or modification.</p>
-</blockquote>
-</section>
-<section class="slide level2 center">
-
-
-<img data-src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffb1a898a-8440-430e-8ffa-3612d0555e6f_1768x1288.png" class="quarto-figure quarto-figure-center r-stretch" style="width:120.0%"><div class="footer">
-<p>See <a href="https://chmod-calculator.com/">https://chmod-calculator.com/</a> for an explanation of Unix file permissions.</p>
-</div>
-</section>
-<section id="bulk-changing-permissions" class="slide level2 center">
-<h2>Bulk changing permissions</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a></a><span class="co"># for all files in a directory (and its subdirectories)</span></span>
-<span id="cb19-2"><a></a><span class="fu">find</span> <span class="op">&lt;</span>path<span class="op">&gt;</span> -type f <span class="at">-exec</span> chmod 440 {} +</span>
-<span id="cb19-3"><a></a></span>
-<span id="cb19-4"><a></a><span class="co"># for individual files</span></span>
-<span id="cb19-5"><a></a><span class="fu">chgrp</span> ap_itg_mu <span class="op">&lt;</span>file name<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">or</span> glob pattern<span class="op">&gt;</span></span>
-<span id="cb19-6"><a></a><span class="fu">chmod</span> 440  <span class="op">&lt;</span>file name<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">or</span> glob pattern<span class="op">&gt;</span></span>
-<span id="cb19-7"><a></a></span>
-<span id="cb19-8"><a></a><span class="co"># just removing the write flag from a file</span></span>
-<span id="cb19-9"><a></a><span class="fu">chmod</span> <span class="at">-w</span> <span class="op">&lt;</span>file name<span class="er">(</span><span class="ex">s</span><span class="kw">)</span> <span class="ex">or</span> glob pattern<span class="op">&gt;</span></span>
-<span id="cb19-10"><a></a></span>
-<span id="cb19-11"><a></a><span class="co"># do not set the 440 flag directly on directories,</span></span>
-<span id="cb19-12"><a></a><span class="co"># and do not set it using the recursive (-r) flag either,</span></span>
-<span id="cb19-13"><a></a><span class="co"># because this would make them inaccessible/untraversable</span></span>
-<span id="cb19-14"><a></a><span class="co"># (directories need execution permission)</span></span>
-<span id="cb19-15"><a></a><span class="co"># instead use:</span></span>
-<span id="cb19-16"><a></a><span class="fu">find</span> . <span class="at">-type</span> d <span class="at">-exec</span> chmod 550 {} +</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="storage-quotas-are-determined-by-the-group-owner-not-the-physical-location" class="slide level2 center">
-<h2>Storage quotas are determined by the group owner, not the physical location</h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a></a><span class="co"># setting ownership</span></span>
-<span id="cb20-2"><a></a><span class="fu">chown</span> <span class="at">-R</span> <span class="op">&lt;</span>vsc-username<span class="op">&gt;</span>:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/<span class="op">&lt;</span>name<span class="op">&gt;</span></span>
-<span id="cb20-3"><a></a><span class="fu">chown</span> <span class="at">-R</span> <span class="op">&lt;</span>vsc-username<span class="op">&gt;</span>:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/<span class="op">&lt;</span>name<span class="op">&gt;</span></span>
-<span id="cb20-4"><a></a></span>
-<span id="cb20-5"><a></a><span class="co"># or to do it recursively for all files and directories in a specific location</span></span>
-<span id="cb20-6"><a></a><span class="fu">find</span> <span class="op">&lt;</span>path-to-folder<span class="op">&gt;</span> -user <span class="op">&lt;</span>username<span class="op">&gt;</span> -group <span class="op">&lt;</span>groupname<span class="op">&gt;</span> -exec chgrp <span class="op">&lt;</span>groupname<span class="op">&gt;</span> {} <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section></section>
-<section>
-<section id="persistent-sessions-using-tmuxscreen" class="title-slide slide level1 center">
-<h1>Persistent sessions using <code>tmux</code>/<code>screen</code></h1>
-
-</section>
-<section id="how-to-avoid-timeouts-during-long-running-commands" class="slide level2 smaller center">
-<h2>How to avoid timeouts during long-running commands?</h2>
-<ul>
-<li>Commands on the login nodes are cancelled after some time.</li>
-<li>Annoying when copying or downloading a large amount of data, or during interactive <code>srun</code> jobs.</li>
-<li>Solution: use <code>tmux</code> or <code>screen</code> to create a <em>persistent session</em> that remains active even if you log out.</li>
-</ul>
-<p>See:</p>
-<ul>
-<li><a href="https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/">https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/</a></li>
-<li><a href="https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html">https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html</a></li>
-</ul>
-</section>
-<section id="example" class="slide level2 center">
-<h2>Example</h2>
-
-<img data-src="https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section></section>
 <section>
 <section id="nextflow-on-calcua" class="title-slide slide level1 center">
 <h1>Nextflow on CalcUA</h1>
@@ -840,12 +883,42 @@ TODO: check if line highlighting can be used in combination with no line numbers
 <span id="cb22-30" class="hljs-ln-code"><a></a>  <span class="at">-with-report</span> report.html <span class="dt">\</span></span>
 <span id="cb22-31" class="hljs-ln-code"><a></a>  <span class="at">--outdir</span> test_output</span>
 <span id="cb22-32" class="hljs-ln-code"><a></a>  <span class="ex">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-
 </section></section>
+<section>
+<section id="running-gui-tools-on-calcua" class="title-slide slide level1 center">
+<h1>Running GUI tools on CalcUA</h1>
+
+</section>
+<section id="running-gui-tools-on-calcua-1" class="slide level2 center">
+<h2>Running GUI tools on CalcUA</h2>
+<p>It is possible to run GUI tools on CalcUA, on both the login nodes and during interactive compute jobs.</p>
+<p>This allows you to e.g., run <a href="https://igv.org/">IGV</a> or <a href="https://github.com/kcleal/gw">GW</a> on a large bam file without downloading it or the reference fasta to your own machine.</p>
+<p>To enable this option, use:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a></a><span class="co"># in SSH config</span></span>
+<span id="cb23-2"><a></a><span class="ex">ForwardX11</span> yes</span>
+<span id="cb23-3"><a></a></span>
+<span id="cb23-4"><a></a><span class="co"># in SSH connection command</span></span>
+<span id="cb23-5"><a></a><span class="fu">ssh</span> <span class="at">-X</span> remotemachine username@calcua</span>
+<span id="cb23-6"><a></a></span>
+<span id="cb23-7"><a></a><span class="co"># for an interactive job</span></span>
+<span id="cb23-8"><a></a><span class="ex">srun</span> <span class="at">--x11</span> <span class="at">--time</span><span class="op">=</span>00:05:00 <span class="at">--pty</span> bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="some-tips" class="slide level2 center">
+<h2>Some tips</h2>
+<ul>
+<li>Certain tools might not work (at all or certain functionality like a file browser) because they rely on a newer version of GTK which is not available on CalcUA (e.g.&nbsp;QuPath). In this case, you might be able to force the tool to run using an older version by launching it with the flag <code>-Djdk.gtk.version=2</code>.</li>
+<li>Do not pass the <code>--x11</code> command at the end of your <code>srun</code> command, because it will be interpreted as being part of <code>--pty bash</code>.</li>
+</ul>
+</section></section>
+<section id="thats-all-folks" class="title-slide slide level1 unlisted center">
+<h1>That’s all folks</h1>
+<p>Many thanks to the CalcUA team and the many researchers who’ve collectively taught me all these things.</p>
+
+
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
-<p><img src="img/ITM-symbol_col_rgb.png" class="slide-logo"></p>
+<p><img src="assets/img/ITM-symbol_col_rgb.png" class="slide-logo"></p>
 <div class="footer footer-default">
 
 </div>

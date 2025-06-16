@@ -1,5 +1,138 @@
 [
   {
+    "objectID": "calcua-tips.html#ssh-config",
+    "href": "calcua-tips.html#ssh-config",
+    "title": "CalcUA tips and tricks",
+    "section": "SSH config",
+    "text": "SSH config\nYou can add an SSH config file in your local (!) user/home directory ~/.ssh/config that allows you to simply type ssh calcua to connect, without needing to provide your username, the login url, etc.\nHost calcua\n    HostName login.hpc.uantwerpen.be\n    # or login-leibniz.hpc.uantwerpen.be\n    # or login-vaughan.hpc.uantwerpen.be\n    # or even login1-leibniz.hpc.uantwerpen.be\n    User vsc20380\n    IdentityFile ~/.ssh/id_ed25519\n\nFurther reading:\n\nList of hostnames\nVSC docs on SSH config\nX11 forwarding over SSH"
+  },
+  {
+    "objectID": "calcua-tips.html#advanced-ssh-config",
+    "href": "calcua-tips.html#advanced-ssh-config",
+    "title": "CalcUA tips and tricks",
+    "section": "Advanced SSH config",
+    "text": "Advanced SSH config\nHost *\n    # prevent timeouts\n    ServerAliveInterval 60  # ping every 60 seconds\n    ServerAliveCountMax 10  # number of failed attempts before disconnecting\n    # Ignore SSH keys expect the ones specified in Host subsection\n    IdentitiesOnly yes\n\nHost calcua\n    HostName login.hpc.uantwerpen.be\n    User vsc20380\n    # only attempt to log in use this key\n    IdentityFile ~/.ssh/id_ed25519\n    # enable GUIs\n    ForwardX11 yes\n    # connect straight to a tmux session\n    RemoteCommand tmux new -A -s green-hills-zone\n\nFurther reading:\n\nList of hostnames\nVSC docs on SSH config\nX11 forwarding over SSH\nSource for tmux trick (and related HackerNews discussion)"
+  },
+  {
+    "objectID": "calcua-tips.html#of-course-you-can-also-set-up-an-alias-as-an-alternative",
+    "href": "calcua-tips.html#of-course-you-can-also-set-up-an-alias-as-an-alternative",
+    "title": "CalcUA tips and tricks",
+    "section": "Of course, you can also set up an alias as an alternative",
+    "text": "Of course, you can also set up an alias as an alternative\nalias tardis='ssh vsc09001@login.hpc.uantwerpen.be'"
+  },
+  {
+    "objectID": "calcua-tips.html#remote-ssh-in-vscode---keys-and-config-files",
+    "href": "calcua-tips.html#remote-ssh-in-vscode---keys-and-config-files",
+    "title": "CalcUA tips and tricks",
+    "section": "Remote SSH in VSCode - keys and config files",
+    "text": "Remote SSH in VSCode - keys and config files\n\n\n\n\n\n\nBe mindful of where your SSH keys live!\n\n\nFor Windows users that rely on WSL to access CalcUA, keep in mind that VSCode will be default search your Windows user’s directory for SSH keys and config files, which are not the same as the ones in your WSL home directory.\nYou can either copy your keys to Windows or set the absolute path to the SSH config file (but then it will likely only work while WSL is running): \"remote.SSH.configFile\": \"\"."
+  },
+  {
+    "objectID": "calcua-tips.html#how-to-avoid-timeouts-during-long-running-commands",
+    "href": "calcua-tips.html#how-to-avoid-timeouts-during-long-running-commands",
+    "title": "CalcUA tips and tricks",
+    "section": "How to avoid timeouts during long-running commands?",
+    "text": "How to avoid timeouts during long-running commands?\n\nCommands on the login nodes are cancelled after some time.\nAnnoying when copying or downloading a large amount of data, or during interactive srun jobs.\nSolution: use tmux or screen to create a persistent session that remains active even if you log out.\n\nSee:\n\nhttps://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/\nhttps://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html"
+  },
+  {
+    "objectID": "calcua-tips.html#example",
+    "href": "calcua-tips.html#example",
+    "title": "CalcUA tips and tricks",
+    "section": "Example",
+    "text": "Example"
+  },
+  {
+    "objectID": "calcua-tips.html#pretty-squeue-1",
+    "href": "calcua-tips.html#pretty-squeue-1",
+    "title": "CalcUA tips and tricks",
+    "section": "Pretty squeue",
+    "text": "Pretty squeue\nAdd this to your .bashrc or .bash_aliases file for a more readable job output:\nalias squeue='squeue --format=\"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R\"'\n\nFor more info on formatting options, see:\n\nhttps://slurm.schedmd.com/squeue.html\nhttps://docs.vscentrum.be/compute/jobs/job_management.html\nhttps://jhpce.jhu.edu/slurm/tips-squeue/\nhttps://hpc-docs.cubi.bihealth.org/slurm/format-strings/\nhttps://kb.ucdavis.edu/?id=07381"
+  },
+  {
+    "objectID": "calcua-tips.html#pretty-squeue-2",
+    "href": "calcua-tips.html#pretty-squeue-2",
+    "title": "CalcUA tips and tricks",
+    "section": "Pretty squeue",
+    "text": "Pretty squeue\n└─▶ /usr/bin/squeue\n             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)\n           2036034 broadwell the-answ vsc20380  R      30:36      1 r3c08cn3.leibniz\n\n\n\n└─▶ squeue --format=\"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R\"\n   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)\n 2036034     the answer to life the universe and everything  broadwell  RUNNING      30:37   2-23:29:23  2025-05-17T12:01:44 3-00:00:00  2025-05-14T12:01:34      1 r3c08cn3.leibniz\n\nEspecially useful if you use long job names.\nDownside: widths are fixed and terminal window needs to be wide enough to fit everything in."
+  },
+  {
+    "objectID": "calcua-tips.html#file-transfers-on-calcua",
+    "href": "calcua-tips.html#file-transfers-on-calcua",
+    "title": "CalcUA tips and tricks",
+    "section": "File transfers on CalcUA",
+    "text": "File transfers on CalcUA\n\nFor an overview of different methods to transfer data to CalcUA, we refer to the VSC documentation. In brief, you can use:\n\noptions like rsync or sftp from a terminal\na dedicated GUI SFTP tool like FileZilla (bundled spyware in the past) or WinSCP (or even directly from within MobaXterm if you are using it for access anyway)\nGlobus data sharing platform\nBelnet FileSender: useful for sharing large datasets with others.\nrclone for moving data from CalcUA to OneDrive or SharePoint."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender---downsides",
+    "href": "calcua-tips.html#belnet-filesender---downsides",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender - downsides",
+    "text": "Belnet FileSender - downsides\n\n\nBelnet FileSender can be used to transfer large (volumes of) files.\nHowever, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.\nMoreover, since you cannot open a web browser on the CalcUA (unless you try your hand at X forwarding), you cannot download any files from FileSender to CalcUA directly.\nFortunately, there is an API you can call through a Python script, which makes it possible to upload files directly from the CalcUA."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender-api-for-uploading---setup",
+    "href": "calcua-tips.html#belnet-filesender-api-for-uploading---setup",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender API for uploading - setup",
+    "text": "Belnet FileSender API for uploading - setup\nInstalling the script and generating a config file:\n# download script\ncurl https://filesender.belnet.be//clidownload.php &gt; ~/.local/bin/filesender.py\n\n# Save `filesender.py.ini` config file and store it in home `~/.filesender`\ncurl https://filesender.belnet.be//clidownload.php?config=1 &gt; ~/.filesender.py.ini\nNext, generate an API key on your belnet profile page and add it alongside your username (email) to the ~/.filesender.py.ini config file."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender-api-for-uploading---usage",
+    "href": "calcua-tips.html#belnet-filesender-api-for-uploading---usage",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender API for uploading - usage",
+    "text": "Belnet FileSender API for uploading - usage\nNow you can transfer files via:\npython3 filesender.py -v \\\n  -m \"Message description\" \\\n  -s \"Sent using the Belnet filesender API\" \\\n  -r \"the.librarian@unseen-university.ank\" \\\n  $VSC_SCRATCH/clacks/*.fastq.gz\nYou can run this either in a Slurm batch job or through a tmux/screen session, to avoid time-outs."
+  },
+  {
+    "objectID": "calcua-tips.html#belnet-filesender---more-info",
+    "href": "calcua-tips.html#belnet-filesender---more-info",
+    "title": "CalcUA tips and tricks",
+    "section": "Belnet FileSender - more info",
+    "text": "Belnet FileSender - more info\nFor more information, see:\n\nhttps://filesender.belnet.be/\nFAQ\nAPI documentation"
+  },
+  {
+    "objectID": "calcua-tips.html#what-is-rclone",
+    "href": "calcua-tips.html#what-is-rclone",
+    "title": "CalcUA tips and tricks",
+    "section": "What is Rclone?",
+    "text": "What is Rclone?\nThe rclone tool makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.\nIn our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g. for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account."
+  },
+  {
+    "objectID": "calcua-tips.html#create-a-new-rclone-remote",
+    "href": "calcua-tips.html#create-a-new-rclone-remote",
+    "title": "CalcUA tips and tricks",
+    "section": "Create a new Rclone remote",
+    "text": "Create a new Rclone remote\nFirst, you will need to create an rclone remote that targets OneDrive or Sharepoint:\n# create a new rclone remote for OneDrive or SharePoint\nrclone config\n\n# an interactive setup will open and you will need to choose the following options:\n- new remote\n- name it e.g. `personal-onedrive` or `sharepoint-sitename`\n- type: 33 ( Microsoft OneDrive \\ \"onedrive\" =&gt; use the same type for SharePoint)\n- client id: leave blank\n- client secret: leave blank\n- region: 1 (Microsoft Cloud Global \\ \"global\")\n- do not edit advanced config\n- use browser to authenticate: no\n- on your local machine (with rclone installed), run:\n    rclone authorize \"onedrive\"\n- config_token: paste the result from above here"
+  },
+  {
+    "objectID": "calcua-tips.html#transferring-files",
+    "href": "calcua-tips.html#transferring-files",
+    "title": "CalcUA tips and tricks",
+    "section": "Transferring files",
+    "text": "Transferring files\nTo transfer files, you can use a similar syntax to rsync:\n# transfer current calcua directory to onedrive directory `./my/folder`\nrclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/\n\n# remove the --dry-run flag if everything looks OK"
+  },
+  {
+    "objectID": "calcua-tips.html#file-ownership-and-permissions",
+    "href": "calcua-tips.html#file-ownership-and-permissions",
+    "title": "CalcUA tips and tricks",
+    "section": "File ownership and permissions",
+    "text": "File ownership and permissions\n\nAfter transferring files to the CalcUA for long-term storage (e.g., raw data stored on /data/antwerpen/grp/ap_itg_*), the file permissions can be set to read-only to avoid accidental removal or modification."
+  },
+  {
+    "objectID": "calcua-tips.html#bulk-changing-permissions",
+    "href": "calcua-tips.html#bulk-changing-permissions",
+    "title": "CalcUA tips and tricks",
+    "section": "Bulk changing permissions",
+    "text": "Bulk changing permissions\n# for all files in a directory (and its subdirectories)\nfind &lt;path&gt; -type f -exec chmod 440 {} +\n\n# for individual files\nchgrp ap_itg_mu &lt;file name(s) or glob pattern&gt;\nchmod 440  &lt;file name(s) or glob pattern&gt;\n\n# just removing the write flag from a file\nchmod -w &lt;file name(s) or glob pattern&gt;\n\n# do not set the 440 flag directly on directories,\n# and do not set it using the recursive (-r) flag either,\n# because this would make them inaccessible/untraversable\n# (directories need execution permission)\n# instead use:\nfind . -type d -exec chmod 550 {} +"
+  },
+  {
+    "objectID": "calcua-tips.html#storage-quotas-are-determined-by-the-group-owner-not-the-physical-location",
+    "href": "calcua-tips.html#storage-quotas-are-determined-by-the-group-owner-not-the-physical-location",
+    "title": "CalcUA tips and tricks",
+    "section": "Storage quotas are determined by the group owner, not the physical location",
+    "text": "Storage quotas are determined by the group owner, not the physical location\n# setting ownership\nchown -R &lt;vsc-username&gt;:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/&lt;name&gt;\nchown -R &lt;vsc-username&gt;:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/&lt;name&gt;\n\n# or to do it recursively for all files and directories in a specific location\nfind &lt;path-to-folder&gt; -user &lt;username&gt; -group &lt;groupname&gt; -exec chgrp &lt;groupname&gt; {} \\;"
+  },
+  {
     "objectID": "calcua-tips.html#using-conda-and-to-a-lesser-extent-pip-is-frowned-upon",
     "href": "calcua-tips.html#using-conda-and-to-a-lesser-extent-pip-is-frowned-upon",
     "title": "CalcUA tips and tricks",
@@ -105,132 +238,6 @@
     "text": "A note on R and renv\nGreat write-up on how to manage R package dependencies using renv on HPCs: https://www.daryavanichkina.com/posts/210728_renvhpc.html"
   },
   {
-    "objectID": "calcua-tips.html#pretty-squeue-1",
-    "href": "calcua-tips.html#pretty-squeue-1",
-    "title": "CalcUA tips and tricks",
-    "section": "Pretty squeue",
-    "text": "Pretty squeue\nAdd this to your .bashrc or .bash_aliases file for a more readable job output:\nalias squeue='squeue --format=\"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R\"'\n\nFor more info on formatting options, see:\n\nhttps://slurm.schedmd.com/squeue.html\nhttps://docs.vscentrum.be/compute/jobs/job_management.html\nhttps://jhpce.jhu.edu/slurm/tips-squeue/\nhttps://hpc-docs.cubi.bihealth.org/slurm/format-strings/\nhttps://kb.ucdavis.edu/?id=07381"
-  },
-  {
-    "objectID": "calcua-tips.html#pretty-squeue-2",
-    "href": "calcua-tips.html#pretty-squeue-2",
-    "title": "CalcUA tips and tricks",
-    "section": "Pretty squeue",
-    "text": "Pretty squeue\n└─▶ /usr/bin/squeue\n             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)\n           2036034 broadwell the-answ vsc20380  R      30:36      1 r3c08cn3.leibniz\n\n\n\n└─▶ squeue --format=\"%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R\"\n   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)\n 2036034     the answer to life the universe and everything  broadwell  RUNNING      30:37   2-23:29:23  2025-05-17T12:01:44 3-00:00:00  2025-05-14T12:01:34      1 r3c08cn3.leibniz\n\nEspecially useful if you use long job names.\nDownside: widths are fixed and terminal window needs to be wide enough to fit everything in."
-  },
-  {
-    "objectID": "calcua-tips.html#file-transfers-on-calcua",
-    "href": "calcua-tips.html#file-transfers-on-calcua",
-    "title": "CalcUA tips and tricks",
-    "section": "File transfers on CalcUA",
-    "text": "File transfers on CalcUA\nFor an overview of different methods to transfer data to CalcUA, we refer to the VSC documentation. In brief, you can use:\n\noptions like rsync or sftp from a terminal\na dedicated GUI SFTP tool like FileZilla (bundled spyware in the past) or WinSCP (or even directly from within MobaXterm if you are using it for access anyway)\nGlobus data sharing platform\nBelnet FileSender: useful for sharing large datasets with others.\nrclone for moving data from CalcUA to OneDrive or SharePoint."
-  },
-  {
-    "objectID": "calcua-tips.html#belnet-filesender---downsides",
-    "href": "calcua-tips.html#belnet-filesender---downsides",
-    "title": "CalcUA tips and tricks",
-    "section": "Belnet FileSender - downsides",
-    "text": "Belnet FileSender - downsides\n\nBelnet FileSender can be used to transfer large (volumes of) files.\nHowever, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.\nMoreover, since you cannot open a web browser on the CalcUA (unless you try your hand at X forwarding), you cannot download any files from FileSender to CalcUA directly.\nFortunately, there is an API you can call through a Python script, which makes it possible to both upload and download files directly on CalcUA."
-  },
-  {
-    "objectID": "calcua-tips.html#belnet-filesender-api---setup",
-    "href": "calcua-tips.html#belnet-filesender-api---setup",
-    "title": "CalcUA tips and tricks",
-    "section": "Belnet FileSender API - setup",
-    "text": "Belnet FileSender API - setup\nInstalling the script and generating a config file:\n# download script\ncurl https://filesender.belnet.be//clidownload.php &gt; ~/.local/bin/filesender.py\n\n# Save `filesender.py.ini` config file and store it in home `~/.filesender`\ncurl https://filesender.belnet.be//clidownload.php?config=1 &gt; ~/.filesender.py.ini\nNext, generate an API key on your belnet profile page and add it alongside your username (email) to the ~/.filesender.py.ini config file."
-  },
-  {
-    "objectID": "calcua-tips.html#belnet-filesender-api---usage",
-    "href": "calcua-tips.html#belnet-filesender-api---usage",
-    "title": "CalcUA tips and tricks",
-    "section": "Belnet FileSender API - usage",
-    "text": "Belnet FileSender API - usage\nNow you can transfer files via:\npython3 filesender.py -v \\\n  -m \"Message description\" \\\n  -s \"Sent using the Belnet filesender API\" \\\n  -r \"the.librarian@unseen-university.ank\" \\\n  $VSC_SCRATCH/clacks/*.fastq.gz\nYou can run this either in a Slurm batch job or through a tmux/screen session, to avoid time-outs."
-  },
-  {
-    "objectID": "calcua-tips.html#belnet-filesender---more-info",
-    "href": "calcua-tips.html#belnet-filesender---more-info",
-    "title": "CalcUA tips and tricks",
-    "section": "Belnet FileSender - more info",
-    "text": "Belnet FileSender - more info\nFor more information, see:\n\nhttps://filesender.belnet.be/\nFAQ\nAPI documentation"
-  },
-  {
-    "objectID": "calcua-tips.html#what-is-rclone",
-    "href": "calcua-tips.html#what-is-rclone",
-    "title": "CalcUA tips and tricks",
-    "section": "What is Rclone?",
-    "text": "What is Rclone?\nThe rclone tool makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.\nIn our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g. for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account."
-  },
-  {
-    "objectID": "calcua-tips.html#create-a-new-rclone-remote",
-    "href": "calcua-tips.html#create-a-new-rclone-remote",
-    "title": "CalcUA tips and tricks",
-    "section": "Create a new Rclone remote",
-    "text": "Create a new Rclone remote\nFirst, you will need to create an rclone remote that targets OneDrive or Sharepoint:\n# create a new rclone remote for OneDrive or SharePoint\nrclone config\n\n# an interactive setup will open and you will need to choose the following options:\n- new remote\n- name it e.g. `personal-onedrive` or `sharepoint-sitename`\n- type: 33 ( Microsoft OneDrive \\ \"onedrive\" =&gt; use the same type for SharePoint)\n- client id: leave blank\n- client secret: leave blank\n- region: 1 (Microsoft Cloud Global \\ \"global\")\n- do not edit advanced config\n- use browser to authenticate: no\n- on your local machine (with rclone installed), run:\n    rclone authorize \"onedrive\"\n- config_token: paste the result from above here"
-  },
-  {
-    "objectID": "calcua-tips.html#transferring-files",
-    "href": "calcua-tips.html#transferring-files",
-    "title": "CalcUA tips and tricks",
-    "section": "Transferring files",
-    "text": "Transferring files\nTo transfer files, you can use a similar syntax to rsync:\n# transfer current calcua directory to onedrive directory `./my/folder`\nrclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/\n\n# remove the --dry-run flag if everything looks OK"
-  },
-  {
-    "objectID": "calcua-tips.html#ssh-config",
-    "href": "calcua-tips.html#ssh-config",
-    "title": "CalcUA tips and tricks",
-    "section": "SSH config",
-    "text": "SSH config\nYou can add an SSH config file in your local (!) user/home directory ~/.ssh/config that allows you to simply type ssh calcua to connect, without needing to provide your username, the login url, etc.\nHost calcua\n    HostName login.hpc.uantwerpen.be\n    # or login-leibniz.hpc.uantwerpen.be\n    # or login-vaughan.hpc.uantwerpen.be\n    # or even login1-leibniz.hpc.uantwerpen.be\n    User vsc20380\n    IdentityFile ~/.ssh/id_ed25519\n\nFurther reading:\n\nList of hostnames\nVSC docs on SSH config\nX11 forwarding over SSH"
-  },
-  {
-    "objectID": "calcua-tips.html#advanced-ssh-config",
-    "href": "calcua-tips.html#advanced-ssh-config",
-    "title": "CalcUA tips and tricks",
-    "section": "Advanced SSH config",
-    "text": "Advanced SSH config\nHost *\n    # prevent timeouts\n    ServerAliveInterval 60  # ping every 60 seconds\n    ServerAliveCountMax 10  # number of failed attempts before disconnecting\n    # Ignore SSH keys expect the ones specified in Host subsection\n    IdentitiesOnly yes\n\nHost calcua\n    HostName login.hpc.uantwerpen.be\n    User vsc20380\n    # only attempt to log in use this key\n    IdentityFile ~/.ssh/id_ed25519\n    # enable GUIs\n    ForwardX11 yes\n    # connect straight to a tmux session\n    RemoteCommand tmux new -A -s green-hills-zone\n\nFurther reading:\n\nList of hostnames\nVSC docs on SSH config\nX11 forwarding over SSH\nSource for tmux trick (and related HackerNews discussion)"
-  },
-  {
-    "objectID": "calcua-tips.html#of-course-you-can-also-set-up-an-alias-as-an-alternative",
-    "href": "calcua-tips.html#of-course-you-can-also-set-up-an-alias-as-an-alternative",
-    "title": "CalcUA tips and tricks",
-    "section": "Of course, you can also set up an alias as an alternative",
-    "text": "Of course, you can also set up an alias as an alternative\nalias tardis='ssh vsc09001@login.hpc.uantwerpen.be'"
-  },
-  {
-    "objectID": "calcua-tips.html#file-ownership-and-permissions",
-    "href": "calcua-tips.html#file-ownership-and-permissions",
-    "title": "CalcUA tips and tricks",
-    "section": "File ownership and permissions",
-    "text": "File ownership and permissions\n\nAfter transferring files to the CalcUA for long-term storage (e.g., raw data stored on /data/antwerpen/grp/ap_itg_*), the file permissions can be set to read-only to avoid accidental removal or modification."
-  },
-  {
-    "objectID": "calcua-tips.html#bulk-changing-permissions",
-    "href": "calcua-tips.html#bulk-changing-permissions",
-    "title": "CalcUA tips and tricks",
-    "section": "Bulk changing permissions",
-    "text": "Bulk changing permissions\n# for all files in a directory (and its subdirectories)\nfind &lt;path&gt; -type f -exec chmod 440 {} +\n\n# for individual files\nchgrp ap_itg_mu &lt;file name(s) or glob pattern&gt;\nchmod 440  &lt;file name(s) or glob pattern&gt;\n\n# just removing the write flag from a file\nchmod -w &lt;file name(s) or glob pattern&gt;\n\n# do not set the 440 flag directly on directories,\n# and do not set it using the recursive (-r) flag either,\n# because this would make them inaccessible/untraversable\n# (directories need execution permission)\n# instead use:\nfind . -type d -exec chmod 550 {} +"
-  },
-  {
-    "objectID": "calcua-tips.html#storage-quotas-are-determined-by-the-group-owner-not-the-physical-location",
-    "href": "calcua-tips.html#storage-quotas-are-determined-by-the-group-owner-not-the-physical-location",
-    "title": "CalcUA tips and tricks",
-    "section": "Storage quotas are determined by the group owner, not the physical location",
-    "text": "Storage quotas are determined by the group owner, not the physical location\n# setting ownership\nchown -R &lt;vsc-username&gt;:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/&lt;name&gt;\nchown -R &lt;vsc-username&gt;:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/&lt;name&gt;\n\n# or to do it recursively for all files and directories in a specific location\nfind &lt;path-to-folder&gt; -user &lt;username&gt; -group &lt;groupname&gt; -exec chgrp &lt;groupname&gt; {} \\;"
-  },
-  {
-    "objectID": "calcua-tips.html#how-to-avoid-timeouts-during-long-running-commands",
-    "href": "calcua-tips.html#how-to-avoid-timeouts-during-long-running-commands",
-    "title": "CalcUA tips and tricks",
-    "section": "How to avoid timeouts during long-running commands?",
-    "text": "How to avoid timeouts during long-running commands?\n\nCommands on the login nodes are cancelled after some time.\nAnnoying when copying or downloading a large amount of data, or during interactive srun jobs.\nSolution: use tmux or screen to create a persistent session that remains active even if you log out.\n\nSee:\n\nhttps://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/\nhttps://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html"
-  },
-  {
-    "objectID": "calcua-tips.html#example",
-    "href": "calcua-tips.html#example",
-    "title": "CalcUA tips and tricks",
-    "section": "Example",
-    "text": "Example"
-  },
-  {
     "objectID": "calcua-tips.html#running-nextflow-on-calcua",
     "href": "calcua-tips.html#running-nextflow-on-calcua",
     "title": "CalcUA tips and tricks",
@@ -250,5 +257,19 @@
     "title": "CalcUA tips and tricks",
     "section": "Quick start - Single-node pipeline run",
     "text": "Quick start - Single-node pipeline run\n#!/bin/bash -l\n#SBATCH --partition=broadwell          # choose partition to run the nextflow head process on\n#SBATCH --job-name=nextflow            # create a short name for your job\n#SBATCH --nodes=1                      # node count\n#SBATCH --cpus-per-task=28             # request a full node for local execution (broadwell nodes have 28 cpus)\n#SBATCH --mem=112G                     # total memory (e.g., 112G max for broadwell) - can be omitted to use default (= max / # cores)\n#SBATCH --time=00:05:00                # total run time limit (HH:MM:SS)\n#SBATCH --account=&lt;project-account&gt;    # set project account\n\n# Load the available Nextflow module.\nmodule load Nextflow\n\n# Or, if using a locally installed version of Nextflow, make Java available.\n# module load Java\n\n# Set Apptainer/Singularity environment variables to define caching and tmp\n# directories. These are used during the conversion of Docker images to\n# Apptainer/Singularity ones.\n# These lines can be omitted if the variables are already set in your `~/.bashrc` file.\nexport APPTAINER_CACHEDIR=\"${VSC_SCRATCH}/apptainer/cache\"\nexport APPTAINER_TMPDIR=\"${VSC_SCRATCH}/apptainer/tmp\"\n# optional - set by default in the config already\n# export NXF_APPTAINER_CACHEDIR=\"${VSC_SCRATCH}/apptainer/nextflow_cache\"\n\n# Launch Nextflow head process that will run on the same node as the pipeline tasks.\n# Append the single_node profile after the vsc_calcua one, to make Nextflow schedule\n# all jobs on the same local node. Note: don't do this on the login nodes!\nnextflow run nf-core/rnaseq \\\n  -profile test,vsc_calcua,single_node \\\n  -with-report report.html \\\n  --outdir test_output\n  --outdir test_output"
+  },
+  {
+    "objectID": "calcua-tips.html#running-gui-tools-on-calcua-1",
+    "href": "calcua-tips.html#running-gui-tools-on-calcua-1",
+    "title": "CalcUA tips and tricks",
+    "section": "Running GUI tools on CalcUA",
+    "text": "Running GUI tools on CalcUA\nIt is possible to run GUI tools on CalcUA, on both the login nodes and during interactive compute jobs.\nThis allows you to e.g., run IGV or GW on a large bam file without downloading it or the reference fasta to your own machine.\nTo enable this option, use:\n# in SSH config\nForwardX11 yes\n\n# in SSH connection command\nssh -X remotemachine username@calcua\n\n# for an interactive job\nsrun --x11 --time=00:05:00 --pty bash"
+  },
+  {
+    "objectID": "calcua-tips.html#some-tips",
+    "href": "calcua-tips.html#some-tips",
+    "title": "CalcUA tips and tricks",
+    "section": "Some tips",
+    "text": "Some tips\n\nCertain tools might not work (at all or certain functionality like a file browser) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath). In this case, you might be able to force the tool to run using an older version by launching it with the flag -Djdk.gtk.version=2.\nDo not pass the --x11 command at the end of your srun command, because it will be interpreted as being part of --pty bash."
   }
 ]
