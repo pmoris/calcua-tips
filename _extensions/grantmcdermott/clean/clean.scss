@@ -10,24 +10,24 @@ $right-arrow: "\2192"; // Unicode character for right arrow
 
 // fonts
 
-/*
-Note: This theme uses the Roboto font family, which it imports from Google
-  Fonts to ensure consistent weighting in addition to availability. While
-  you can use a local installation of Roboto, this is generally not 
-  recommended since the weighting will likely be wrong (probably too
-  light). OTOH, importing from Google Fonts can cause some issues in
-  certain secure environments due the external CDN (see:
-  https://github.com/grantmcdermott/quarto-revealjs-clean/issues/7). If
-  that's the case for you, simply comment out the `@import url(...)` line
-  below and it will default for the default Sans Serif font on your system
-  (e.g., Helvetica on a Mac). Circling back to the earlier point about
-  preserving consistent font weights, you may also wish to remove "Roboto"
-  from the choice set if the family is installed locally.
-*/
-@import url('https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i&display=swap');
+// /*
+// Note: This theme uses the Roboto font family, which it imports from Google
+//   Fonts to ensure consistent weighting in addition to availability. While
+//   you can use a local installation of Roboto, this is generally not
+//   recommended since the weighting will likely be wrong (probably too
+//   light). OTOH, importing from Google Fonts can cause some issues in
+//   certain secure environments due the external CDN (see:
+//   https://github.com/grantmcdermott/quarto-revealjs-clean/issues/7). If
+//   that's the case for you, simply comment out the `@import url(...)` line
+//   below and it will default for the default Sans Serif font on your system
+//   (e.g., Helvetica on a Mac). Circling back to the earlier point about
+//   preserving consistent font weights, you may also wish to remove "Roboto"
+//   from the choice set if the family is installed locally.
+// */
+// @import url('https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i&display=swap');
 
-$font-family-sans-serif: "Roboto", sans-serif !default;
-$presentation-heading-font: "Roboto", sans-serif !default;
+// $font-family-sans-serif: "Roboto", sans-serif !default;
+// $presentation-heading-font: "Roboto", sans-serif !default;
 
 $presentation-heading-color: $jet !default;
 $presentation-heading-font-weight: lighter;
@@ -316,7 +316,7 @@ $selection-bg: #26351c !default;
   object-fit: contain;
 }
 
-// Change the relative widths of `output-location: column`. 
+// Change the relative widths of `output-location: column`.
 // See: https://github.com/grantmcdermott/quarto-revealjs-clean/pull/16
 // Example usage:
 // ```{python}
@@ -342,10 +342,10 @@ $selection-bg: #26351c !default;
 }
 .reveal .columns4060 div.column:not(:first-child) {
   width: 60%;
-}      
+}
 .reveal .columns6040 > div.column:first-child {
   width: 60%;
 }
 .reveal .columns6040 div.column:not(:first-child) {
   width: 40%;
-}      
+}
