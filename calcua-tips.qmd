@@ -26,9 +26,9 @@ format:
     slide-number: c/t #< collapsed/total
     preview-links: auto
     incremental: false  # can be disabled per list using ::: {.nonincremental}, but not for toc?
-    logo: img/ITM-symbol_col_rgb.png
+    logo: assets/img/ITM-symbol_col_rgb.png
     # logo: img/ITM-symbol_white_rgb.png
-    theme: custom.scss
+    theme: assets/custom.scss
     # theme: [black, custom.scss]
     # footer: "{{< fa brands github >}} &nbsp;[`pmoris/calcua-tips`](https://github.com/pmoris/calcua-tips) &nbsp; &bull; &nbsp; {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} &nbsp;[`cc-by-4.0`](https://creativecommons.org/licenses/by/4.0/deed.en)"
     # footer was adapted from https://github.com/rdatatoolbox/course-quarto
