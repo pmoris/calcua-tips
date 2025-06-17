@@ -1,5 +1,5 @@
 ---
-title: "CalcUA tips and tricks"
+title: "CalcUA HPC tips and tricks"
 subtitle: "For bioinformatics"
 author:
   - name: "Pieter Moris [{{< fa globe >}}](https://pmoris.github.io) [{{< ai orcid >}}](https://orcid.org/0000-0003-4242-4939)"
@@ -46,30 +46,39 @@ format:
     include-in-header:
       - text: |
           <script src="assets/custom.js" type="application/javascript"></script>
+
+# <!--
+# # Contents
+#
+# - [x] HPC container wrapper for conda
+# - [x] Pretty squeue command with more information?
+# - [x] Belnet download scripts
+# - [x] Rclone tool for syncing between sharepoint/onedrive and calcua
+# - [x] SSH config files
+# - [x] File permissions best practices
+# - [x] direct editing of scripts on supercomputer via Vscode (remote SSH)
+# - [ ] Useful aliases for navigating the filesystem - merge with squeue?
+# - [x] Persistent sessions using tmux to avoid disconnect/timeout in interactive sessions?
+# - [x] X11-forwarding for gui tools?
+# - [ ] globus?
+# - [ ] Activating conda environments?
+# - [ ] how/which environment variables are passed from user session to job?
+# - [ ] For windows users: WSL + windows terminal? => copy paste works
+# - [ ] conda vs mamba
+# - [x] nextflow config
+#
+# TODO: check if line highlighting can be used in combination with no line numbers
+# -->
+
 ---
 
-<!--
-# Contents
+# Goal of this talk
 
-- [x] HPC container wrapper for conda
-- [x] Pretty squeue command with more information?
-- [x] Belnet download scripts
-- [x] Rclone tool for syncing between sharepoint/onedrive and calcua
-- [x] SSH config files
-- [x] File permissions best practices
-- [x] direct editing of scripts on supercomputer via Vscode (remote SSH)
-- [ ] Useful aliases for navigating the filesystem - merge with squeue?
-- [x] Persistent sessions using tmux to avoid disconnect/timeout in interactive sessions?
-- [ ] X11-forwarding for gui tools?
-- [ ] globus?
-- [ ] Activating conda environments?
-- [ ] how/which environment variables are passed from user session to job?
-- [ ] For windows users: WSL + windows terminal? => copy paste works
-- [ ] conda vs mamba
-- [ ] nextflow config
+Provide an overview of various tips and tricks for using the CalcUA HPC/Slurm and hopefully make you more productive.
 
-TODO: check if line highlighting can be used in combination with no line numbers
--->
+. . .
+
+![](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzRoc3Y5aDFkM2drYnozbmQydW1oOGpvczR2b2w2MTNldWkzeW8zaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LmBsnpDCuturMhtLfw/giphy.gif){fig-align="center" fig-alt="Kermit typing really fast"}
 
 # SSH config files
 
@@ -87,7 +96,7 @@ Host calcua
     IdentityFile ~/.ssh/id_ed25519
 ```
 
-::: footer
+::: aside
 
 Further reading:
 
@@ -118,7 +127,9 @@ Host calcua
     RemoteCommand tmux new -A -s green-hills-zone
 ```
 
-::: footer
+::: aside
+
+::: {style="font-size: 90%;"}
 
 Further reading:
 
@@ -129,18 +140,25 @@ Further reading:
 
 :::
 
+:::
+
 ## Of course, you can also set up an alias as an alternative
+
 
 `alias tardis='ssh vsc09001@login.hpc.uantwerpen.be'`
 
+Add this to the `.bashrc` or `.bash_aliases` file on your local machine (or find the equivalent options in your WinSCP/PuTTY/MobaXterm settings).
+
 # Remote SSH in VSCode
+
+- VSCode can directly connect your workspace to a remote server (or even to a container or WSL instance), allowing you to view and edit files that are stored remotely.
+- It can even work as a file transfer tool in a pinch.
 
 ::: {.callout-note}
 Live demo!
 :::
 
-
-::: footer
+::: aside
 
 Further reading:
 
@@ -160,18 +178,133 @@ For Windows users that rely on WSL to access CalcUA, keep in mind that VSCode wi
 You can either copy your keys to Windows or set the absolute path to the SSH config file (but then it will likely only work while WSL is running): `"remote.SSH.configFile": ""`.
 :::
 
+# Hopping between login and compute nodes
+
+## You can use SSH to jump between nodes.
+
+:::: {.columns .incremental}
+
+::: {.column width="40%"}
+
+![](https://gifsec.com/wp-content/uploads/2021/04/but-why-gif-1.gif){fig-alt="But why?" fig-align="center"}
+
+:::
+
+::: {.column width="60%" .incremental}
+
+- Finding your way back to a particular `tmux` session on a different login node (see [persistent session section](#persistent-sessions-using-tmuxscreen)).
+- Monitoring the resource usage of a compute node.
+
+:::
+
+::::
+
+<!-- ![But why?](https://gifsec.com/wp-content/uploads/2021/04/but-why-gif-1.gif)\-->
+
+## How?
+
+- For login nodes: `ssh login1/2`
+- For compute nodes:
+  - Grab the full node name from `squeue` (see [squeue section](#pretty-squeue))
+  - `ssh r1c05cn3.leibniz`
+
+::: callout-tip
+
+Make sure you have a valid SSH key configured and authorized in your CalcUA home directory (`~/.ssh`):
+
+- `~/.ssh/id_rsa` + `~/.ssh/id_rsa.pub`
+- `~/.ssh/authorized_keys` should contain a copy of the public key
+
+:::
+
+## Example
+
+:::: {style="font-size: 90%;"}
+
+```{.bash}
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ sbatch -A ap_itg_mu --partition=broadwell slurm-sleep.sh
+Submitted batch job 2141426
+
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ squeue
+   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)
+ 2141426                                sleeping-on-the-job  broadwell CONFIGUR       0:03         4:57  2025-06-17T10:11:04       5:00  2025-06-17T10:06:04      1 r1c05cn3.leibniz
+
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ ssh r1c05cn3.leibniz
+Enter passphrase for key '/user/antwerpen/203/vsc20380/.ssh/id_rsa':
+Last login: Tue Jun 17 10:06:40 2025
+
+vsc20380 @ r1c05cn3 ~
+└─▶ top
+top - 10:07:34 up 17 days, 11:55,  1 user,  load average: 0.11, 2.02, 6.44
+Tasks:   5 total,   1 running,   4 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 128785.8 total, 109782.4 free,   1515.7 used,  17487.7 buff/cache
+MiB Swap:  10240.0 total,  10212.5 free,     27.5 used. 121938.3 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+1969012 vsc20380  20   0   13624   3276   2948 S   0.0   0.0   0:00.00 bash
+1969016 vsc20380  20   0    8048    920    848 S   0.0   0.0   0:00.00 sleep
+1969028 vsc20380  20   0   89564   9604   8300 S   0.0   0.0   0:00.02 systemd
+1969036 vsc20380  20   0   38924   9244   3864 S   0.0   0.0   0:00.07 bash
+1969214 vsc20380  20   0   73252   4552   3820 R   0.0   0.0   0:00.00 top
+```
+
+::::
+
+
+# Running GUI tools on CalcUA
+
+## Running GUI tools on CalcUA
+
+It is possible to run GUI tools on CalcUA, on both the login nodes and during interactive compute jobs.
+
+This allows you to e.g., run [IGV](https://igv.org/) or [GW](https://github.com/kcleal/gw) on a large bam file without downloading it or the reference fasta to your own machine.
+
+To enable this option, use:
+
+```{.bash}
+# in SSH config
+ForwardX11 yes
+
+# in SSH connection command
+ssh -X remotemachine username@calcua
+
+# for an interactive job
+srun --x11 --time=00:05:00 --pty bash
+```
+
+## Some tips
+
+- Certain tools might not work (at all or certain functionality like a file browser) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath). In this case, you might be able to force the tool to run using an older version by launching it with the flag `-Djdk.gtk.version=2`.
+- Do not pass the `--x11` command at the end of your `srun` command, because it will be interpreted as being part of `--pty bash`.
+
 # Persistent sessions using `tmux`/`screen`
 
-## How to avoid timeouts during long-running commands? {.smaller}
+## How to avoid timeouts during long-running commands? <!-- {.smaller} -->
 
 - Commands on the login nodes are cancelled after some time.
 - Annoying when copying or downloading a large amount of data, or during interactive `srun` jobs.
 - Solution: use `tmux` or `screen` to create a _persistent session_ that remains active even if you log out.
+  - `nohup` works as an alternative for single commands.
 
-See:
+::: aside
 
-- [https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/](https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/)
-- [https://support.ceci-hpc.be/doc/\_contents/SubmittingJobs/SlurmInteractive.html](https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html)
+::: {style="font-size: 90%;"}
+
+**Tutorials and guides:**
+
+- `tmux` for HPCs:
+  - [https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/](https://docs.ycrc.yale.edu/clusters-at-yale/guides/tmux/)
+  - [https://support.ceci-hpc.be/doc/\_contents/SubmittingJobs/SlurmInteractive.html](https://support.ceci-hpc.be/doc/_contents/SubmittingJobs/SlurmInteractive.html)
+- General `tmux` guides:
+  - [https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/](https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
+  - [https://pragmaticpineapple.com/gentle-guide-to-get-started-with-tmux/](https://pragmaticpineapple.com/gentle-guide-to-get-started-with-tmux/)
+:::
+
+:::
 
 ## Example
 
@@ -185,7 +318,7 @@ Add this to your `.bashrc` or `.bash_aliases` file for a more readable job outpu
 
 `alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'`
 
-::: footer
+::: aside
 
 For more info on formatting options, see:
 
@@ -221,9 +354,9 @@ For more info on formatting options, see:
 For an overview of different methods to transfer data to CalcUA, we refer to the [VSC documentation](https://docs.vscentrum.be/data/transfer.html). In brief, you can use:
 
 - options like `rsync` or `sftp` from a terminal
-- a dedicated GUI SFTP tool like ~~[FileZilla](https://filezilla-project.org/)~~ (bundled spyware in the past) or [WinSCP](https://winscp.net/eng/download.php) (or even directly from within MobaXterm if you are using it for access anyway)
-- Globus data sharing platform
-- Belnet FileSender: useful for sharing large datasets with others.
+- a dedicated GUI SFTP tool like ~~[FileZilla](https://filezilla-project.org/)~~ (bundled spyware in the past) or [WinSCP](https://winscp.net/eng/download.php) (or even directly from within [MobaXterm](https://mobaxterm.mobatek.net/) if you are using it for access anyway)
+- [Globus](https://docs.vscentrum.be/globus/index.html) data sharing platform
+- [Belnet FileSender](https://filesender.belnet.be/): useful for sharing large datasets with others.
 - [rclone](https://rclone.org/) for moving data from CalcUA to OneDrive or SharePoint.
 
 ## Belnet FileSender - downsides
@@ -322,7 +455,7 @@ rclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/
 
 ![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffb1a898a-8440-430e-8ffa-3612d0555e6f_1768x1288.png){fig-align="center" width="120%"}
 
-::: footer
+::: aside
 See [https://chmod-calculator.com/](https://chmod-calculator.com/) for an explanation of Unix file permissions.
 :::
 
@@ -604,7 +737,9 @@ See [https://pythonspeed.com/articles/conda-dependency-management/](https://pyth
 
 ## A note on R and `renv`
 
-Great write-up on how to manage R package dependencies using `renv` on HPCs: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html)
+Great write-up on how to manage R package dependencies using `renv` on HPCs: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html).
+
+![[Artwork by @allison_horst](https://allisonhorst.com/data-science-art)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/3c1eda6b-be13-4257-9c32-4cf865f171ae_rw_3840.png?h=87c3548b5f8a6ee566e245181f88d605)
 
 # Nextflow on CalcUA
 
@@ -688,32 +823,6 @@ nextflow run nf-core/rnaseq \
   --outdir test_output
 ```
 
-# Running GUI tools on CalcUA
-
-## Running GUI tools on CalcUA
-
-It is possible to run GUI tools on CalcUA, on both the login nodes and during interactive compute jobs.
-
-This allows you to e.g., run [IGV](https://igv.org/) or [GW](https://github.com/kcleal/gw) on a large bam file without downloading it or the reference fasta to your own machine.
-
-To enable this option, use:
-
-```{.bash}
-# in SSH config
-ForwardX11 yes
-
-# in SSH connection command
-ssh -X remotemachine username@calcua
-
-# for an interactive job
-srun --x11 --time=00:05:00 --pty bash
-```
-
-## Some tips
-
-- Certain tools might not work (at all or certain functionality like a file browser) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath). In this case, you might be able to force the tool to run using an older version by launching it with the flag `-Djdk.gtk.version=2`.
-- Do not pass the `--x11` command at the end of your `srun` command, because it will be interpreted as being part of `--pty bash`.
-
 # That's all folks {.unlisted}
 
-Many thanks to the CalcUA team and the many researchers who've collectively taught me all these things.
+Many thanks to the CalcUA team and the many researchers/mentors who've collectively taught me all these things.
