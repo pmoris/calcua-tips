@@ -1,13 +1,15 @@
 ---
 title: "CalcUA HPC tips and tricks"
-subtitle: "For bioinformatics"
+subtitle: "A bioinformatics survival guide"
 author:
   - name: "Pieter Moris [{{< fa globe >}}](https://pmoris.github.io) [{{< ai orcid >}}](https://orcid.org/0000-0003-4242-4939)"
     affiliation: "[Institute of Tropical Medicine Antwerp](https://www.itg.be)"
     # orcid: 0000-0003-4242-4939
     email: pmoris@itg.be
-# institute: Institute of Tropical Medicine Antwerp
-date: 2025-06-17  # last-modified
+# date: "2025-07-17"
+title-slide-attributes:
+  date-original-publication: 2025-06-17
+  date-last-update: 2026-04-22
 editor:
   render-on-save: true
 format:

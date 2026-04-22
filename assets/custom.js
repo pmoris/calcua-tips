@@ -39,7 +39,38 @@ function add_custom_footer() {
     });
 };
 
+function add_title_dates() {
+
+    Reveal.on('ready', () => {
+
+        let title_slide = document.querySelector("#title-slide");
+        if (!title_slide) return;
+
+        if (title_slide.querySelector(".title-dates")) return;
+
+        let original = title_slide.getAttribute("date-original-publication");
+        let updated = title_slide.getAttribute("date-last-update");
+
+        if (!original && !updated) return;
+
+        let separator = original && updated ? ' &nbsp; &mdash; &nbsp; ' : '';
+
+        let text =
+            `Originally published: ${original ?? ''}${separator}Last updated: ${updated ?? ''}`;
+
+        let wrapper = document.createElement("div");
+        wrapper.className = "title-dates";
+
+        let p = document.createElement("p");
+        p.innerHTML = text;
+
+        wrapper.appendChild(p);
+        title_slide.appendChild(wrapper);
+    });
+}
+
 window.addEventListener("load", (event) => {
     add_custom_footer();
+    add_title_dates();
     console.log("✅ Reveal is ready. Current slide:", Reveal.getCurrentSlide().id);
 });
