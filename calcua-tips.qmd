@@ -52,8 +52,10 @@ format:
 # <!--
 # # Contents
 #
-# - [ ] fix info regarding partitions and quotas
-# - [ ] RAM vs disk /dev/shm VS /tmp
+# - [ ] R server GUI - barebones info is there
+# - [ ] R package install
+# - [x] fix info regarding partitions and quotas
+# - [x] RAM vs disk /dev/shm VS /tmp
 # - [x] HPC container wrapper for conda
 # - [x] Pretty squeue command with more information?
 # - [x] Belnet download scripts
@@ -78,7 +80,7 @@ format:
 
 # Goal of this talk
 
-Provide an overview of various tips and tricks for using the CalcUA HPC and hopefully make you more productive.
+Provide an overview of various tips and tricks for using the CalcUA HPC (or other remote servers) and hopefully make you more productive.
 
 <!-- . . . -->
 
@@ -101,7 +103,6 @@ Host calcua
 ```
 
 ::: aside
-
 Further reading:
 
 - [List of hostnames](https://docs.vscentrum.be/antwerp/tier2_hardware.html#login-infrastructure)
@@ -129,16 +130,12 @@ Host calcua
 ```
 
 ::: aside
-
 ::: {style="font-size: 90%;"}
-
 Further reading:
 
 - [X11 forwarding over SSH](https://some-natalie.dev/blog/ssh-x11-forwarding/)
 - [Source for tmux trick](https://carlosbecker.com/posts/ssh-tips-and-tricks/) (and related [HackerNews discussion](https://news.ycombinator.com/item?id=32486031))
-
 :::
-
 :::
 
 ## Of course, you can also set up an alias as an alternative
@@ -148,7 +145,7 @@ Further reading:
 
 Add this to the `.bashrc` or `.bash_aliases` file on your local machine (or find the equivalent options in your WinSCP/PuTTY/MobaXterm settings).
 
-# Connecting your editor - remote SSH {.smaller}
+# Connecting your editor via remote SSH {.smaller}
 
 Several editors support a feature to remotely connect to a server over SSH. Examples include [VSCode](https://code.visualstudio.com/docs/remote/ssh-tutorial), [VSCodium](https://open-vsx.org/extension/jeanp413/open-remote-ssh), the [JetBrains suite](https://www.jetbrains.com/help/pycharm/remote-development-overview.html#extensibility), [Zed](https://zed.dev/docs/remote-development), etc.
 
@@ -162,9 +159,7 @@ Live demo!
 :::
 
 ::: aside
-
 ::: {style="font-size: 60%;"}
-
 Further reading:
 
 - VSCodium:
@@ -174,9 +169,7 @@ Further reading:
   - [https://code.visualstudio.com/blogs/2019/10/03/remote-ssh-tips-and-tricks](https://code.visualstudio.com/blogs/2019/10/03/remote-ssh-tips-and-tricks)
   - [https://carleton.ca/scs/2024/vscode-remote-access-and-code-editing/](https://carleton.ca/scs/2024/vscode-remote-access-and-code-editing/)
   - [https://suedbroecker.net/2024/01/25/cheatsheet-how-to-set-up-remote-development-with-vs-code-using-ssh/](https://suedbroecker.net/2024/01/25/cheatsheet-how-to-set-up-remote-development-with-vs-code-using-ssh/)
-
 :::
-
 :::
 
 ## A few words of caution on remote SSH in VSCod(ium)
@@ -203,20 +196,14 @@ ln -s $VSC_DATA/.vscode-server $VSC_HOME/.vscode-server
 (_Thanks @Robin-Verschoren!_)
 
 For more info on why to use this storage partition, check out [CalcUA VSC storage location guidelines](https://docs.vscentrum.be/data/storage_locations.html#data-location) and [slide 131 in the training presentation](https://calcua.uantwerpen.be/courses/intro-hpc/intro-hpc-20260225.pdf).
-
 <!-- You might need to do something similar for .vscode-remote-containers -->
-
 :::
-
-<!-- . . . -->
 
 ::: {.callout-warning .fragment}
 ## Mind your I/O - be kind to your colleagues
-
 Depending on how large the folders are that you have checked out, as well as which kind of extensions you are running which might attempt to index all files therein, this could put a lot of strain on the shared (scratch) disks.
 
 If you ever notice a long latency between executing a command and regaining a prompt, even for lightweight commands, this might be happening. Don't let it happen to you.
-
 :::
 
 :::
@@ -230,16 +217,16 @@ For Windows users that rely on WSL to access CalcUA, keep in mind that VSCode wi
 You can either copy your keys to Windows or set the absolute path to the SSH config file (but then it will likely only work while WSL is running): `"remote.SSH.configFile": ""`.
 :::
 
-## Acknowledging the `vim`/`emacs` users out there (and a little tip regarding dotfiles) {.smaller}
+## Mandatory acknowledgment of all the `vim`/`emacs` users out there (and a little tip regarding dotfiles) {.smaller}
 
 Running a light-weight IDE that you can transport anywhere of course has its advantages over the hoops that you need to jump through for these GUI IDEs. For anyone interested in exploring this direction, check out `doom emacs`, `spacemacs` or `neovim`.
 
-These tools save their settings in dotfiles (small configuration files that live in your home directory). Things like your `.bashrc` or `.bash_aliases` file also fall in this category. If you'd like to streamline your environment between your own machine and remote servers like CalcUA, you can store and sync your dotfiles via git or a dedicated tool like [yadm](https://yadm.io/) or [chezmoi](https://www.chezmoi.io/comparison-table/).
+These tools save their settings in dotfiles (small configuration files that live in your home directory). Things like your `.bashrc` or `.bash_aliases` file also fall in this category.
+
+If you'd like to streamline your environment between your own machine and remote servers like CalcUA, you can store and sync your dotfiles via git or a dedicated tool like [yadm](https://yadm.io/) or [chezmoi](https://www.chezmoi.io/comparison-table/).
 
 ::: aside
-
 ([check out HackerNews for many more opinions on the matter](https://news.ycombinator.com/item?id=41453264)).
-
 :::
 
 # Hopping between login and compute nodes
@@ -249,16 +236,12 @@ These tools save their settings in dotfiles (small configuration files that live
 :::: {.columns .incremental}
 
 ::: {.column width="40%"}
-
 ![](https://gifsec.com/wp-content/uploads/2021/04/but-why-gif-1.gif){fig-alt="But why?" fig-align="center"}
-
 :::
 
 ::: {.column width="60%" .incremental}
-
 - Finding your way back to a particular `tmux` session on a different login node (see [persistent session section](#persistent-sessions-using-tmuxscreen)).
 - Monitoring the resource usage of a compute node.
-
 :::
 
 ::::
@@ -273,19 +256,59 @@ These tools save their settings in dotfiles (small configuration files that live
   - `ssh r1c05cn3.leibniz`
 
 ::: callout-tip
-
 Make sure you have a valid SSH key configured and authorized in your CalcUA home directory (`~/.ssh`):
 
 - `~/.ssh/id_rsa` + `~/.ssh/id_rsa.pub`
 - `~/.ssh/authorized_keys` should contain a copy of the public key
-
 :::
 
-## Example
+## Example {auto-animate="true"}
 
 :::: {style="font-size: 90%;"}
 
 ```{.bash}
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ sbatch -A ap_itg_mu --partition=broadwell slurm-sleep.sh
+Submitted batch job 2141426
+
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ squeue
+   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)
+ 2141426                                sleeping-on-the-job  broadwell CONFIGUR       0:03         4:57  2025-06-17T10:11:04       5:00  2025-06-17T10:06:04      1 r1c05cn3.leibniz
+```
+
+::::
+
+## Example {auto-animate="true"}
+
+:::: {style="font-size: 90%;"}
+
+```{.bash code-line-numbers="11-16"}
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ sbatch -A ap_itg_mu --partition=broadwell slurm-sleep.sh
+Submitted batch job 2141426
+
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ squeue
+   JOBID                                               NAME  PARTITION    STATE       TIME    TIME_LEFT             END_TIME TIME_LIMIT          SUBMIT_TIME  NODES NODELIST(REASON)
+ 2141426                                sleeping-on-the-job  broadwell CONFIGUR       0:03         4:57  2025-06-17T10:11:04       5:00  2025-06-17T10:06:04      1 r1c05cn3.leibniz
+
+vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
+└─▶ ssh r1c05cn3.leibniz
+Enter passphrase for key '/user/antwerpen/203/vsc20380/.ssh/id_rsa':
+Last login: Tue Jun 17 10:06:40 2025
+
+vsc20380 @ r1c05cn3 ~
+└─▶
+```
+
+::::
+
+## Example {auto-animate="true"}
+
+:::: {style="font-size: 90%;"}
+
+```{.bash code-line-numbers="15-28"}
 vsc20380 @ login1 /scratch/antwerpen/203/vsc20380/test-area
 └─▶ sbatch -A ap_itg_mu --partition=broadwell slurm-sleep.sh
 Submitted batch job 2141426
@@ -321,7 +344,7 @@ MiB Swap:  10240.0 total,  10212.5 free,     27.5 used. 121938.3 avail Mem
 
 # Running GUI tools on CalcUA
 
-## Running GUI tools on CalcUA
+## Running GUI tools on CalcUA via X11
 
 It is possible to run GUI tools on CalcUA, on both the login nodes and during interactive compute jobs.
 
@@ -340,27 +363,44 @@ ssh -X remotemachine username@calcua
 srun --x11 --time=00:05:00 --pty bash
 ```
 
+## RStudio Server
+
+For certain R work (like scRNA-seq analysis) where you need both interactivity and compute power, you can make use of the RStudio Server module (or spin up your own singularity container of it).
+
+This approach is compatible with both existing R modules (like `R-bundle-Bioconductor`) and your own locally installed R packages.
+
+::: {.callout-tip}
+In many cases, testing your code on a representive small test dataset is the better approach, but for things like deciding on clustering or QC thresholds, this might not be feasible.
+:::
+
+::: aside
+Further reading:
+
+- [https://docs.vscentrum.be/compute/portal/ondemand/rstudio-server.html](https://docs.vscentrum.be/compute/portal/ondemand/rstudio-server.html)
+- [More info on container approach and SSH tunneling if needed](https://wiki.helsinki.fi/xwiki/bin/view/it4sci/IT%20for%20Science%20group/HPC%20Environment%20User%20Guide/How%20to%20use%20RStudio%20Server%20in%20HPC%20environment/)
+:::
+
 ## Some tips
 
-- Certain tools might not work (at all or certain functionality like a file browser) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath). In this case, you might be able to force the tool to run using an older version by launching it with the flag `-Djdk.gtk.version=2`.
+- Certain tools might not work (at all or specific functionality like a file open dialogue) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath).
+  - In this case, you might be able to force the tool to run using an older version by launching it with the flag `-Djdk.gtk.version=2`.
 - Do not pass the `--x11` command at the end of your `srun` command, because it will be interpreted as being part of `--pty bash`.
 - Be warned that IGV might be (even) slow(er than usual).
 
-# Persistent sessions using `tmux`/`screen`/`Zellij`
-
-<!-- TODO info on other tools that do the same thing - tiling window managers - built-in panes in terminal's like kitty/wezterm -->
+# Persistent sessions using `tmux`/`screen`
 
 ## How to avoid timeouts during long-running commands? <!-- {.smaller} -->
 
-- Commands on the login nodes are cancelled after some time.
-- Annoying when copying or downloading a large amount of data, or during interactive `srun` jobs.
-- Solution: use `tmux` or `screen` to create a _persistent session_ that remains active even if you log out.
+::: {.incremental}
+- Commands on login/interactive nodes are cancelled after some time.
+- Problematic when copying or downloading a large amount of data, or during interactive `srun` jobs.
+- Solution: use `tmux` or `screen` to create a _persistent session_ that remains active even if you log out (or are disconnected on a flaky connection).
   - `nohup` works as an alternative for single commands.
+:::
 
 ::: aside
-
-::: {style="font-size: 90%;"}
-
+::: {.fragment}
+::: {style="font-size: 70%;"}
 **Tutorials and guides:**
 
 - `tmux` for HPCs:
@@ -369,8 +409,12 @@ srun --x11 --time=00:05:00 --pty bash
 - General `tmux` guides:
   - [https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/](https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
   - [https://pragmaticpineapple.com/gentle-guide-to-get-started-with-tmux/](https://pragmaticpineapple.com/gentle-guide-to-get-started-with-tmux/)
+- Mandatory acknowledgement of other options for multiplexing (which might lack persistence):
+  - `zellij`
+  - Terminals with built-in multiplexing like `kitty` and `wezterm`
+  - Tiling WMs like `i3` or `Sway`
 :::
-
+:::
 :::
 
 ## Example
@@ -386,7 +430,7 @@ Add this to your `.bashrc` or `.bash_aliases` file for a more readable job outpu
 `alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'`
 
 ::: aside
-
+::: {.fragment}
 For more info on formatting options, see:
 
 - [https://slurm.schedmd.com/squeue.html](https://slurm.schedmd.com/squeue.html)
@@ -394,6 +438,7 @@ For more info on formatting options, see:
 - [https://jhpce.jhu.edu/slurm/tips-squeue/](https://jhpce.jhu.edu/slurm/tips-squeue/)
 - [https://hpc-docs.cubi.bihealth.org/slurm/format-strings/](https://hpc-docs.cubi.bihealth.org/slurm/format-strings/)
 - [https://kb.ucdavis.edu/?id=07381](https://kb.ucdavis.edu/?id=07381)
+:::
 :::
 
 ## Pretty `squeue`
@@ -413,24 +458,36 @@ For more info on formatting options, see:
 - Especially useful if you use long job names.
 - Downside: widths are fixed and terminal window needs to be wide enough to fit everything in.
 
-# Belnet FileSender
+# Transferring files
 
 ## File transfers on CalcUA
 <!-- {.smaller} -->
 
 For an overview of different methods to transfer data to CalcUA, we refer to the [VSC documentation](https://docs.vscentrum.be/data/transfer.html). In brief, you can use:
 
+::: {.incremental}
 - options like `rsync` or `sftp` from a terminal
 - a dedicated GUI SFTP tool like ~~[FileZilla](https://filezilla-project.org/)~~ (bundled adware in the past) or [WinSCP](https://winscp.net/eng/download.php) (or even directly from within [MobaXterm](https://mobaxterm.mobatek.net/) if you are using it for access anyway)
 - [Globus](https://docs.vscentrum.be/globus/index.html) data sharing platform
-- [Belnet FileSender](https://filesender.belnet.be/): useful for sharing large datasets with others.
-- [rclone](https://rclone.org/) for moving data from CalcUA to OneDrive or SharePoint.
+- [Belnet FileSender](https://filesender.belnet.be/): useful for sharing large datasets with others
+- [rclone](https://rclone.org/) for moving data from CalcUA to OneDrive or SharePoint
+:::
 
-## Belnet FileSender - downsides
+::: {.fragment}
+Of course, aside from data, `git` can take care of synchronizing your code. _You are using `git`, aren't you?_
+:::
+
+## Globus
+
+I won't go into much detail here, but this is what you probably should be using whenever it is feasible (i.e. collaborators also have acccess to it).
+
+See the [excellent VSC docs](https://docs.vscentrum.be/globus/index.html) for more info.
+
+## Belnet FileSender
 <!-- {.smaller} -->
 
 - [Belnet FileSender](https://filesender.belnet.be/) can be used to transfer large (volumes of) files.
-- However, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload.
+- However, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload/download.
 - Moreover, since you cannot open a web browser on the CalcUA (unless you try your hand at [X forwarding](https://docs.vscentrum.be/access/access_methods.html#gui-applications-on-the-clusters)), you cannot download any files from FileSender to CalcUA directly.
 - Fortunately, there is an API you can call through a Python script, which makes it possible to upload files directly from the CalcUA.
 
@@ -470,7 +527,7 @@ For more information, see:
 - [FAQ](https://www.belnet.be/nl/communities-diensten/alle-diensten/identity-mobility-federation/filesender/filesender-technical-faq)
 - [API documentation](https://belnet.be/sites/default/files/2024-02/FileSender-API-20230811%201.pdf)
 
-# Rclone - connecting to SharePoint
+## Rclone - connecting to SharePoint
 
 ## What is Rclone?
 
@@ -501,7 +558,7 @@ rclone config
 - config_token: paste the result from above here
 ```
 
-## Transferring files
+## Transferring files with rclone
 
 To transfer files, you can use a similar syntax to `rsync`:
 
@@ -511,6 +568,57 @@ rclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/
 
 # remove the --dry-run flag if everything looks OK
 ```
+
+# Too many small files or large volumes of data
+
+Most file systems can be brought to their knees when creating large amounts of small files. Doing so might invoke the wrath of the system admins, but unfortunately you cannot also control the behaviour of existing tools.
+
+. . .
+
+Similarly, you might face a situation where a program creates a large total volume of intermediate data that you do not really need, but which causes your jobs to fail when they invariably bump into your storage quota.
+
+. . .
+
+_So what can you do?_
+
+## Meet `$TMPDIR`...
+
+The first option is to **write temporary files to the job node's SSD**.
+
+- Path = `$TMPDIR` (or `$VSC_SCRATCH_NODE` or just `/tmp`)
+- Data will be cleared/inaccessible after the job finishes
+- Especially useful for nextflow pipelines
+- Size depends on the [cluster](https://docs.vscentrum.be/antwerp/tier2_hardware.html#) (~100-200 GB)
+
+::: aside
+Further reading:
+
+- [Nextflow `scratch` directive (via `$TMPDIR`)](https://docs.seqera.io/nextflow/reference/process#scratch)
+- [More on Nextflow `scratch`](https://nf-co.re/docs/running/advanced-topics/managing_work_directory_growth#scratch-directory-implementation)
+
+> The scratch directive enables process execution in temporary directories typically local to compute nodes, with only selective output staging to the work directory
+:::
+
+## ...and `/dev/shm`
+
+- **Mount directory into RAM** as `tmpfs` file system instead of using persistent disk storage.
+- Eats into the total RAM available to your job.
+  - For large amounts of data a high memory node might be required.
+  - Might be more useful for large amounts of small files.
+- Ephemeral just like `/tmp`
+- Use cases: `SPAdes`, `Trinity`, `OpenFOAM`, etc.
+
+_(Thanks go to Franky for sharing this arcane knowledge._)
+
+::: aside
+::: {.smaller}
+Further reading:
+
+- [StackOverflow on `/dev/shm`](https://superuser.com/questions/45342/when-should-i-use-dev-shm-and-when-should-i-use-tmp)
+- [Nextflow `scratch` can point to `/dev/shm` too](https://docs.seqera.io/nextflow/reference/process#ram-disk)
+:::
+:::
+
 
 # Best practices for file permissions
 
@@ -542,23 +650,31 @@ chmod -w <file name(s) or glob pattern>
 # do not set the 440 flag directly on directories,
 # and do not set it using the recursive (-r) flag either,
 # because this would make them inaccessible/untraversable
-# (directories need execution permission)
-# instead use:
+# (because directories need execution permission)
+# use the instead:
 find . -type d -exec chmod 550 {} +
 ```
 
-## Storage quotas are determined by the group owner, not the physical location
+## Storage quotas are determined by a combination of the group owner and the storage location
 
 ```bash
 # setting ownership
+
+# will count towards ap_itg_mu group's data quota
 chown -R <vsc-username>:ap_itg_mu /data/antwerpen/grp/ap_itg_mu/projects/<name>
+
+# will count towards aitg group's scratch quota
 chown -R <vsc-username>:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/<name>
 
 # or to do it recursively for all files and directories in a specific location
 find <path-to-folder> -user <username> -group <groupname> -exec chgrp <groupname> {} \;
 ```
 
-# HPC container wrapper as a `conda` alternative
+# HPC container wrapper as a `conda`/`mamba` alternative
+
+::: {.callout-tip .fragment}
+As a side note, I recommend to use the [miniforge](https://github.com/conda-forge/miniforge) distribution rather than conda/miniconda due to licensing and historically better package management/coverage/architecture support.
+:::
 
 ## Using `conda` (and to a lesser extent `pip`) is frowned upon
 
@@ -568,11 +684,18 @@ find <path-to-folder> -user <username> -group <groupname> -exec chgrp <groupname
 
 ::: incremental
 -   Disk space / file quota
--   Not optimized for CPUs (e.g. Intel MKL math libraries, openBlAS, AMD Math Core Library)
+-   Not always optimized for specific CPUs (e.g. Intel MKL math libraries, openBlAS, AMD Math Core Library)
+-   Security concerns
 :::
 
+::: {.fragment}
+_But sometimes, being able to use conda just makes your life so much easier..._
+:::
+
+<!-- Why? Reproducing an existing environment file, being able to share your software versions in a consistent manner, combining potentially incompatible versions of python and non-python tools that might not be part of the module system, etc. -->
+
 ::: aside
-Learn more: - [VSC docs](https://docs.vscentrum.be/compute/software/python_package_management.html#install-python-packages-using-conda) & [CalcUA docs](https://docs.vscentrum.be/antwerp/tier2_hardware.html#conda)
+Learn more: - [VSC docs on python package management](https://docs.vscentrum.be/compute/software/installing_software/python_package_management.html) & [CalcUA docs on conda](https://docs.vscentrum.be/antwerp/uantwerp_software.html#conda)
 :::
 
 ## File quota {auto-animate="true"}
@@ -594,39 +717,6 @@ file system /user/antwerpen
 file system /data/antwerpen
     using 82.99G of 128G space, 157,497 of 200k files
 
-└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -h
-...
-91      /data/antwerpen/203/vsc20380/miniforge3/conda-meta
-132     /data/antwerpen/203/vsc20380/miniforge3/bin
-798     /data/antwerpen/203/vsc20380/miniforge3/include
-1.5K    /data/antwerpen/203/vsc20380/miniforge3/share
-6.0K    /data/antwerpen/203/vsc20380/miniforge3/lib
-10K     /data/antwerpen/203/vsc20380/miniforge3/envs
-107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs
-```
-<!--
-└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/
-125K    /data/antwerpen/203/vsc20380/miniforge3/
-
-
-91      /data/antwerpen/203/vsc20380/miniforge3/conda-meta
-132     /data/antwerpen/203/vsc20380/miniforge3/bin
-798     /data/antwerpen/203/vsc20380/miniforge3/include -->
-
-## File quota {auto-animate="true"}
-
-```{.bash code-line-numbers="12-20"}
-└─▶ myquota
-file system /user/antwerpen
-    using 1.612G of 3G space, 5,187 of 20k files
-file system /data/antwerpen
-    using 82.99G of 128G space, 157,497 of 200k files
-
-└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -h
-...
-10K     /data/antwerpen/203/vsc20380/miniforge3/envs
-107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs
-
 └─▶ conda env list
 # conda environments:
 #
@@ -638,9 +728,38 @@ you                   /data/antwerpen/203/vsc20380/miniforge3/envs/you
 up                    /data/antwerpen/203/vsc20380/miniforge3/envs/up
 ```
 
+## File quota {auto-animate="true"}
+
+```{.bash code-line-numbers="17-24"}
+└─▶ myquota
+file system /user/antwerpen
+    using 1.612G of 3G space, 5,187 of 20k files
+file system /data/antwerpen
+    using 82.99G of 128G space, 157,497 of 200k files
+
+└─▶ conda env list
+# conda environments:
+#
+base                 * /data/antwerpen/203/vsc20380/miniforge3
+never                 /data/antwerpen/203/vsc20380/miniforge3/envs/never
+gonna                 /data/antwerpen/203/vsc20380/miniforge3/envs/gonna
+give                  /data/antwerpen/203/vsc20380/miniforge3/envs/give
+you                   /data/antwerpen/203/vsc20380/miniforge3/envs/you
+up                    /data/antwerpen/203/vsc20380/miniforge3/envs/up
+
+└─▶ du -sh --inodes /data/antwerpen/203/vsc20380/miniforge3/* | sort -hr
+107K    /data/antwerpen/203/vsc20380/miniforge3/pkgs
+10K     /data/antwerpen/203/vsc20380/miniforge3/envs
+6.0K    /data/antwerpen/203/vsc20380/miniforge3/lib
+1.5K    /data/antwerpen/203/vsc20380/miniforge3/share
+798     /data/antwerpen/203/vsc20380/miniforge3/include
+132     /data/antwerpen/203/vsc20380/miniforge3/bin
+...
+```
+
 ## Conda clean {auto-animate="true"}
 
-Remember to clear out your conda cache every now and then:
+If you cannot avoid a regular conda install, at the very least remember to clear out your cache every now and then:
 
 ```bash
 └─▶ conda clean --all
@@ -648,7 +767,7 @@ Remember to clear out your conda cache every now and then:
 
 ## Conda clean {auto-animate="true"}
 
-Remember to clear out your conda cache every now and then:
+If you cannot avoid a regular conda install, at the very least remember to clear out your cache every now and then:
 
 ```bash
 └─▶ conda clean --all
@@ -667,7 +786,7 @@ There are no logfile(s) to remove.
 
 ## Conda clean {auto-animate="true"}
 
-Remember to clear out your conda cache every now and then:
+If you cannot avoid a regular conda install, at the very least remember to clear out your cache every now and then:
 
 ```{.bash code-line-numbers="14-15"}
 └─▶ conda clean --all
@@ -722,6 +841,7 @@ dependencies:
   - bedtools=2.31.1
 ```
 
+::: {.fragment}
 ::: {style="font-size: 0.7em"}
 Create container:
 :::
@@ -730,10 +850,11 @@ Create container:
 └─▶ module load hpc-container-wrapper
 └─▶ conda-containerize new --prefix "$VSC_SCRATCH/containers/wgs" environment.yaml
 ```
+:::
 
 ## Creating containers {.smaller}
 
-```.bash
+```{.bash code-line-numbers="1,4,10,21,23"}
 └─▶ ll wgs/wgs-container/
 total 2313043
 drwxrwxr-x 2 vsc20380 vsc20380        341 May  8 16:36 _bin
@@ -763,7 +884,7 @@ total 857
 ## Running containers
 
 - Run `export PATH="$VSC_SCRATCH/containers/wgs/bin:$PATH"` at the top of job script, or
-- just use individual binaries, e.g. `$VSC_SCRATCH/containers/wgs/bin/python` and `$VSC_SCRATCH/containers/wgs/bin/fastqc`
+- Directly call individual binaries, e.g. `$VSC_SCRATCH/containers/wgs/bin/python` and `$VSC_SCRATCH/containers/wgs/bin/fastqc`
 - Python packages are automatically picked up via import statements when using the containerized python binary.
 
 ## Updating containers
@@ -777,34 +898,52 @@ conda-containerize update --post-install post-install.sh \
 
 `post-install.sh`:
 ```bash
+#!/bin/bash
 pip install requests
 conda install -c bioconda pyfaidx
 ```
 
-## Warnings
+## Caveats to be aware of
 
 ::: {.callout-warning}
 ## Beware of `coreutils`!
 - Certain conda packages pull in the [coreutils package](https://anaconda.org/conda-forge/coreutils), to provide tools like `ls`.
 - If you add the entire container to your PATH by default (e.g. in `.bashrc`), it will hijack **all** of your `ls` calls.
-- The time it takes to spin up and down the container will add multiple seconds to even these basic system calls.
+- The time it takes to spin up and down the container will add multiple seconds to even these basic system calls, sending you (and perhaps the admins) on a wild goose chase.
+
+::: {style="font-size: 80%;" .fragment}
+This is _entirely_ speculative and not based on a true story.
 :::
 
-::: {.callout-note}
-The packages provided by conda might still be slower/less optimized than `module` installed software?
+:::
+
+::: {.fragment}
+::: {.callout-caution}
+The packages provided by conda could still be less optimized than `module` installed software(?)
+:::
 :::
 
 ## Reproducibility
 
 ::: {.callout-tip}
 Remember to store your `environment.yml` or `requirements.txt` files (ideally under version control, e.g. `git`).
+
+Consider whether you need a regular environment file or require `conda-lock` carefully.
 :::
 
-See [https://pythonspeed.com/articles/conda-dependency-management/](https://pythonspeed.com/articles/conda-dependency-management/) and [https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/](https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/) for a refresher.
+::: aside
+Check these resources for a refresher on conda package versioning:
 
-## A note on R and `renv`
+- [https://pythonspeed.com/articles/conda-dependency-management/](https://pythonspeed.com/articles/conda-dependency-management/)
+- [https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/](https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/)
+- [Issues with `--from-history`](https://www.monicathieu.com/posts/2024-05-20-conda-env-export-from-history.html) and how to [add explicit package versions](https://github.com/conda/conda/issues/10345#issuecomment-1852838493)
+:::
+
+# A note on R and `renv`
 
 Great write-up on how to manage R package dependencies using `renv` on HPCs: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html).
+
+<!-- TODO add VSC R project info + Renviron -->
 
 ![[Artwork by @allison_horst](https://allisonhorst.com/data-science-art)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/3c1eda6b-be13-4257-9c32-4cf865f171ae_rw_3840.png?h=87c3548b5f8a6ee566e245181f88d605)
 
@@ -812,9 +951,18 @@ Great write-up on how to manage R package dependencies using `renv` on HPCs: [ht
 
 ## Running Nextflow on CalcUA
 
-A dedicated nf-core config optimized for CalcUA is available here: [https://nf-co.re/configs/vsc_calcua/](https://nf-co.re/configs/vsc_calcua/), alongside instructions on how to use it.
+A dedicated nf-core config optimized for CalcUA is available, alongside instructions on how to use it, here:
+
+[https://nf-co.re/configs/vsc_calcua/](https://nf-co.re/configs/vsc_calcua/)
 
 This config will set various settings like using Singularity/Apptainer containers for running processes (since docker does not work on most HPCs and we do not want to install all required software ourselves).
+
+::: aside
+Further reading (aside from the docs above):
+
+- [https://epi2me.nanoporetech.com/how-to-tmpdir/](https://epi2me.nanoporetech.com/how-to-tmpdir/)
+- [https://seqera.io/blog/5-more-tips-for-nextflow-user-on-hpc/](https://seqera.io/blog/5-more-tips-for-nextflow-user-on-hpc/)
+:::
 
 ## Quick start - Slurm-scheduled pipeline run {.smaller auto-animate="true"}
 
