@@ -1,6 +1,6 @@
 ---
 title: "CalcUA HPC tips and tricks"
-subtitle: "A bioinformatics survival guide"
+subtitle: "A bioinformatician's survival guide"
 author:
   - name: "Pieter Moris [{{< fa globe >}}](https://pmoris.github.io) [{{< ai orcid >}}](https://orcid.org/0000-0003-4242-4939)"
     affiliation: "[Institute of Tropical Medicine Antwerp](https://www.itg.be)"
@@ -86,11 +86,11 @@ Provide an overview of various tips and tricks for using the CalcUA HPC (or othe
 
 ![](./assets/img/kermit-typing.gif){.nostretch fig-align="center" fig-alt="Kermit typing really fast" width="75%"}
 
-# SSH config files
+# SSH config files {background-color="#0a4e62"}
 
 ## SSH config
 
-You can create an SSH config file in your local (!) user/home directory `~/.ssh/config` that allows you to simply type `ssh calcua` to connect, without needing to provide your username, the login URL, your private key, etc.
+You can create an [SSH config file]{.bg style="--col: #e64173"} in your local (!) user/home directory (e.g., `~/.ssh/config`) that allows you to simply type `ssh calcua` to connect, without needing to provide your username, the login URL, your private key, etc.
 
 ```.bash
 Host calcua
@@ -138,20 +138,22 @@ Further reading:
 :::
 :::
 
-## Of course, you can also set up an alias as an alternative
+## Of course, you can also set up an [alias]{.bg style="--col: #e64173"} as an alternative
 
 
 `alias tardis='ssh vsc09001@login.hpc.uantwerpen.be'`
 
 Add this to the `.bashrc` or `.bash_aliases` file on your local machine (or find the equivalent options in your WinSCP/PuTTY/MobaXterm settings).
 
-# Connecting your editor via remote SSH {.smaller}
+# Remote SSH {background-color="#0a4e62"}
+
+## Connecting your editor via remote SSH {.smaller}
 
 Several editors support a feature to remotely connect to a server over SSH. Examples include [VSCode](https://code.visualstudio.com/docs/remote/ssh-tutorial), [VSCodium](https://open-vsx.org/extension/jeanp413/open-remote-ssh), the [JetBrains suite](https://www.jetbrains.com/help/pycharm/remote-development-overview.html#extensibility), [Zed](https://zed.dev/docs/remote-development), etc.
 
-- Directly connect your workspace to a remote server allowing you to view and edit files that are stored remotely.
+- Directly connect your editor to a remote server allowing you to view and edit files that are stored remotely.
 - It can even work as a file transfer tool in a pinch!
-- Some editors offer the same for [WSL](https://learn.microsoft.com/en-us/windows/wsl/) (which you should be using if you are stuck on Windows).
+- Some editors offer the same for [WSL](https://learn.microsoft.com/en-us/windows/wsl/) (which you should be using if you are stuck on Windows) or containers.
 <!-- - You could even directly connect to a container running on the remote. -->
 
 ::: {.callout-note}
@@ -199,7 +201,7 @@ For more info on why to use this storage partition, check out [CalcUA VSC storag
 <!-- You might need to do something similar for .vscode-remote-containers -->
 :::
 
-::: {.callout-warning .fragment}
+::: {.callout-caution .fragment}
 ## Mind your I/O - be kind to your colleagues
 Depending on how large the folders are that you have checked out, as well as which kind of extensions you are running which might attempt to index all files therein, this could put a lot of strain on the shared (scratch) disks.
 
@@ -210,18 +212,21 @@ If you ever notice a long latency between executing a command and regaining a pr
 
 ## Remote SSH - keys and config files
 
-::: {.callout-warning}
+::: {.callout-tip}
 ## Be mindful of where your SSH keys live!
 For Windows users that rely on WSL to access CalcUA, keep in mind that VSCode will be default search your Windows user's directory for SSH keys and config files, which are not the same as the ones in your WSL home directory.
 
 You can either copy your keys to Windows or set the absolute path to the SSH config file (but then it will likely only work while WSL is running): `"remote.SSH.configFile": ""`.
 :::
 
-## Mandatory acknowledgment of all the `vim`/`emacs` users out there (and a little tip regarding dotfiles) {.smaller}
+## [Mandatory acknowledgment of all the `vim`/`emacs` users out there]{.r-fit-text} {.smaller}
+### (and a little tip regarding dotfiles)
 
-Running a light-weight IDE that you can transport anywhere of course has its advantages over the hoops that you need to jump through for these GUI IDEs. For anyone interested in exploring this direction, check out `doom emacs`, `spacemacs` or `neovim`.
+Using a light-weight IDE that you can run anywhere of course has its advantages over the hoops that you need to jump through for these GUI IDEs. For anyone interested in exploring this direction, check out `doom emacs`, `spacemacs` or `neovim`.
 
-These tools save their settings in dotfiles (small configuration files that live in your home directory). Things like your `.bashrc` or `.bash_aliases` file also fall in this category.
+These tools save their settings in [dotfiles]{.bg style="--col: #e64173"} (small configuration files that live in your home directory).
+
+Things like your `.bashrc` or `.bash_aliases` file also fall in this category.
 
 If you'd like to streamline your environment between your own machine and remote servers like CalcUA, you can store and sync your dotfiles via git or a dedicated tool like [yadm](https://yadm.io/) or [chezmoi](https://www.chezmoi.io/comparison-table/).
 
@@ -229,7 +234,7 @@ If you'd like to streamline your environment between your own machine and remote
 ([check out HackerNews for many more opinions on the matter](https://news.ycombinator.com/item?id=41453264)).
 :::
 
-# Hopping between login and compute nodes
+# Hopping between login and compute nodes {background-color="#0a4e62"}
 
 ## You can use SSH to jump between nodes.
 
@@ -342,7 +347,19 @@ MiB Swap:  10240.0 total,  10212.5 free,     27.5 used. 121938.3 avail Mem
 ::::
 
 
-# Running GUI tools on CalcUA
+# Running GUI tools on CalcUA {background-color="#0a4e62"}
+
+## OnDemand access via Web Portal
+
+I only discovered this myself very recently: [VSC Web Portal access](https://docs.vscentrum.be/compute/portal/index.html):
+
+- File transfer
+- Shell access
+- Job monitoring
+- Interactive applications (like Jupyter, RStudio, IGV, etc.)
+- Gateway/tunnel for e.g. VSCode
+
+Accessible via [https://portal.hpc.uantwerpen.be/](https://portal.hpc.uantwerpen.be/)
 
 ## Running GUI tools on CalcUA via X11
 
@@ -363,9 +380,16 @@ ssh -X remotemachine username@calcua
 srun --x11 --time=00:05:00 --pty bash
 ```
 
+## Some tips
+
+- Certain tools might not work (at all or specific functionality like a file open dialogue) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath).
+  - In this case, you might be able to force the tool to run using an older version by launching it with the flag `-Djdk.gtk.version=2`.
+- Do not pass the `--x11` command at the end of your `srun` command, because it will be interpreted as being part of `--pty bash`.
+- Be warned that IGV might be (even) slow(er than usual).
+
 ## RStudio Server
 
-For certain R work (like scRNA-seq analysis) where you need both interactivity and compute power, you can make use of the RStudio Server module (or spin up your own singularity container of it).
+For certain types of analysis in R (like scRNA-seq), where you need both interactivity and compute power, you can make use of the RStudio Server module on the [CalcUA web portal](https://docs.vscentrum.be/compute/portal/index.html) (or even spin up your own singularity containerized version of it).
 
 This approach is compatible with both existing R modules (like `R-bundle-Bioconductor`) and your own locally installed R packages.
 
@@ -380,21 +404,14 @@ Further reading:
 - [More info on container approach and SSH tunneling if needed](https://wiki.helsinki.fi/xwiki/bin/view/it4sci/IT%20for%20Science%20group/HPC%20Environment%20User%20Guide/How%20to%20use%20RStudio%20Server%20in%20HPC%20environment/)
 :::
 
-## Some tips
-
-- Certain tools might not work (at all or specific functionality like a file open dialogue) because they rely on a newer version of GTK which is not available on CalcUA (e.g. QuPath).
-  - In this case, you might be able to force the tool to run using an older version by launching it with the flag `-Djdk.gtk.version=2`.
-- Do not pass the `--x11` command at the end of your `srun` command, because it will be interpreted as being part of `--pty bash`.
-- Be warned that IGV might be (even) slow(er than usual).
-
-# Persistent sessions using `tmux`/`screen`
+# Persistent SSH sessions {background-color="#0a4e62"}
 
 ## How to avoid timeouts during long-running commands? <!-- {.smaller} -->
 
 ::: {.incremental}
 - Commands on login/interactive nodes are cancelled after some time.
 - Problematic when copying or downloading a large amount of data, or during interactive `srun` jobs.
-- Solution: use `tmux` or `screen` to create a _persistent session_ that remains active even if you log out (or are disconnected on a flaky connection).
+- Solution: use `tmux` or `screen` to create a [_persistent session_]{.bg style="--col: #e64173"} that remains active even if you log out (or are disconnected on a flaky connection).
   - `nohup` works as an alternative for single commands.
 :::
 
@@ -421,13 +438,15 @@ Further reading:
 
 ![](https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif){fig-align="center" width="100%"}
 
-# Pretty `squeue`
+# Pretty `squeue` {background-color="#0a4e62"}
 
 ## Pretty `squeue`
 
 Add this to your `.bashrc` or `.bash_aliases` file for a more readable job output:
 
-`alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'`
+```bash
+alias squeue='squeue --format="%.8i %.50j %.10P %.8T %.10M %.12L %.20e %.10l %.20V %.6D %.R"'
+```
 
 ::: aside
 ::: {.fragment}
@@ -458,7 +477,7 @@ For more info on formatting options, see:
 - Especially useful if you use long job names.
 - Downside: widths are fixed and terminal window needs to be wide enough to fit everything in.
 
-# Transferring files
+# Transferring files {background-color="#0a4e62"}
 
 ## File transfers on CalcUA
 <!-- {.smaller} -->
@@ -489,7 +508,7 @@ See the [excellent VSC docs](https://docs.vscentrum.be/globus/index.html) for mo
 - [Belnet FileSender](https://filesender.belnet.be/) can be used to transfer large (volumes of) files.
 - However, its basic usage works through a portal in your web browser, which means that your PC must stay awake during the upload/download.
 - Moreover, since you cannot open a web browser on the CalcUA (unless you try your hand at [X forwarding](https://docs.vscentrum.be/access/access_methods.html#gui-applications-on-the-clusters)), you cannot download any files from FileSender to CalcUA directly.
-- Fortunately, there is an API you can call through a Python script, which makes it possible to upload files directly from the CalcUA.
+- Fortunately, there is an [API]{.bg style="--col: #e64173"} you can call through a Python script, which makes it possible to upload files directly from the CalcUA.
 
 ## Belnet FileSender API for uploading - setup
 
@@ -534,7 +553,7 @@ For more information, see:
 
 The [rclone tool](https://rclone.org/) makes it easy to quickly transfer (large amounts of) data between various supported endpoints, like your machine and cloud storage.
 
-In our case, we want to use it connect CalcUA to OneDrive or SharePoint, e.g. for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account.
+For example, it could be used to connect CalcUA to [OneDrive]{.bg style="--col: #e64173"} or [SharePoint]{.bg style="--col: #e64173"}, e.g. for easier data sharing, downstream analyses on your local machine or even longer-term storage without eating up storage space on your CalcUA account.
 
 ## Create a new Rclone remote
 
@@ -567,15 +586,19 @@ To transfer files, you can use a similar syntax to `rsync`:
 rclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/
 
 # remove the --dry-run flag if everything looks OK
+
+# `rclone sync` is also available
 ```
 
-# Too many small files or large volumes of data
+# Too many small files or large volumes of data {background-color="#0a4e62"}
 
-Most file systems can be brought to their knees when creating large amounts of small files. Doing so might invoke the wrath of the system admins, but unfortunately you cannot also control the behaviour of existing tools.
+##
+
+Most file systems can be brought to their knees when creating large amounts of [small files]{.bg style="--col: #e64173"}. Doing so might invoke the wrath of the system admins, but unfortunately you cannot also control the behaviour of existing tools.
 
 . . .
 
-Similarly, you might face a situation where a program creates a large total volume of intermediate data that you do not really need, but which causes your jobs to fail when they invariably bump into your storage quota.
+Similarly, you might face a situation where a program creates a large total volume of intermediate data that you do not really need, but which causes your jobs to fail when they invariably bump into your [storage quota]{.bg style="--col: #e64173"}.
 
 . . .
 
@@ -583,7 +606,7 @@ _So what can you do?_
 
 ## Meet `$TMPDIR`...
 
-The first option is to **write temporary files to the job node's SSD**.
+The first option is to [**write temporary files to the job node's SSD**]{.fg style="--col: #e64173"}.
 
 - Path = `$TMPDIR` (or `$VSC_SCRATCH_NODE` or just `/tmp`)
 - Data will be cleared/inaccessible after the job finishes
@@ -601,7 +624,7 @@ Further reading:
 
 ## ...and `/dev/shm`
 
-- **Mount directory into RAM** as `tmpfs` file system instead of using persistent disk storage.
+- [**Mount directory into RAM**]{.fg style="--col: #e64173"} as `tmpfs` file system instead of using persistent disk storage.
 - Eats into the total RAM available to your job.
   - For large amounts of data a high memory node might be required.
   - Might be more useful for large amounts of small files.
@@ -620,11 +643,11 @@ Further reading:
 :::
 
 
-# Best practices for file permissions
+# Best practices for file permissions {background-color="#0a4e62"}
 
 ## File ownership and permissions
 
-> After transferring files to the CalcUA for long-term storage (e.g., raw data stored on `/data/antwerpen/grp/ap_itg_*`), the file permissions can be set to `read-only` to avoid accidental removal or modification.
+> After transferring files to the CalcUA for _long-term_^[A Do not use CalcUA for long-term storage unless an agreement has been setup.] storage (e.g., raw data stored on `/data/antwerpen/grp/ap_itg_*`), file permissions can be set to `read-only` to avoid accidental removal or modification.
 
 ---
 
@@ -670,9 +693,11 @@ chown -R <vsc-username>:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/<name
 find <path-to-folder> -user <username> -group <groupname> -exec chgrp <groupname> {} \;
 ```
 
-# HPC container wrapper as a `conda`/`mamba` alternative
+# HPC container wrapper as a `conda`/`mamba` alternative {background-color="#0a4e62"}
 
-::: {.callout-tip .fragment}
+---
+
+::: {.callout-tip}
 As a side note, I recommend to use the [miniforge](https://github.com/conda-forge/miniforge) distribution rather than conda/miniconda due to licensing and historically better package management/coverage/architecture support.
 :::
 
@@ -811,9 +836,9 @@ There are no logfile(s) to remove.
 `hpc-container-wrapper` (formerly known as `Tykky`)
 
 ::: incremental
-- A tool to wrap your Python installation into a (Apptainer/Singularity) container, designed for use on HPC systems.
+- A tool to wrap your Python environment into an Apptainer/Singularity [container]{.bg style="--col: #e64173"}, designed for use on HPC systems.
 - Uses `environment.yml` (conda/mamba) or `requirements.txt` (pip) to define packages
-- Provides "wrapped" binaries to call Python (or other tools) inside the container environment.
+- Provides "wrapped" binaries to call Python (or other tools) inside the container.
 :::
 
 ::: aside
@@ -852,7 +877,7 @@ Create container:
 ```
 :::
 
-## Creating containers {.smaller}
+## Containers binaries {.smaller}
 
 ```{.bash code-line-numbers="1,4,10,21,23"}
 └─▶ ll wgs/wgs-container/
@@ -939,7 +964,7 @@ Check these resources for a refresher on conda package versioning:
 - [Issues with `--from-history`](https://www.monicathieu.com/posts/2024-05-20-conda-env-export-from-history.html) and how to [add explicit package versions](https://github.com/conda/conda/issues/10345#issuecomment-1852838493)
 :::
 
-# A note on R and `renv`
+# A note on R and `renv` {background-color="#0a4e62"}
 
 Great write-up on how to manage R package dependencies using `renv` on HPCs: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html).
 
@@ -947,7 +972,7 @@ Great write-up on how to manage R package dependencies using `renv` on HPCs: [ht
 
 ![[Artwork by @allison_horst](https://allisonhorst.com/data-science-art)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/3c1eda6b-be13-4257-9c32-4cf865f171ae_rw_3840.png?h=87c3548b5f8a6ee566e245181f88d605)
 
-# Nextflow on CalcUA
+# Nextflow on CalcUA {background-color="#0a4e62"}
 
 ## Running Nextflow on CalcUA
 
@@ -1038,6 +1063,6 @@ nextflow run nf-core/rnaseq \
   --outdir test_output
 ```
 
-# That's all folks {.unlisted}
+# That's all folks {.unlisted background-color="#0a4e62"}
 
 Many thanks to the CalcUA team and the many researchers/mentors who've collectively taught me all these things.

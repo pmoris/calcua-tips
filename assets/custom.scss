@@ -21,3 +21,13 @@ $code-bg:#f1f1f1;
 .reveal .slide-logo {
    max-height: 4em !important;
 }
+
+// https://github.com/orgs/quarto-dev/discussions/3417
+// alternative code option to switch between light and dark logo: https://github.com/orgs/quarto-dev/discussions/5439
+.reveal.has-dark-background .slide-logo {
+  display: none !important;
+}
+
+// .reveal .progress {
+//     color: #115e67 !important;
+// }

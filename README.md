@@ -3,14 +3,17 @@ BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgreen.svg)](http
 
 # CalcUA tips and tricks
 
-Quarto code used to create the presentation _"CalcUA tips and tricks for bioinformatics"_ (available at: [https://pmoris.github.io/calcua-tips](https://pmoris.github.io/calcua-tips)) for the bioinformatics meetings at the [Institute of Tropical Medicine (Antwerp)](https://www.itg.be/).
+Quarto code used to create the presentation _"CalcUA tips and tricks for bioinformatics"_ (available at: [https://pmoris.github.io/calcua-tips](https://pmoris.github.io/calcua-tips)).
+
+First presented during the bioinformatics meet-up at the [Institute of Tropical Medicine (Antwerp)](https://www.itg.be/) on 2025-06-17.
+Revised and shown again at a Biomina Lunch Talk on 2026-04-22.
 
 # Also see:
 
 - [https://docs.vscentrum.be/](https://docs.vscentrum.be/)
 - [https://www.uantwerpen.be/en/research-facilities/calcua/](https://www.uantwerpen.be/en/research-facilities/calcua/)
 - [https://quarto.org/docs/presentations/revealjs/](https://quarto.org/docs/presentations/revealjs/)
-- Extensions used:
+- Quarto extensions used:
   - [https://github.com/grantmcdermott/quarto-revealjs-clean](https://github.com/grantmcdermott/quarto-revealjs-clean)
   - [https://github.com/schochastics/academicons](https://github.com/schochastics/academicons)
   - [https://github.com/quarto-ext/fontawesome](https://github.com/quarto-ext/fontawesome)
