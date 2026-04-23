@@ -181,12 +181,14 @@ Further reading:
 ::: {.callout-warning .fragment .fade-out}
 ## Avoid polluting your home directory and exceeding disk quotas
 
-By default, VSCode will store all the components it needs + a cache in your home directory. Due to the limited quota, you should change this location to the data partition.
+By default, VSCode will store all the components it needs + a cache in your home directory. Due to the limited quota, you should change this location to the data partition inside VSCode's `settings.json` file:
 
 ```json
   "remote.SSH.serverInstallPath": {
     "calcua": "/data/antwerpen/203/vsc20380/"
 ```
+
+</br>
 
 Or better yet (since VSCode does not always seem to respect this option, and VSCodium does not offer it yet), create a symlink yourself:
 
@@ -197,15 +199,22 @@ ln -s $VSC_DATA/.vscode-server $VSC_HOME/.vscode-server
 
 (_Thanks @Robin-Verschoren!_)
 
+<br>
+
+::: {style="font-size: 80%;"}
 For more info on why to use this storage partition, check out [CalcUA VSC storage location guidelines](https://docs.vscentrum.be/data/storage_locations.html#data-location) and [slide 131 in the training presentation](https://calcua.uantwerpen.be/courses/intro-hpc/intro-hpc-20260225.pdf).
 <!-- You might need to do something similar for .vscode-remote-containers -->
 :::
+:::
+
 
 ::: {.callout-caution .fragment}
 ## Mind your I/O - be kind to your colleagues
 Depending on how large the folders are that you have checked out, as well as which kind of extensions you are running which might attempt to index all files therein, this could put a lot of strain on the shared (scratch) disks.
 
-If you ever notice a long latency between executing a command and regaining a prompt, even for lightweight commands, this might be happening. Don't let it happen to you.
+If you ever notice a long latency between executing a command and regaining a prompt, even for lightweight commands, this might (partially) be why.
+
+Don't let it happen to you.
 :::
 
 :::
@@ -220,7 +229,7 @@ You can either copy your keys to Windows or set the absolute path to the SSH con
 :::
 
 ## [Mandatory acknowledgment of all the `vim`/`emacs` users out there]{.r-fit-text} {.smaller}
-### (and a little tip regarding dotfiles)
+### (and a little tip regarding dotfiles) {.smaller}
 
 Using a light-weight IDE that you can run anywhere of course has its advantages over the hoops that you need to jump through for these GUI IDEs. For anyone interested in exploring this direction, check out `doom emacs`, `spacemacs` or `neovim`.
 
@@ -231,7 +240,7 @@ Things like your `.bashrc` or `.bash_aliases` file also fall in this category.
 If you'd like to streamline your environment between your own machine and remote servers like CalcUA, you can store and sync your dotfiles via git or a dedicated tool like [yadm](https://yadm.io/) or [chezmoi](https://www.chezmoi.io/comparison-table/).
 
 ::: aside
-([check out HackerNews for many more opinions on the matter](https://news.ycombinator.com/item?id=41453264)).
+([check](https://news.ycombinator.com/item?id=34296396) out [HackerNews](https://news.ycombinator.com/item?id=40284164) for [many](https://news.ycombinator.com/item?id=41453264) more opinions on the matter.)
 :::
 
 # Hopping between login and compute nodes {background-color="#0a4e62"}
@@ -394,7 +403,7 @@ For certain types of analysis in R (like scRNA-seq), where you need both interac
 This approach is compatible with both existing R modules (like `R-bundle-Bioconductor`) and your own locally installed R packages.
 
 ::: {.callout-tip}
-In many cases, testing your code on a representive small test dataset is the better approach, but for things like deciding on clustering or QC thresholds, this might not be feasible.
+In many cases, testing your code on a representative small test dataset is the better approach, but for things like deciding on clustering or QC thresholds, this might not be feasible.
 :::
 
 ::: aside
@@ -479,6 +488,18 @@ For more info on formatting options, see:
 
 # Transferring files {background-color="#0a4e62"}
 
+_Never underestimate the bandwidth of a station wagon full of tapes hurtling down the highway._
+
+~Andrew Tanenbaum, 1981
+
+---
+
+![[XKCD - File Transfer](https://xkcd.com/949/)](https://imgs.xkcd.com/comics/file_transfer.png){fig-align="center"}
+
+<!-- ::: aside
+[Obligatory XKCD](https://what-if.xkcd.com/31/)
+::: -->
+
 ## File transfers on CalcUA
 <!-- {.smaller} -->
 
@@ -498,7 +519,7 @@ Of course, aside from data, `git` can take care of synchronizing your code. _You
 
 ## Globus
 
-I won't go into much detail here, but this is what you probably should be using whenever it is feasible (i.e. collaborators also have acccess to it).
+I won't go into much detail here, but this is what you probably should be using whenever it is feasible (i.e. collaborators also have access to it).
 
 See the [excellent VSC docs](https://docs.vscentrum.be/globus/index.html) for more info.
 
@@ -664,11 +685,11 @@ See [https://chmod-calculator.com/](https://chmod-calculator.com/) for an explan
 find <path> -type f -exec chmod 440 {} +
 
 # for individual files
-chgrp ap_itg_mu <file name(s) or glob pattern>
-chmod 440  <file name(s) or glob pattern>
+chgrp ap_itg_mu <file names or glob pattern>
+chmod 440  <file names or glob pattern>
 
 # just removing the write flag from a file
-chmod -w <file name(s) or glob pattern>
+chmod -w <file names or glob pattern>
 
 # do not set the 440 flag directly on directories,
 # and do not set it using the recursive (-r) flag either,
@@ -692,6 +713,24 @@ chown -R <vsc-username>:aitg /scratch/antwerpen/grp/aitg/arosanas/projects/<name
 # or to do it recursively for all files and directories in a specific location
 find <path-to-folder> -user <username> -group <groupname> -exec chgrp <groupname> {} \;
 ```
+
+## Checksums and file integrity
+
+![[Obligatory XKCD - Digital Data](https://xkcd.com/1683/)](https://imgs.xkcd.com/comics/digital_data.png)
+
+::: {.fragment style="font-size: 0.8em"}
+When storing (and transferring) files, a good habit to develop is using file checksum integrity tests.
+
+```bash
+# create a single md5 checksum file for all files in the current directory (or below)
+find . -type f -exec md5sum "{}" + | tee checksum-$(date +%F).md5
+
+# recursively verify all files listed in any MD5.txt in the current location
+find . -type f -name "MD5.txt" -execdir bash -c 'md5sum -c {}' \;
+```
+
+For more info, please refer to [https://genomicsaotearoa.github.io/shell-for-bioinformatics/2_download_data/](https://genomicsaotearoa.github.io/shell-for-bioinformatics/2_download_data/).
+:::
 
 # HPC container wrapper as a `conda`/`mamba` alternative {background-color="#0a4e62"}
 
@@ -959,18 +998,131 @@ Consider whether you need a regular environment file or require `conda-lock` car
 ::: aside
 Check these resources for a refresher on conda package versioning:
 
-- [https://pythonspeed.com/articles/conda-dependency-management/](https://pythonspeed.com/articles/conda-dependency-management/)
-- [https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/](https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/)
+- [Conda and conda-lock](https://pythonspeed.com/articles/conda-dependency-management/)
+- [More on conda and conda-lock](https://openscpca.readthedocs.io/en/stable/ensuring-repro/managing-software/using-conda/)
 - [Issues with `--from-history`](https://www.monicathieu.com/posts/2024-05-20-conda-env-export-from-history.html) and how to [add explicit package versions](https://github.com/conda/conda/issues/10345#issuecomment-1852838493)
 :::
 
-# A note on R and `renv` {background-color="#0a4e62"}
-
-Great write-up on how to manage R package dependencies using `renv` on HPCs: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html).
-
-<!-- TODO add VSC R project info + Renviron -->
+# A note on R, RStudio Projects and `renv` {background-color="#0a4e62"}
 
 ![[Artwork by @allison_horst](https://allisonhorst.com/data-science-art)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/3c1eda6b-be13-4257-9c32-4cf865f171ae_rw_3840.png?h=87c3548b5f8a6ee566e245181f88d605)
+
+---
+
+When working locally, using a mix of [RStudio Projects](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner%27s-guide/) and [renv lockfiles](https://rstudio.github.io/renv/articles/renv.html) is the way to go to keep your projects [reproducible]{.fg style="--col: #e64173"} and [portable]{.fg style="--col: #e64173"}.
+
+On CalcUA, as for Python, the preferred approach is to use packages made available in modules instead of redundant local installs.
+
+. . .
+
+You can still benefit from projects and package pinning by using [vsc-Rproject]{.bg style="--col: #e64173"} (optionally combined with `renv` where need be).
+
+Check the VSC docs for a full walkthrough: [https://docs.vscentrum.be/compute/software/installing_software/vsc_rproject.html](https://docs.vscentrum.be/compute/software/installing_software/vsc_rproject.html)
+
+::: aside
+For more info on project-oriented workflows, check out [https://tidyverse.org/blog/2017/12/workflow-vs-script/](https://tidyverse.org/blog/2017/12/workflow-vs-script/) and [https://rstats.wtf/projects](https://rstats.wtf/projects).
+
+:::
+
+---
+
+Alternatively, you could rely on only loading the main R module and [install your own R packages](https://docs.vscentrum.be/compute/software/installing_software/r_package_management.html) while using `renv` for versioning (the benefit being that everything is contained in a single lockfile instead of spread across modules too).
+
+In this case though, it is again important to change a few default paths to avoid filling your home directory.
+
+## {auto-animate="true"}
+
+```bash
+# load R first
+module load R/4.5.1-gfbf-2025a
+
+# create a file called .Renviron in $VSC_HOME / ~ with the following content
+└─▶ cat >$VSC_HOME/.Renviron <<EOL
+R_LIBS_USER=${VSC_DATA}/Rlibs/${VSC_OS_LOCAL}/${VSC_ARCH_LOCAL}/R-${EBVERSIONR}
+RENV_PATHS_CACHE=${VSC_DATA}/Rlibs/renv_cache/${VSC_OS_LOCAL}/${VSC_ARCH_LOCAL}/R-${EBVERSIONR}
+EOL
+
+# create the directory
+└─▶ mkdir -p ${VSC_DATA}/Rlibs/${VSC_OS_LOCAL}/${VSC_ARCH_LOCAL}/R-${EBVERSIONR}
+```
+
+## {.smaller}
+
+```{.R}
+# then inside R, verify the library path
+> .libPaths()
+[1] "/apps/antwerpen/broadwell/rocky9/R/4.5.1-gfbf-2025a/lib64/R/library"
+
+# install renv
+> install.packages("renv")
+...
+
+# initialise renv
+> renv::init()
+The following package(s) will be updated in the lockfile:
+
+# CRAN -----------------------------------------------------------------------
+- renv   [* -> 1.2.2]
+
+The version of R recorded in the lockfile will be updated:
+- R      [* -> 4.5.1]
+
+- Lockfile written to "/scratch/antwerpen/203/vsc20380/R-local-test/renv.lock".
+- renv activated -- please restart the R session.
+
+# restart R
+
+# install packages inside the current directory/project
+> install.packages("ggplot2")
+...
+These packages will be installed into "/scratch/antwerpen/203/vsc20380/R-local-test/renv/library/linux-rocky-9.7/R-4.5/x86_64-pc-linux-gnu".
+
+# save packages to the lockfile
+> renv::snapshot()  # will only write packages that are used in .R* files in the current project directory
+```
+
+---
+
+The lockfile contains an overview of everything you've installed:
+
+```json
+{
+  "R": {
+    "Version": "4.5.1",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://cloud.r-project.org"
+      }
+    ]
+  },
+  "Packages": {
+...
+"ggplot2": {
+      "Package": "ggplot2",
+      "Version": "4.0.3",
+...
+```
+
+---
+
+::: {.callout-tip}
+If you prefer, you can set another `.Renviron` option to force `renv` to install packages to a shared directory (e.g. in `/data`) instead of inside your (`/scratch`) project directory:
+
+`RENV_PATHS_RENV=/data/antwerpen/203/vsc20380/renv-shared-lib/`
+:::
+
+---
+
+::: {.callout-tip}
+Make liberal use of `saveRDS()` and `readRDS()` to avoid re-computing long-running steps or even split workloads between CalcUA and your local machine.
+:::
+
+::: aside
+Further reading:
+
+Great write-up on how to manage R package dependencies using `renv` on HPCs in general: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html).
+:::
 
 # Nextflow on CalcUA {background-color="#0a4e62"}
 
@@ -1062,6 +1214,16 @@ nextflow run nf-core/rnaseq \
   --outdir test_output
   --outdir test_output
 ```
+
+##
+
+::: {.callout-tip}
+Be aware that the temporary files created in your work directory can quickly overwhelm your file quota.
+
+In the past, the config was set to automatically prune the work directory on a successful pipeline run, but because this made it more difficult troubleshoot or to run two-step pipelines, this behaviour was reversed.
+
+Use `du -sh (--inodes)` to monitor this directory and clean it out regularly (either by removing it manually or running `nextflow clean` in the pipeline directory).
+:::
 
 # That's all folks {.unlisted background-color="#0a4e62"}
 
