@@ -99,7 +99,7 @@
     code span.vs { color: #a3be8c; } /* VerbatimString */
     code span.wa { color: #bf616a; } /* Warning */
   </style>
-  <link rel="stylesheet" href="calcua-tips_files/libs/revealjs/dist/theme/quarto-4cc5fbc7e159ef1a6d4e2b0c5e8405ac.css">
+  <link rel="stylesheet" href="calcua-tips_files/libs/revealjs/dist/theme/quarto-fcebc00640c72348fb03139f926ea1c2.css">
   <link href="calcua-tips_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="calcua-tips_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="calcua-tips_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -192,6 +192,11 @@
     }
   </style>
   <script src="assets/custom.js" type="application/javascript"></script>
+  <style>
+    body:has(.present.hide-logo) {
+      --logo-display: none;
+    }
+  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -219,7 +224,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
 <ul>
-<li><a href="#/goal-of-this-talk" id="/toc-goal-of-this-talk">Goal of this talk</a></li>
+<li><a href="#/goal-of-this-talks" id="/toc-goal-of-this-talks">Goal of this talks</a></li>
 <li><a href="#/ssh-config-files" id="/toc-ssh-config-files">SSH config files</a></li>
 <li><a href="#/remote-ssh" id="/toc-remote-ssh">Remote SSH</a></li>
 <li><a href="#/hopping-between-login-and-compute-nodes" id="/toc-hopping-between-login-and-compute-nodes">Hopping between login and compute nodes</a></li>
@@ -235,8 +240,8 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </ul>
 </nav>
 </section>
-<section id="goal-of-this-talk" class="title-slide slide level1 center">
-<h1>Goal of this talk</h1>
+<section id="goal-of-this-talks" class="title-slide slide level1 center">
+<h1>Goal of this talks</h1>
 <p>Provide an overview of various tips and tricks for using the CalcUA HPC (or other remote servers) and hopefully make you more productive.</p>
 <!-- . . . -->
 <div class="quarto-figure quarto-figure-center">
@@ -247,7 +252,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </section>
 
 <section>
-<section id="ssh-config-files" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="ssh-config-files" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>SSH config files</h1>
 
 </section>
@@ -302,7 +307,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <p>Add this to the <code>.bashrc</code> or <code>.bash_aliases</code> file on your local machine (or find the equivalent options in your WinSCP/PuTTY/MobaXterm settings).</p>
 </section></section>
 <section>
-<section id="remote-ssh" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="remote-ssh" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Remote SSH</h1>
 
 </section>
@@ -423,7 +428,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <p>(<a href="https://news.ycombinator.com/item?id=34296396">check</a> out <a href="https://news.ycombinator.com/item?id=40284164">HackerNews</a> for <a href="https://news.ycombinator.com/item?id=41453264">many</a> more opinions on the matter.)</p>
 </div></aside></section></section>
 <section>
-<section id="hopping-between-login-and-compute-nodes" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="hopping-between-login-and-compute-nodes" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Hopping between login and compute nodes</h1>
 
 </section>
@@ -540,7 +545,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </div>
 </section></section>
 <section>
-<section id="running-gui-tools-on-calcua" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="running-gui-tools-on-calcua" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Running GUI tools on CalcUA</h1>
 
 </section>
@@ -607,7 +612,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </ul>
 </div></aside></section></section>
 <section>
-<section id="persistent-ssh-sessions" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="persistent-ssh-sessions" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Persistent SSH sessions</h1>
 
 </section>
@@ -647,12 +652,11 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </div>
 </div>
 </div></aside></section>
-<section id="example-3" class="slide level2 center">
-<h2>Example</h2>
-
-<img data-src="https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section></section>
+<section id="section" class="slide level2 hide-logo center" data-background-image="https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif" data-background-size="100%">
+<h2></h2>
+</section></section>
 <section>
-<section id="pretty-squeue" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="pretty-squeue" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Pretty <code>squeue</code></h1>
 
 </section>
@@ -690,7 +694,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </ul>
 </section></section>
 <section>
-<section id="transferring-files" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="transferring-files" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Transferring files</h1>
 <p><em>Never underestimate the bandwidth of a station wagon full of tapes hurtling down the highway.</em></p>
 <p>~Andrew Tanenbaum, 1981</p>
@@ -799,11 +803,11 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <span id="cb14-6"><a href=""></a><span class="co"># `rclone sync` is also available</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
 <section>
-<section id="too-many-small-files-or-large-volumes-of-data" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="too-many-small-files-or-large-volumes-of-data" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Too many small files or large volumes of data</h1>
 
 </section>
-<section id="section" class="slide level2 center">
+<section id="section-1" class="slide level2 center">
 <h2></h2>
 <p>Most file systems can be brought to their knees when creating large amounts of <span class="bg" style="--col: #e64173">small files</span>. Doing so might invoke the wrath of the system admins, but unfortunately you cannot also control the behaviour of existing tools.</p>
 <div class="fragment">
@@ -857,7 +861,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </div>
 </div></aside></section></section>
 <section>
-<section id="best-practices-for-file-permissions" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="best-practices-for-file-permissions" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Best practices for file permissions</h1>
 
 </section>
@@ -924,7 +928,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </div>
 </section></section>
 <section>
-<section id="hpc-container-wrapper-as-a-condamamba-alternative" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="hpc-container-wrapper-as-a-condamamba-alternative" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>HPC container wrapper as a <code>conda</code>/<code>mamba</code> alternative</h1>
 
 </section>
@@ -1202,7 +1206,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 </ul>
 </div></aside></section></section>
 <section>
-<section id="a-note-on-r-rstudio-projects-and-renv" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="a-note-on-r-rstudio-projects-and-renv" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>A note on R, RStudio Projects and <code>renv</code></h1>
 
 <img data-src="https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/3c1eda6b-be13-4257-9c32-4cf865f171ae_rw_3840.png?h=87c3548b5f8a6ee566e245181f88d605" class="r-stretch quarto-figure-center"><p class="caption"><a href="https://allisonhorst.com/data-science-art">Artwork by <span class="citation" data-cites="allison_horst">@allison_horst</span></a></p></section>
@@ -1223,7 +1227,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <p>Alternatively, you could rely on only loading the main R module and <a href="https://docs.vscentrum.be/compute/software/installing_software/r_package_management.html">install your own R packages</a> while using <code>renv</code> for versioning (the benefit being that everything is contained in a single lockfile instead of spread across modules too).</p>
 <p>In this case though, it is again important to change a few default paths to avoid filling your home directory.</p>
 </section>
-<section id="section-1" class="slide level2 center" data-auto-animate="true">
+<section id="section-2" class="slide level2 center" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <div class="sourceCode" id="cb29"><pre class="sourceCode numberSource bash number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode bash hljs"><span id="cb29-1" class="hljs-ln-code"><a href=""></a><span class="co"># load R first</span></span>
 <span id="cb29-2" class="hljs-ln-code"><a href=""></a><span class="ex">module</span> load R/4.5.1-gfbf-2025a</span>
@@ -1236,8 +1240,11 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <span id="cb29-9" class="hljs-ln-code"><a href=""></a></span>
 <span id="cb29-10" class="hljs-ln-code"><a href=""></a><span class="co"># create the directory</span></span>
 <span id="cb29-11" class="hljs-ln-code"><a href=""></a><span class="ex">└─▶</span> mkdir <span class="at">-p</span> <span class="va">${VSC_DATA}</span>/Rlibs/<span class="va">${VSC_OS_LOCAL}</span>/<span class="va">${VSC_ARCH_LOCAL}</span>/R-<span class="va">${EBVERSIONR}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="section-2" class="slide level2 smaller center">
+
+<aside><div>
+<p>More info on how the <code>renv</code> global caching directory works can be found <a href="https://rstudio.github.io/renv/articles/package-install.html#cache-location">here</a>.</p>
+</div></aside></section>
+<section id="section-3" class="slide level2 smaller center">
 <h2></h2>
 <div class="sourceCode" id="cb30"><pre class="sourceCode numberSource R number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># then inside R, verify the library path</span></span>
 <span id="cb30-2"><a href=""></a><span class="sc">&gt;</span> <span class="fu">.libPaths</span>()</span>
@@ -1301,12 +1308,16 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>If you prefer, you can set another <code>.Renviron</code> option to force <code>renv</code> to install packages to a shared directory (e.g.&nbsp;in <code>/data</code>) instead of inside your (<code>/scratch</code>) project directory:</p>
+<p>If you prefer, you can set another <code>.Renviron</code> option to force <code>renv</code> to create the project-local packages folder (which actually just contains symlinks to the global cache) in a shared directory (e.g.&nbsp;in <code>/data</code>) instead of inside your actual project directory:</p>
 <p><code>RENV_PATHS_RENV=/data/antwerpen/203/vsc20380/renv-shared-lib/</code></p>
 </div>
 </div>
 </div>
-</section>
+
+<aside><div>
+<p>This is also useful when working locally while storing your project folder in a synced directory (e.g.&nbsp;prevent OneDrive from throwing a tantrum).</p>
+<p>More info on this functionality can be found <a href="https://rstudio.github.io/renv/news/index.html?q=RENV_PATHS_RENV#renv-0150">here</a>.</p>
+</div></aside></section>
 <section class="slide level2 center">
 
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -1328,7 +1339,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <p>Great write-up on how to manage R package dependencies using <code>renv</code> on HPCs in general: <a href="https://www.daryavanichkina.com/posts/210728_renvhpc.html">https://www.daryavanichkina.com/posts/210728_renvhpc.html</a>.</p>
 </div></aside></section></section>
 <section>
-<section id="nextflow-on-calcua" class="title-slide slide level1 center" data-background-color="#0a4e62">
+<section id="nextflow-on-calcua" class="title-slide slide level1 hide-logo center" data-background-color="#0a4e62">
 <h1>Nextflow on CalcUA</h1>
 
 </section>
@@ -1415,7 +1426,7 @@ Pieter Moris <a href="https://pmoris.github.io"><i class="fa-solid fa-globe" ari
 <span id="cb33-31" class="hljs-ln-code"><a href=""></a>  <span class="at">--outdir</span> test_output</span>
 <span id="cb33-32" class="hljs-ln-code"><a href=""></a>  <span class="ex">--outdir</span> test_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-3" class="slide level2 center">
+<section id="section-4" class="slide level2 center">
 <h2></h2>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">

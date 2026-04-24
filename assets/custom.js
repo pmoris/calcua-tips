@@ -2,8 +2,6 @@
 
 // This script allows the addition of a custom footer to the title slide only
 
-console.log("✅ Custom JS loaded!");
-
 function add_custom_footer() {
     // Footer was hardcoded in custom.js because {{ }} code injection or even quote escaping/html entities like &quot; do not seem to work when passed via the
     // title-slide-attributes => title-footer YAML option.
@@ -72,5 +70,4 @@ function add_title_dates() {
 window.addEventListener("load", (event) => {
     add_custom_footer();
     add_title_dates();
-    console.log("✅ Reveal is ready. Current slide:", Reveal.getCurrentSlide().id);
 });
