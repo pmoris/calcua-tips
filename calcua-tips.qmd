@@ -1050,6 +1050,10 @@ EOL
 └─▶ mkdir -p ${VSC_DATA}/Rlibs/${VSC_OS_LOCAL}/${VSC_ARCH_LOCAL}/R-${EBVERSIONR}
 ```
 
+::: aside
+More info on how the `renv` global caching directory works can be found [here](https://rstudio.github.io/renv/articles/package-install.html#cache-location).
+:::
+
 ## {.smaller}
 
 ```{.R}
@@ -1111,9 +1115,15 @@ The lockfile contains an overview of everything you've installed:
 ---
 
 ::: {.callout-tip}
-If you prefer, you can set another `.Renviron` option to force `renv` to install packages to a shared directory (e.g. in `/data`) instead of inside your (`/scratch`) project directory:
+If you prefer, you can set another `.Renviron` option to force `renv` to create the project-local packages folder (which actually just contains symlinks to the global cache) in a shared directory (e.g. in `/data`) instead of inside your actual project directory:
 
 `RENV_PATHS_RENV=/data/antwerpen/203/vsc20380/renv-shared-lib/`
+:::
+
+::: aside
+This is also useful when working locally while storing your project folder in a synced directory (e.g. prevent OneDrive from throwing a tantrum).
+
+More info on this functionality can be found [here](https://rstudio.github.io/renv/news/index.html?q=RENV_PATHS_RENV#renv-0150).
 :::
 
 ---
