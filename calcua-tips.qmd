@@ -48,12 +48,19 @@ format:
     include-in-header:
       - text: |
           <script src="assets/custom.js" type="application/javascript"></script>
+    # https://stackoverflow.com/questions/78257697/suppressing-logo-on-specific-quarto-reveal-js-slides
+      - text: |
+          <style>
+            body:has(.present.hide-logo) {
+              --logo-display: none;
+            }
+          </style>
 
 # <!--
 # # Contents
 #
-# - [ ] R server GUI - barebones info is there
-# - [ ] R package install
+# - [x] R server GUI - barebones info is there
+# - [x] R package install
 # - [x] fix info regarding partitions and quotas
 # - [x] RAM vs disk /dev/shm VS /tmp
 # - [x] HPC container wrapper for conda
@@ -78,7 +85,7 @@ format:
 
 ---
 
-# Goal of this talk
+# Goal of this talks
 
 Provide an overview of various tips and tricks for using the CalcUA HPC (or other remote servers) and hopefully make you more productive.
 
@@ -86,7 +93,7 @@ Provide an overview of various tips and tricks for using the CalcUA HPC (or othe
 
 ![](./assets/img/kermit-typing.gif){.nostretch fig-align="center" fig-alt="Kermit typing really fast" width="75%"}
 
-# SSH config files {background-color="#0a4e62"}
+# SSH config files {background-color="#0a4e62" .hide-logo}
 
 ## SSH config
 
@@ -145,7 +152,7 @@ Further reading:
 
 Add this to the `.bashrc` or `.bash_aliases` file on your local machine (or find the equivalent options in your WinSCP/PuTTY/MobaXterm settings).
 
-# Remote SSH {background-color="#0a4e62"}
+# Remote SSH {background-color="#0a4e62" .hide-logo}
 
 ## Connecting your editor via remote SSH {.smaller}
 
@@ -243,7 +250,7 @@ If you'd like to streamline your environment between your own machine and remote
 ([check](https://news.ycombinator.com/item?id=34296396) out [HackerNews](https://news.ycombinator.com/item?id=40284164) for [many](https://news.ycombinator.com/item?id=41453264) more opinions on the matter.)
 :::
 
-# Hopping between login and compute nodes {background-color="#0a4e62"}
+# Hopping between login and compute nodes {background-color="#0a4e62" .hide-logo}
 
 ## You can use SSH to jump between nodes.
 
@@ -356,7 +363,7 @@ MiB Swap:  10240.0 total,  10212.5 free,     27.5 used. 121938.3 avail Mem
 ::::
 
 
-# Running GUI tools on CalcUA {background-color="#0a4e62"}
+# Running GUI tools on CalcUA {background-color="#0a4e62" .hide-logo}
 
 ## OnDemand access via Web Portal
 
@@ -413,7 +420,7 @@ Further reading:
 - [More info on container approach and SSH tunneling if needed](https://wiki.helsinki.fi/xwiki/bin/view/it4sci/IT%20for%20Science%20group/HPC%20Environment%20User%20Guide/How%20to%20use%20RStudio%20Server%20in%20HPC%20environment/)
 :::
 
-# Persistent SSH sessions {background-color="#0a4e62"}
+# Persistent SSH sessions {background-color="#0a4e62" .hide-logo}
 
 ## How to avoid timeouts during long-running commands? <!-- {.smaller} -->
 
@@ -443,11 +450,9 @@ Further reading:
 :::
 :::
 
-## Example
+## {background-image="https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif" background-size="100%" .hide-logo}
 
-![](https://s3-us-west-2.amazonaws.com/talum.github.io/tmux.gif){fig-align="center" width="100%"}
-
-# Pretty `squeue` {background-color="#0a4e62"}
+# Pretty `squeue` {background-color="#0a4e62" .hide-logo}
 
 ## Pretty `squeue`
 
@@ -486,7 +491,7 @@ For more info on formatting options, see:
 - Especially useful if you use long job names.
 - Downside: widths are fixed and terminal window needs to be wide enough to fit everything in.
 
-# Transferring files {background-color="#0a4e62"}
+# Transferring files {background-color="#0a4e62" .hide-logo}
 
 _Never underestimate the bandwidth of a station wagon full of tapes hurtling down the highway._
 
@@ -611,7 +616,7 @@ rclone copy -P --dry-run party.parrot personal-onedrive:new-zealand/kakapo/
 # `rclone sync` is also available
 ```
 
-# Too many small files or large volumes of data {background-color="#0a4e62"}
+# Too many small files or large volumes of data {background-color="#0a4e62" .hide-logo}
 
 ##
 
@@ -664,7 +669,7 @@ Further reading:
 :::
 
 
-# Best practices for file permissions {background-color="#0a4e62"}
+# Best practices for file permissions {background-color="#0a4e62" .hide-logo}
 
 ## File ownership and permissions
 
@@ -732,7 +737,7 @@ find . -type f -name "MD5.txt" -execdir bash -c 'md5sum -c {}' \;
 For more info, please refer to [https://genomicsaotearoa.github.io/shell-for-bioinformatics/2_download_data/](https://genomicsaotearoa.github.io/shell-for-bioinformatics/2_download_data/).
 :::
 
-# HPC container wrapper as a `conda`/`mamba` alternative {background-color="#0a4e62"}
+# HPC container wrapper as a `conda`/`mamba` alternative {background-color="#0a4e62" .hide-logo}
 
 ---
 
@@ -1003,7 +1008,7 @@ Check these resources for a refresher on conda package versioning:
 - [Issues with `--from-history`](https://www.monicathieu.com/posts/2024-05-20-conda-env-export-from-history.html) and how to [add explicit package versions](https://github.com/conda/conda/issues/10345#issuecomment-1852838493)
 :::
 
-# A note on R, RStudio Projects and `renv` {background-color="#0a4e62"}
+# A note on R, RStudio Projects and `renv` {background-color="#0a4e62" .hide-logo}
 
 ![[Artwork by @allison_horst](https://allisonhorst.com/data-science-art)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/3c1eda6b-be13-4257-9c32-4cf865f171ae_rw_3840.png?h=87c3548b5f8a6ee566e245181f88d605)
 
@@ -1021,7 +1026,6 @@ Check the VSC docs for a full walkthrough: [https://docs.vscentrum.be/compute/so
 
 ::: aside
 For more info on project-oriented workflows, check out [https://tidyverse.org/blog/2017/12/workflow-vs-script/](https://tidyverse.org/blog/2017/12/workflow-vs-script/) and [https://rstats.wtf/projects](https://rstats.wtf/projects).
-
 :::
 
 ---
@@ -1124,7 +1128,7 @@ Further reading:
 Great write-up on how to manage R package dependencies using `renv` on HPCs in general: [https://www.daryavanichkina.com/posts/210728_renvhpc.html](https://www.daryavanichkina.com/posts/210728_renvhpc.html).
 :::
 
-# Nextflow on CalcUA {background-color="#0a4e62"}
+# Nextflow on CalcUA {background-color="#0a4e62" .hide-logo}
 
 ## Running Nextflow on CalcUA
 

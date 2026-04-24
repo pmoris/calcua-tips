@@ -19,9 +19,10 @@ $code-bg:#f1f1f1;
 }
 
 .reveal .slide-logo {
-   max-height: 4em !important;
+   max-height: 5vw !important;
 }
 
+// replaced by https://stackoverflow.com/questions/78257697/suppressing-logo-on-specific-quarto-reveal-js-slides
 // https://github.com/orgs/quarto-dev/discussions/3417
 // alternative code option to switch between light and dark logo: https://github.com/orgs/quarto-dev/discussions/5439
 .reveal.has-dark-background .slide-logo {
